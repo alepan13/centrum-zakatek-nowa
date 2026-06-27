@@ -6,8 +6,8 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function run(){
-    const sel = ['.section-head', '.prob-grid', '.steps-grid', '.values-grid',
-                 '.team-group', '.price-grid', '.faq', '.privacy-grid', '.cta-band', '.trust-inner'];
+    const sel = ['.section-head', '.svc', '.svc-note', '.team-group', '.price-grid',
+                 '.priv', '.cta-band', '.trust-inner'];
     const reveals = [];
     sel.forEach(s => document.querySelectorAll(s).forEach(el => { el.classList.add('reveal'); reveals.push(el); }));
 

@@ -585,3 +585,36 @@ p,li,blockquote,.lede,.db,.rc-why,.modal-desc{text-wrap:pretty}
 
 /* atrybut hidden musi wygrywać z display:flex/grid na panelach */
 [hidden]{display:none!important}
+
+/* ============================================================
+   Animowane ikony SVG przy specjalizacjach (line-art, draw-on)
+   ============================================================ */
+.svc-art{display:grid;place-items:center;width:54px;height:54px;border-radius:14px;background:var(--surface-2);color:var(--teal);margin-bottom:18px;transition:background .22s ease,color .22s ease}
+.svc:hover .svc-art{background:var(--teal-2);color:#fff}
+.svc-art svg{width:30px;height:30px;overflow:visible;transition:transform .28s ease}
+.svc:hover .svc-art svg{transform:scale(1.07)}
+.svc-art .dl{stroke-dasharray:100}
+.svc-art .node{opacity:.55;transform-box:fill-box;transform-origin:center}
+.sway{transform-box:fill-box;transform-origin:50% 100%}
+.bloom{transform-box:fill-box;transform-origin:50% 92%}
+.rings{transform-box:fill-box;transform-origin:center}
+
+@keyframes svgdraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes svgsway{0%,100%{transform:rotate(-2.6deg)}50%{transform:rotate(2.6deg)}}
+@keyframes svgbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+@keyframes svghb{0%,100%{opacity:1}48%{opacity:.32}}
+@keyframes svgnode{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
+
+@media(prefers-reduced-motion:no-preference){
+  .svc.reveal .svc-art .dl{stroke-dashoffset:100}
+  .svc.in .svc-art .dl{animation:svgdraw .95s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards}
+  .svc.in .svc-art .pulse{animation:svgdraw .95s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards, svghb 3s ease-in-out 1.5s infinite}
+  .svc.in .sway{animation:svgsway 5.5s ease-in-out 1.3s infinite}
+  .svc.in .bloom{animation:svgbreathe 5s ease-in-out 1.4s infinite}
+  .svc.in .rings{animation:svgbreathe 5.5s ease-in-out 1.4s infinite}
+  .svc.in .svc-art .node{animation:svgnode 2.6s ease-in-out 1.5s infinite}
+  .svc:hover .sway,.svc:hover .bloom,.svc:hover .rings{animation-duration:3.4s}
+}
+@media(prefers-reduced-motion:reduce){
+  .svc-art .dl{stroke-dashoffset:0}
+}
