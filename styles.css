@@ -4,7 +4,7 @@
   --surface:#fffdf8;
   --surface-2:#eef4ef;
   --ink:#14211d;
-  --muted:#61706a;
+  --muted:#53615a;
   --soft:#dfe9e2;
   --line:#d8e0da;
   --teal:#176b5b;
@@ -156,7 +156,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:560;line-height:1.05;color:var(--t
 .zai-dot{width:8px;height:8px;border-radius:50%;background:#25a77d;box-shadow:0 0 0 4px rgba(37,167,125,.14)}
 .zai-qr-label{margin:18px 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:var(--muted)}
 .chip-row{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:8px 10px;color:#31433d;font-size:13px;font-weight:800;cursor:pointer;transition:all .16s ease}
+.chip{display:inline-flex;align-items:center;gap:7px;min-height:40px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:8px 12px;color:#31433d;font-size:13px;font-weight:800;cursor:pointer;transition:all .16s ease}
 .chip:hover{border-color:var(--teal);color:var(--teal-2);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 .zai-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 18px;border-top:1px solid var(--line);background:#fffdf8}
 .zai-meta span{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-weight:800}
@@ -265,7 +265,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:560;line-height:1.05;color:var(--t
 
 /* Team */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
-.filter{border:1px solid var(--line);border-radius:var(--radius);background:#fffdf8;color:#4d5f58;padding:8px 12px;font-weight:900;font-size:14px;cursor:pointer;transition:all .16s ease}
+.filter{display:inline-flex;align-items:center;min-height:40px;border:1px solid var(--line);border-radius:var(--radius);background:#fffdf8;color:#4d5f58;padding:8px 14px;font-weight:900;font-size:14px;cursor:pointer;transition:all .16s ease}
 .filter:hover{border-color:var(--teal);color:var(--teal-2)}
 .filter.on{background:var(--teal-2);border-color:var(--teal-2);color:#fff}
 .team-group{margin-bottom:42px}
