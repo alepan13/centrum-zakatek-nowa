@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPricing();
   renderFaq();
   bindFilters();
+  bindHeroAssistant();
   buildModal();
   Assistant.start();
   typoPass(document.body);
@@ -185,7 +186,7 @@ const Assistant = (() => {
       <div class="zai-recommends">
         <span class="zai-avatar sm"><img src="assets/brand/favicon.svg" alt=""></span>
         <div>
-          <div class="zai-rec-name">ZAIkątek poleca</div>
+          <div class="zai-rec-name">Asystent wskazuje</div>
           <div class="zai-rec-sub">Twoje TOP 3 - od czego najlepiej zacząć</div>
         </div>
       </div>
@@ -224,12 +225,12 @@ const Assistant = (() => {
     typoPass(body());
   }
 
-  function quickStart(concernKey){
+  function quickStart(concernKey, who = 'adults'){
     start();
-    answers.who = 'adults';
+    answers.who = who;
     answers.concerns = concernKey ? [concernKey] : [];
     buildVisibleFlow();
-    stepIdx = visibleFlow.findIndex(f => f.id === 'concerns');
+    stepIdx = visibleFlow.findIndex(f => f.id === (who === 'children' ? 'age' : 'concerns'));
     if(stepIdx < 0) stepIdx = 0;
     render();
     document.getElementById('asystent').scrollIntoView({ behavior:'smooth' });
@@ -250,12 +251,18 @@ const FILTERS = [
 function initials(name){ return name.split(' ').slice(0,2).map(w => w[0]).join(''); }
 
 function docCard(s){
+  const slot = formatSlot(s.availDays);
+  const price = s.priceFrom ? `od ${s.priceFrom} zł` : s.priceLabel;
   return `
   <button class="doc" data-open="${s.id}">
     <div class="doc-photo"><img src="${s.photo}" alt="${s.name}" loading="lazy"></div>
     <div class="doc-body">
       <div class="dn">${s.name}</div>
       <div class="dr">${s.role}</div>
+      <div class="doc-meta">
+        <span><i class="ti ti-tag"></i> ${price}</span>
+        <span><i class="ti ti-calendar-check"></i> ${slot.rel}</span>
+      </div>
       <div class="db">${s.motto ? '„' + s.motto.replace(/[.]$/,'') + '"' : s.blurb}</div>
       <div class="badges">
         ${s.treats.includes('children') ? '<span class="tagb">dzieci/młodzież</span>' : ''}
@@ -395,3 +402,27 @@ function renderFaq(){
 
 /* skrót dla kafelków problemów / hero */
 function quick(concern){ Assistant.quickStart(concern); }
+function quickChild(){ Assistant.quickStart(null, 'children'); }
+function startHeroAssistant(){
+  const text = (document.getElementById('heroSymptom')?.value || '').toLowerCase();
+  const pairs = [
+    [/dziec|nastolat|młodzie|mlodzie|syn|córk|cork/, null, 'children'],
+    [/lęk|lek|panik|niepok|napię/, 'anxiety', 'adults'],
+    [/sen|bezsen|zasyp/, 'sleep', 'adults'],
+    [/uzależ|uzalezn|alkohol|hazard|substanc/, 'addiction', 'adults'],
+    [/głow|glow|zawrot|drętw|dretw|neurolog/, 'neuro', 'adults'],
+    [/relac|para|partner|związek|zwiazek/, 'relationships', 'adults'],
+    [/smut|depres|nastr|energia|przygnęb/, 'depression', 'adults'],
+  ];
+  const hit = pairs.find(([rx]) => rx.test(text));
+  Assistant.quickStart(hit ? hit[1] : null, hit ? hit[2] : 'adults');
+}
+
+function bindHeroAssistant(){
+  const input = document.getElementById('heroSymptom');
+  const count = document.getElementById('heroSymptomCount');
+  if(!input || !count) return;
+  const update = () => { count.textContent = `${input.value.length}/300`; };
+  input.addEventListener('input', update);
+  update();
+}

@@ -321,15 +321,15 @@ const FAQ = [
 
 /* Wartości / podejście */
 const VALUES = [
-  ['ti-shield-heart','Bezpiecznie i dyskretnie','Tworzymy przestrzeń, w której możesz mówić otwarcie, bez obawy o ocenę. Dbamy o poufność na każdym etapie.'],
-  ['ti-puzzle','Indywidualne podejście','Dobieramy metody do Ciebie, a nie odwrotnie. Łączymy różne nurty terapeutyczne, by jak najlepiej dopasować pomoc.'],
-  ['ti-certificate','Doświadczeni specjaliści','Lekarze, psycholodzy i psychoterapeuci z praktyką kliniczną, którzy stale poszerzają wiedzę i pracują pod superwizją.'],
+  ['ti-shield-heart','Prywatność od pierwszego kliknięcia','Dobór specjalisty działa bez danych osobowych, a kontakt pojawia się dopiero wtedy, gdy pacjent sam zdecyduje.'],
+  ['ti-route','Ścieżka zamiast chaosu','Objawy, wiek, cel wizyty i pilność zamieniamy w czytelną rekomendację oraz alternatywy.'],
+  ['ti-certificate','Człowiek zatwierdza decyzję','Asystent skraca drogę, ale ostateczny termin, formę wizyty i szczegóły potwierdza rejestracja.'],
 ];
 
 /* Proces pierwszej wizyty */
 const STEPS = [
-  ['ti-message-chatbot','Dobierz specjalistę','Skorzystaj z anonimowego asystenta albo zadzwoń - pomożemy ustalić, kto najlepiej Ci pomoże.'],
-  ['ti-calendar-plus','Umów dogodny termin','Rejestracja zaproponuje wolne terminy i odpowie na pytania. Bez zobowiązań.'],
-  ['ti-armchair','Przyjdź na spotkanie','Pierwsza wizyta to rozmowa i poznanie Twojej sytuacji. Razem ustalamy dalsze kroki.'],
-  ['ti-leaf','Działajcie razem','Specjalista prowadzi Cię dalej - konsultacje, terapia lub diagnoza, w Twoim tempie.'],
+  ['ti-message-chatbot','Opisz objawy anonimowo','Asystent pyta o najważniejsze sygnały, wiek, cel wizyty i pilność kontaktu.'],
+  ['ti-users','Zobacz 3 rekomendacje','Dostajesz konkretne osoby z uzasadnieniem, ceną i orientacyjną dostępnością.'],
+  ['ti-calendar-plus','Potwierdź termin','Rejestracja pomaga wybrać dogodny termin i odpowiada na pytania organizacyjne.'],
+  ['ti-armchair','Zacznij opiekę','Pierwsza wizyta porządkuje sytuację i ustala dalsze kroki: konsultacje, terapia, diagnoza lub leczenie.'],
 ];
