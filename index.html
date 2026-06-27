@@ -55,7 +55,7 @@
   ::selection{background:rgba(6,64,43,.16);color:var(--accent)}
   img{display:block;max-width:100%}
 
-  #brain{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:.6}
+  #brain{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:.72}
   #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
   .grade{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(92% 84% at 50% 42%,transparent 64%,rgba(120,98,52,.05) 100%)}
   .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#F4ECDE 0%,rgba(244,236,222,.93) 26%,rgba(244,236,222,.55) 60%,transparent 100%)}
@@ -498,15 +498,22 @@
   new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
     var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
     if(!geo) return;
-    geo.computeBoundingSphere();
-    var c=geo.boundingSphere.center, r=geo.boundingSphere.radius||1;
-    var mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0058, sizeAttenuation:true, transparent:true, opacity:0.085, depthWrite:false});
-    var pts=new THREE.Points(geo, mat);
+    /* odetnij dolną część (talerz/baza), zostaw sam mózg */
+    geo.computeBoundingBox();
+    var bb=geo.boundingBox, minY=bb.min.y, hY=bb.max.y-bb.min.y, cut=minY+hY*0.27;
+    var src=geo.attributes.position, out=[];
+    for(var i=0;i<src.count;i++){ var y=src.getY(i); if(y>=cut){ out.push(src.getX(i),y,src.getZ(i)); } }
+    var ng=new THREE.BufferGeometry();
+    ng.setAttribute('position', new THREE.Float32BufferAttribute(out,3));
+    ng.computeBoundingSphere();
+    var c=ng.boundingSphere.center, r=ng.boundingSphere.radius||1;
+    var mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0056, sizeAttenuation:true, transparent:true, opacity:0.125, depthWrite:false});
+    var pts=new THREE.Points(ng, mat);
     pts.position.set(-c.x,-c.y,-c.z);
     group=new THREE.Group(); group.add(pts);
-    group.scale.setScalar(1.5/r);
-    group.position.set(0.8, 0.12, 0);   // bardziej w prawo, za treścią
-    group.rotation.x=-0.25;
+    group.scale.setScalar(1.05/r);
+    group.position.set(0.42, 0.06, 0);   // mniejszy, wyśrodkowany-prawo, za treścią
+    group.rotation.x=-0.18;
     scene.add(group);
     renderer.render(scene,camera);
   }, undefined, function(){ /* błąd ładowania - pomijamy mózg */ });
