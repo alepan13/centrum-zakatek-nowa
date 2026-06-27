@@ -43,17 +43,21 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
+  html{background:#0A0F0D}
   body{font-family:var(--body);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100%;
-    background:
-      radial-gradient(135% 100% at 82% 4%, rgba(74,116,100,.22), transparent 56%),
-      radial-gradient(120% 95% at 4% 100%, rgba(124,96,68,.12), transparent 60%),
-      linear-gradient(180deg,#10191600,#0C1311 60%,#0A0F0D);}
+    background-color:#0B100E;
+    background-image:
+      radial-gradient(135% 100% at 82% 4%, rgba(74,116,100,.20), transparent 56%),
+      radial-gradient(120% 95% at 4% 100%, rgba(124,96,68,.10), transparent 60%),
+      linear-gradient(180deg,#101916,#0C1311 55%,#0A0F0D);
+    background-attachment:fixed,fixed,fixed;}
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(143,194,168,.24);color:#fff}
   img{display:block;max-width:100%}
 
   #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
   .grade{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(92% 84% at 50% 42%,transparent 56%,rgba(6,9,8,.55) 100%)}
+  .topscrim{position:fixed;top:0;left:0;right:0;height:118px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#0A0F0D 0%,rgba(10,15,13,.92) 26%,rgba(10,15,13,.6) 60%,transparent 100%)}
 
   .brandmark{position:fixed;top:26px;left:40px;z-index:8;font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:11px;color:var(--cream);text-shadow:var(--halo)}
   .brandmark .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 11px var(--glow);animation:breathe 4s ease-in-out infinite}
@@ -226,6 +230,7 @@
 
 <canvas id="field"></canvas>
 <div class="grade"></div>
+<div class="topscrim"></div>
 <div class="brandmark"><span class="dot"></span>Centrum Zakątek</div>
 <nav class="topnav">
   <a data-goto="zakres">Zakres</a>
