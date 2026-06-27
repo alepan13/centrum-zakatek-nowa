@@ -37,9 +37,9 @@
   :root{
     /* --- kolory --- */
     --accent:#06402B; --accent-rgb:6,64,43; --accent-2:#0B5A3B; --accent-ink:#F4ECD6;
-    --cream:#23302A; --soft:#565C4C; --muted:#6E6A57;
+    --cream:#23302A; --soft:#565C4C; --muted:#5C5847;
     --line:rgba(35,48,40,.13); --glow:rgba(var(--accent-rgb),.14);
-    --clay:#9C6B45; --card:rgba(255,253,246,.62);
+    --clay:#9C6B45; --card:rgba(252,247,237,.92);
     /* --- tła --- */
     --bg:#F1E8DA; --bg-top:#F7F1E7; --bg-bottom:#ECE1D0; --surface:#F8F2E6;
     /* --- promienie --- */
@@ -75,6 +75,7 @@
 
   .brandmark{position:fixed;top:26px;left:40px;z-index:8;font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:11px;color:var(--cream);text-shadow:var(--halo)}
   .brandmark .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 11px var(--glow);animation:breathe 4s ease-in-out infinite}
+  @media(max-width:600px){ .brandmark{font-size:var(--text-xs);letter-spacing:.12em;gap:8px} }
   @keyframes breathe{0%,100%{opacity:.5;transform:scale(.85)}50%{opacity:1;transform:scale(1.12)}}
   .loopnote{position:fixed;bottom:26px;left:40px;z-index:8;font-family:var(--mono);font-size:var(--text-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:9px;text-shadow:var(--halo)}
   .loopnote .sp{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--glow);animation:breathe 3s ease-in-out infinite}
@@ -85,6 +86,20 @@
   .topnav .navcta{margin-left:8px;color:var(--accent-ink);background:var(--accent);font-weight:600;letter-spacing:.06em}
   .topnav .navcta:hover{background:var(--accent-2)}
   @media(max-width:980px){ .topnav{top:16px;right:12px} .topnav a:not(.navcta){display:none} }
+  .navtoggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);cursor:pointer;margin-left:8px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .navtoggle span,.navtoggle span::before,.navtoggle span::after{display:block;width:18px;height:2px;background:var(--accent);border-radius:2px;transition:transform .25s,opacity .2s}
+  .navtoggle span{position:relative}
+  .navtoggle span::before{content:"";position:absolute;top:-6px}
+  .navtoggle span::after{content:"";position:absolute;top:6px}
+  .navtoggle.open span{background:transparent}
+  .navtoggle.open span::before{top:0;transform:rotate(45deg)}
+  .navtoggle.open span::after{top:0;transform:rotate(-45deg)}
+  .mobilemenu{display:none;position:fixed;top:70px;left:12px;right:12px;z-index:9;flex-direction:column;gap:2px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 24px 60px -24px rgba(20,30,24,.35)}
+  .mobilemenu.open{display:flex}
+  .mobilemenu a{font-family:var(--mono);font-size:var(--text-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--cream);padding:14px;border-radius:var(--r-sm)}
+  .mobilemenu a:hover,.mobilemenu a:focus-visible{background:rgba(var(--accent-rgb),.06);color:var(--accent)}
+  @media(max-width:980px){ .navtoggle{display:inline-flex} }
+  @media(min-width:981px){ .mobilemenu{display:none!important} }
 
   .scene{position:relative;z-index:2;padding:13vh 7vw;overflow:hidden}
   .scene.hero{min-height:90vh;display:flex;align-items:center}
@@ -162,7 +177,7 @@
 
   /* ZESPÓŁ */
   .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:32px}
-  .filt{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.05em;text-transform:uppercase;color:var(--soft);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 14px;cursor:pointer;transition:.25s}
+  .filt{display:inline-flex;align-items:center;min-height:40px;font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.05em;text-transform:uppercase;color:var(--soft);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 14px;cursor:pointer;transition:.25s}
   .filt:hover{border-color:var(--accent);color:var(--accent)}
   .filt.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
   .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:14px;margin-top:26px}
@@ -252,7 +267,15 @@
   <a data-goto="cennik">Cennik</a>
   <a data-goto="prywatnosc">Prywatność</a>
   <a class="navcta" href="tel:575805505">575 805 505</a>
+  <button class="navtoggle" id="navtoggle" aria-label="Menu" aria-expanded="false" aria-controls="mobilemenu"><span></span></button>
 </nav>
+<div class="mobilemenu" id="mobilemenu">
+  <a data-goto="zakres">Zakres pomocy</a>
+  <a data-goto="zespol">Zespół</a>
+  <a data-goto="cennik">Cennik</a>
+  <a data-goto="prywatnosc">Prywatność</a>
+  <a data-goto="umow">Kontakt</a>
+</div>
 <div class="loopnote"><span class="sp"></span>Toruń · ul. Bydgoska 32</div>
 
 <main>
@@ -448,6 +471,15 @@
   /* ---------- nawigacja ---------- */
   document.querySelectorAll('[data-goto]').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); var t=document.getElementById(a.getAttribute('data-goto')); if(t)t.scrollIntoView({behavior:'smooth'}); }); });
 
+  /* ---------- menu mobilne ---------- */
+  var nt=document.getElementById('navtoggle'), mm=document.getElementById('mobilemenu');
+  if(nt&&mm){
+    function setMenu(open){ mm.classList.toggle('open',open); nt.classList.toggle('open',open); nt.setAttribute('aria-expanded',open?'true':'false'); }
+    nt.addEventListener('click',function(){ setMenu(!mm.classList.contains('open')); });
+    mm.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ setMenu(false); }); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') setMenu(false); });
+  }
+
   typoPass(document.body);
 
   /* auto-wykrycie zablokowanych animacji: jeśli po 1.5s hero wciąż niewidoczne, wymuś widoczność */
@@ -501,6 +533,10 @@
     scene.add(group);
     renderer.render(scene,camera);
   }, undefined, function(){ /* błąd ładowania - pomijamy mózg */ });
+  /* mózg mocny w hero, wygasza się przy zjeżdżaniu (czyste karty niżej) */
+  var BASE=0.82;
+  function fade(){ var t=Math.min(1, (window.pageYOffset||0)/(innerHeight*0.72)); canvas.style.opacity=(BASE*(1-t)+0.05*t).toFixed(3); }
+  addEventListener('scroll', fade, {passive:true}); addEventListener('resize', fade, {passive:true}); fade();
   function tick(){ if(group) group.rotation.y += reduce?0:0.0011; renderer.render(scene,camera); requestAnimationFrame(tick); }
   tick();
 })();
