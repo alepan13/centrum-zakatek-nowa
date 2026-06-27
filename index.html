@@ -55,8 +55,7 @@
   ::selection{background:rgba(6,64,43,.16);color:var(--accent)}
   img{display:block;max-width:100%}
 
-  #brain{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:.72}
-  #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
+  #brain{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:.82}
   .grade{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(92% 84% at 50% 42%,transparent 64%,rgba(120,98,52,.05) 100%)}
   .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#F4ECDE 0%,rgba(244,236,222,.93) 26%,rgba(244,236,222,.55) 60%,transparent 100%)}
 
@@ -230,7 +229,6 @@
 <body>
 
 <canvas id="brain"></canvas>
-<canvas id="field"></canvas>
 <div class="grade"></div>
 <div class="topscrim"></div>
 <div class="brandmark"><span class="dot"></span>Centrum Zakątek</div>
@@ -444,37 +442,6 @@
     if(h1 && parseFloat(getComputedStyle(h1).opacity) < 0.5){ document.body.classList.add('forced'); }
   },1500);
 
-  /* ---------- lekkie tło: pole cząsteczek (neuronowe) ---------- */
-  var cv=document.getElementById('field'), ctx=cv.getContext('2d');
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W,H,DPR,pts,signals=[];
-  var NODE='84,86,70', SIG='50,76,58'; /* szarość neuronów; sygnał z nutą zieleni */
-  function resize(){ DPR=Math.min(window.devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
-    var n=Math.round(Math.min(64, innerWidth/24)); pts=[]; for(var i=0;i<n;i++){ pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*0.09*DPR,vy:(Math.random()-.5)*0.09*DPR,r:(Math.random()*1.5+0.7)*DPR}); } signals=[]; }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    var max=150*DPR;
-    for(var i=0;i<pts.length;i++){ var p=pts[i]; p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
-      for(var j=i+1;j<pts.length;j++){ var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);
-        if(d<max){ ctx.strokeStyle='rgba('+NODE+','+(0.13*(1-d/max))+')'; ctx.lineWidth=DPR; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); } }
-      ctx.fillStyle='rgba('+NODE+',.5)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.2832); ctx.fill();
-    }
-    /* sygnały: spokojnie przesyłane między bliskimi neuronami */
-    if(!reduce && signals.length<6 && Math.random()<0.03){
-      var a=(Math.random()*pts.length)|0, best=-1, bd=max;
-      for(var k=0;k<pts.length;k++){ if(k===a)continue; var ddx=pts[a].x-pts[k].x,ddy=pts[a].y-pts[k].y,dd=Math.hypot(ddx,ddy); if(dd<bd){bd=dd;best=k;} }
-      if(best>=0) signals.push({a:a,b:best,t:0,sp:0.0030+Math.random()*0.0024});
-    }
-    for(var s=signals.length-1;s>=0;s--){ var sg=signals[s]; sg.t+=sg.sp; if(sg.t>=1){signals.splice(s,1);continue;}
-      var pa=pts[sg.a],pb=pts[sg.b]; if(!pa||!pb){signals.splice(s,1);continue;}
-      var x=pa.x+(pb.x-pa.x)*sg.t, y=pa.y+(pb.y-pa.y)*sg.t, al=Math.sin(sg.t*Math.PI);
-      ctx.strokeStyle='rgba('+SIG+','+(0.14*al)+')'; ctx.lineWidth=1.3*DPR; ctx.beginPath(); ctx.moveTo(pa.x,pa.y); ctx.lineTo(pb.x,pb.y); ctx.stroke();
-      ctx.fillStyle='rgba('+SIG+','+(0.65*al)+')'; ctx.beginPath(); ctx.arc(x,y,2.2*DPR,0,6.2832); ctx.fill();
-    }
-    if(!reduce) requestAnimationFrame(draw);
-  }
-  addEventListener('resize',resize); resize(); draw();
 })();
 </script>
 
@@ -507,7 +474,7 @@
     ng.setAttribute('position', new THREE.Float32BufferAttribute(out,3));
     ng.computeBoundingSphere();
     var c=ng.boundingSphere.center, r=ng.boundingSphere.radius||1;
-    var mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0056, sizeAttenuation:true, transparent:true, opacity:0.125, depthWrite:false});
+    var mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0115, sizeAttenuation:true, transparent:true, opacity:0.2, depthWrite:false});
     var pts=new THREE.Points(ng, mat);
     pts.position.set(-c.x,-c.y,-c.z);
     group=new THREE.Group(); group.add(pts);
