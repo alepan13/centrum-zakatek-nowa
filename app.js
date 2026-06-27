@@ -49,9 +49,46 @@ document.addEventListener('DOMContentLoaded', () => {
   bindFilters();
   bindHeroAssistant();
   buildModal();
+  bindAssistantModal();
   Assistant.start();
   typoPass(document.body);
 });
+
+/* ---------- Nakładka asystenta (dobór specjalisty) ---------- */
+function openAssistant(){
+  const m = document.getElementById('assistantModal');
+  if(!m) return;
+  m.classList.add('open');
+  m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  const sc = m.querySelector('.amodal-scroll');
+  if(sc) sc.scrollTop = 0;
+}
+function closeAssistant(){
+  const m = document.getElementById('assistantModal');
+  if(!m) return;
+  m.classList.remove('open');
+  m.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+/* generyczne „Dobierz specjalistę" - start od początku przepływu */
+function dobor(e){
+  if(e && e.preventDefault) e.preventDefault();
+  Assistant.start();
+  openAssistant();
+}
+function bindAssistantModal(){
+  const m = document.getElementById('assistantModal');
+  if(!m) return;
+  m.querySelectorAll('[data-close]').forEach(el => el.onclick = closeAssistant);
+  // klik w link „Umów wizytę / kontakt" w wynikach zamyka nakładkę i przewija
+  m.addEventListener('click', e => {
+    if(e.target.closest('a[href="#umow"]')) closeAssistant();
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && m.classList.contains('open')) closeAssistant();
+  });
+}
 
 /* ---------- Asystent (silnik UI) ---------- */
 const Assistant = (() => {
@@ -186,7 +223,7 @@ const Assistant = (() => {
       <div class="zai-recommends">
         <span class="zai-avatar sm"><img src="assets/brand/favicon.svg" alt=""></span>
         <div>
-          <div class="zai-rec-name">Asystent wskazuje</div>
+          <div class="zai-rec-name">Nasza propozycja</div>
           <div class="zai-rec-sub">Twoje TOP 3 - od czego najlepiej zacząć</div>
         </div>
       </div>
@@ -233,7 +270,7 @@ const Assistant = (() => {
     stepIdx = visibleFlow.findIndex(f => f.id === (who === 'children' ? 'age' : 'concerns'));
     if(stepIdx < 0) stepIdx = 0;
     render();
-    document.getElementById('asystent').scrollIntoView({ behavior:'smooth' });
+    openAssistant();
   }
 
   return { start, quickStart };

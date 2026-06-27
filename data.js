@@ -312,8 +312,8 @@ const PRICING = [
 
 /* FAQ */
 const FAQ = [
-  ['Czy korzystanie z asystenta jest anonimowe?','Tak. Asystent nie prosi o imię, nazwisko ani dane kontaktowe, a Twoje odpowiedzi nie są nigdzie zapisywane. To narzędzie, które ma jedynie pomóc Ci wybrać właściwego specjalistę.'],
-  ['Nie wiem, czy potrzebuję psychiatry, czy psychologa.','To bardzo częsta wątpliwość - i właśnie po to powstał nasz asystent. W skrócie: psychiatra jest lekarzem i może włączyć leczenie farmakologiczne, a psycholog i psychoterapeuta pracują rozmową. Często obie formy pomocy się uzupełniają.'],
+  ['Czy dobór specjalisty jest anonimowy?','Tak. Dobór nie prosi o imię, nazwisko ani dane kontaktowe, a Twoje odpowiedzi nie są nigdzie zapisywane. To narzędzie, które ma jedynie pomóc Ci wybrać właściwego specjalistę.'],
+  ['Nie wiem, czy potrzebuję psychiatry, czy psychologa.','To bardzo częsta wątpliwość - i właśnie z tym pomaga nasz krótki dobór. W skrócie: psychiatra jest lekarzem i może włączyć leczenie farmakologiczne, a psycholog i psychoterapeuta pracują rozmową. Często obie formy pomocy się uzupełniają.'],
   ['Jak umówić wizytę?','Zadzwoń pod numer 575 805 505 lub napisz na rejestracja@centrumzakatek.pl. Pomożemy dobrać specjalistę i dogodny termin.'],
   ['Czy przyjmujecie dzieci?','Tak. Mamy psychiatrę dzieci i młodzieży, psychologów dziecięcych, pedagoga specjalnego, trenerów umiejętności społecznych oraz fizjoterapeutkę dziecięcą.'],
   ['Czy mogę przyjść z partnerem na terapię par?','Tak. Kilkoro naszych specjalistów prowadzi terapię par. Możesz też zacząć od konsultacji indywidualnej, a partner dołączy później.'],
@@ -322,14 +322,14 @@ const FAQ = [
 /* Wartości / podejście */
 const VALUES = [
   ['ti-shield-heart','Prywatność od pierwszego kliknięcia','Dobór specjalisty działa bez danych osobowych, a kontakt pojawia się dopiero wtedy, gdy pacjent sam zdecyduje.'],
-  ['ti-route','Ścieżka zamiast chaosu','Objawy, wiek, cel wizyty i pilność zamieniamy w czytelną rekomendację oraz alternatywy.'],
-  ['ti-certificate','Człowiek zatwierdza decyzję','Asystent skraca drogę, ale ostateczny termin, formę wizyty i szczegóły potwierdza rejestracja.'],
+  ['ti-route','Ścieżka zamiast chaosu','Objawy, wiek, cel wizyty i pilność zamieniamy w czytelną propozycję specjalistów oraz alternatywy.'],
+  ['ti-certificate','Człowiek zatwierdza decyzję','Dobór skraca drogę, ale ostateczny termin, formę wizyty i szczegóły potwierdza rejestracja.'],
 ];
 
 /* Proces pierwszej wizyty */
 const STEPS = [
-  ['ti-message-chatbot','Opisz objawy anonimowo','Asystent pyta o najważniejsze sygnały, wiek, cel wizyty i pilność kontaktu.'],
-  ['ti-users','Zobacz 3 rekomendacje','Dostajesz konkretne osoby z uzasadnieniem, ceną i orientacyjną dostępnością.'],
+  ['ti-message-chatbot','Opisz objawy anonimowo','Krótki dobór pyta o najważniejsze sygnały, wiek, cel wizyty i pilność kontaktu.'],
+  ['ti-users','Zobacz 3 propozycje','Dostajesz konkretne osoby z uzasadnieniem, ceną i orientacyjną dostępnością.'],
   ['ti-calendar-plus','Potwierdź termin','Rejestracja pomaga wybrać dogodny termin i odpowiada na pytania organizacyjne.'],
   ['ti-armchair','Zacznij opiekę','Pierwsza wizyta porządkuje sytuację i ustala dalsze kroki: konsultacje, terapia, diagnoza lub leczenie.'],
 ];
