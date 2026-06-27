@@ -410,38 +410,13 @@ function closeModal(){
   document.body.style.overflow = '';
 }
 
-/* ---------- Wartości / proces / FAQ / cennik ---------- */
-function renderValues(){
-  document.getElementById('valuesGrid').innerHTML = VALUES.map(([ic, t, d]) => `
-    <div class="value">
-      <span class="value-ic"><i class="ti ${ic}"></i></span>
-      <h4>${t}</h4><p>${d}</p>
-    </div>`).join('');
-}
-
-function renderSteps(){
-  document.getElementById('stepsGrid').innerHTML = STEPS.map(([ic, t, d], i) => `
-    <div class="step">
-      <span class="step-num">${i + 1}</span>
-      <span class="step-ic"><i class="ti ${ic}"></i></span>
-      <h4>${t}</h4><p>${d}</p>
-    </div>`).join('');
-}
-
+/* ---------- Cennik ---------- */
 function renderPricing(){
   document.getElementById('priceGrid').innerHTML = PRICING.map(g => `
     <div class="price-card">
       <h4><i class="ti ${g.icon}"></i> ${g.group}</h4>
       ${g.items.map(([n, p]) => `<div class="price-row"><span>${n}</span><span class="tnum">${p}</span></div>`).join('')}
     </div>`).join('');
-}
-
-function renderFaq(){
-  document.getElementById('faqList').innerHTML = FAQ.map(([q, a]) => `
-    <details class="faq-item">
-      <summary>${q}<i class="ti ti-chevron-down"></i></summary>
-      <div class="faq-a">${a}</div>
-    </details>`).join('');
 }
 
 /* skrót dla kafelków problemów / hero */
