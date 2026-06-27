@@ -465,11 +465,14 @@
   new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
     var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
     if(!geo) return;
-    /* odetnij dolną część (talerz/baza), zostaw sam mózg */
+    /* dolna część: zmniejszona (kompresja ku osi) z zachowaniem tej samej gęstości */
     geo.computeBoundingBox();
     var bb=geo.boundingBox, minY=bb.min.y, hY=bb.max.y-bb.min.y, cut=minY+hY*0.27;
+    var cx=(bb.min.x+bb.max.x)/2, cz=(bb.min.z+bb.max.z)/2, sB=0.5;
     var src=geo.attributes.position, out=[];
-    for(var i=0;i<src.count;i++){ var y=src.getY(i); if(y>=cut){ out.push(src.getX(i),y,src.getZ(i)); } }
+    for(var i=0;i<src.count;i++){ var x=src.getX(i), y=src.getY(i), z=src.getZ(i);
+      if(y>=cut){ out.push(x,y,z); }
+      else if(Math.random()<sB*sB){ out.push(cx+(x-cx)*sB, cut-(cut-y)*0.55, cz+(z-cz)*sB); } }
     var ng=new THREE.BufferGeometry();
     ng.setAttribute('position', new THREE.Float32BufferAttribute(out,3));
     ng.computeBoundingSphere();
