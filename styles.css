@@ -465,3 +465,123 @@ p,li,blockquote,.lede,.db,.rc-why,.modal-desc{text-wrap:pretty}
   .cta-band{padding:24px}
   .foot-bottom{padding-bottom:52px}
 }
+
+/* ============================================================
+   REDESIGN v3 — hero z okładką, zakres pomocy, kompaktowy zespół,
+   elegantszy cennik, prywatność. (nadpisuje wcześniejsze reguły)
+   ============================================================ */
+
+.section-pad{padding:84px 0}
+
+/* ---- Hero: równe kolumny, lewa bez AI ---- */
+.hero-grid{grid-template-columns:1.04fr .96fr;gap:50px;align-items:start}
+.hero-left{min-width:0;padding-top:4px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;color:var(--teal-2);font-size:13px;font-weight:900}
+.hero-eyebrow i{color:var(--clay);font-size:18px}
+.hero h1{font-size:clamp(48px,5.4vw,76px);margin:0 0 16px;max-width:8ch}
+.hero-motto{margin-bottom:16px}
+.hero-lede{max-width:50ch;margin-bottom:22px}
+.spec-pills{margin-bottom:24px}
+.hero-actions{margin-bottom:26px}
+
+/* ---- Panel asystenta (większy, z okładką) ---- */
+.hero-right{min-width:0;display:flex;flex-direction:column}
+.ai-panel{display:flex;flex-direction:column;background:rgba(255,253,248,.97);border:1px solid rgba(216,224,218,.98);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;padding:28px;min-height:430px}
+.panel-head{display:flex;align-items:center;gap:13px;padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+.panel-cover{display:flex;flex-direction:column;gap:20px;flex:1}
+.cover-lede{font-size:16px;line-height:1.62;color:#3a4a44}
+.cover-points{display:flex;flex-direction:column;gap:12px}
+.cover-points span{display:inline-flex;align-items:center;gap:11px;font-size:14.5px;font-weight:700;color:#43564f}
+.cover-points i{color:var(--teal);font-size:20px}
+.btn-lg{min-height:54px;font-size:16.5px;border-radius:11px;margin-top:auto}
+.cover-foot{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5}
+.cover-foot a{color:var(--teal-2);font-weight:800;text-decoration:underline;text-underline-offset:2px}
+
+.panel-engine{display:flex;flex-direction:column;flex:1}
+.engine-back{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;color:var(--muted);font-size:13.5px;font-weight:800;cursor:pointer;margin-bottom:14px;padding:0}
+.engine-back:hover{color:var(--teal)}
+#heroFlowWrap .progress{padding:4px 0 0;background:transparent}
+#heroFlowWrap .progress-label{padding:9px 0 0;background:transparent}
+#heroFlowWrap .assistant-body{padding:14px 0 0;background:transparent}
+#heroFlowWrap .assistant-note{text-align:left;max-width:none;margin:14px 0 0}
+
+/* ---- Pasek zespołu (małe miniatury) ---- */
+.people-strip{display:flex;align-items:center;gap:14px;margin-top:16px;padding:12px 16px;border:1px solid var(--line);background:rgba(255,253,248,.7);border-radius:13px;transition:all .16s ease}
+.people-strip:hover{border-color:var(--teal);background:#fff;box-shadow:var(--shadow-sm)}
+.strip-thumbs{display:flex;flex-shrink:0}
+.strip-thumbs img{width:42px;height:42px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid var(--surface);margin-left:-12px;box-shadow:var(--shadow-sm)}
+.strip-thumbs img:first-child{margin-left:0}
+.strip-label{font-size:13.5px;color:#43564f;font-weight:700;display:inline-flex;align-items:center;gap:7px;line-height:1.35}
+.strip-label b{color:var(--teal-2);font-weight:900}
+.strip-label i{color:var(--teal);transition:transform .16s ease;font-size:17px}
+.people-strip:hover .strip-label i{transform:translateX(3px)}
+
+/* ---- Zakres pomocy (specjalizacje) ---- */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.svc{border:1px solid var(--line);background:#fffdf8;border-radius:14px;padding:26px;transition:all .18s ease}
+.svc:hover{border-color:var(--teal);box-shadow:var(--shadow);transform:translateY(-2px)}
+.svc-ic{display:grid;place-items:center;width:50px;height:50px;border-radius:12px;background:var(--surface-2);color:var(--teal);font-size:25px;margin-bottom:18px}
+.svc:hover .svc-ic{background:var(--teal-2);color:#fff}
+.svc h3{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--teal-3);line-height:1.14;margin-bottom:9px}
+.svc p{font-size:14.5px;line-height:1.6;color:var(--muted)}
+.svc-note{margin-top:24px;display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:var(--surface-2);border-radius:14px;padding:18px 20px;font-size:14.5px;line-height:1.65;color:#42564f}
+.svc-note i{color:var(--teal);font-size:21px;flex-shrink:0;margin-top:1px}
+.svc-note b{color:var(--teal-3)}
+
+/* ---- Zespół: kompaktowe karty ---- */
+.team-group{margin-bottom:32px}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(198px,1fr));gap:14px}
+.doc{display:flex;flex-direction:column;text-align:left;border:1px solid var(--line);border-radius:13px;background:#fffdf8;overflow:hidden;cursor:pointer;min-height:auto;transition:all .18s ease}
+.doc:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--teal)}
+.doc-photo{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--surface-2)}
+.doc-photo img{width:100%;height:100%;object-fit:cover;object-position:center 16%;transition:transform .35s ease}
+.doc:hover .doc-photo img{transform:scale(1.04)}
+.doc-flags{position:absolute;left:8px;bottom:8px;display:flex;gap:5px;flex-wrap:wrap}
+.doc-flags span{background:rgba(10,51,46,.82);color:#eafff4;font-size:10px;font-weight:800;letter-spacing:.02em;padding:3px 7px;border-radius:6px;backdrop-filter:blur(3px)}
+.doc-body{display:block;flex:none;padding:13px 14px 15px}
+.doc .dn{font-family:var(--serif);font-size:16.5px;line-height:1.12;color:var(--teal-3);font-weight:600}
+.doc .dr{font-size:11.5px;color:var(--teal);font-weight:800;margin-top:4px;line-height:1.3}
+.doc-meta{display:flex;align-items:center;gap:9px;margin:11px 0 0;flex-wrap:wrap}
+.dm-price{font-size:13px;font-weight:900;color:var(--teal-2)}
+.dm-slot{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:800;color:var(--muted)}
+.dm-slot i{font-size:13px;color:var(--teal)}
+
+/* ---- Cennik: czytelniejszy ---- */
+.price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.price-card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:26px 28px;box-shadow:var(--shadow-sm)}
+.price-card h4{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-size:21px;font-weight:600;color:var(--teal-3);padding-bottom:15px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.price-card h4 i{color:var(--clay);font-size:23px}
+.price-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:12px 0;border-bottom:1px solid rgba(216,224,218,.5);font-size:15px}
+.price-row:last-child{border-bottom:0;padding-bottom:2px}
+.price-row span:first-child{color:#46564f;line-height:1.4}
+.price-row .tnum{white-space:nowrap;font-family:var(--serif);font-weight:600;font-size:18px;color:var(--teal-2);font-variant-numeric:tabular-nums}
+
+/* ---- Prywatność i komfort ---- */
+.priv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.priv{border:1px solid var(--line);background:#fffdf8;border-radius:14px;padding:24px}
+.priv-ic{display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid var(--line);color:var(--teal);font-size:24px;margin-bottom:16px}
+.priv h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--teal-3);line-height:1.18;margin-bottom:9px}
+.priv p{font-size:13.8px;line-height:1.6;color:var(--muted)}
+
+/* ---- Responsywność nowych siatek ---- */
+@media(max-width:1100px){
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .hero h1{max-width:none}
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .priv-grid{grid-template-columns:repeat(2,1fr)}
+  .ai-panel{min-height:0}
+}
+@media(max-width:760px){
+  .svc-grid,.priv-grid,.price-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
+@media(max-width:680px){
+  .ai-panel{padding:20px}
+  .people-strip{flex-wrap:wrap}
+}
+@media(max-width:430px){
+  .team-grid{grid-template-columns:1fr 1fr}
+}
+
+/* atrybut hidden musi wygrywać z display:flex/grid na panelach */
+[hidden]{display:none!important}

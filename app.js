@@ -41,53 +41,62 @@ function formatSlot(days){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderValues();
-  renderSteps();
   renderSpecialists('all');
   renderPricing();
-  renderFaq();
   bindFilters();
   bindHeroAssistant();
   buildModal();
-  bindAssistantModal();
+  bindHeroEngine();
   Assistant.start();
   typoPass(document.body);
 });
 
-/* ---------- Nakładka asystenta (dobór specjalisty) ---------- */
-function openAssistant(){
-  const m = document.getElementById('assistantModal');
-  if(!m) return;
-  m.classList.add('open');
-  m.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  const sc = m.querySelector('.amodal-scroll');
-  if(sc) sc.scrollTop = 0;
+/* ---------- Asystent w hero: okładka -> silnik -> przepływ (inline) ---------- */
+function _el(id){ return document.getElementById(id); }
+
+/* okładka -> widok narzędzia (textarea + kafelki) */
+function openHeroEngine(){
+  const cover = _el('heroCover'), eng = _el('heroEngine');
+  if(!cover || !eng) return;
+  cover.hidden = true;
+  eng.hidden = false;
+  _el('heroIntro').hidden = false;
+  _el('heroFlowWrap').hidden = true;
+  const ta = _el('heroSymptom'); if(ta) setTimeout(() => ta.focus(), 60);
 }
-function closeAssistant(){
-  const m = document.getElementById('assistantModal');
-  if(!m) return;
-  m.classList.remove('open');
-  m.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+/* pokaż przepływ pytań (po wyborze kafelka / Rozpocznij) - dalej w tym samym elemencie */
+function showHeroFlow(){
+  _el('heroCover').hidden = true;
+  _el('heroEngine').hidden = false;
+  _el('heroIntro').hidden = true;
+  _el('heroFlowWrap').hidden = false;
 }
-/* generyczne „Dobierz specjalistę" - start od początku przepływu */
+/* powrót: z przepływu -> do intro; z intro -> do okładki */
+function heroBack(){
+  const flow = _el('heroFlowWrap');
+  if(flow && !flow.hidden){
+    flow.hidden = true;
+    _el('heroIntro').hidden = false;
+  } else {
+    _el('heroEngine').hidden = true;
+    _el('heroCover').hidden = false;
+  }
+}
+function bindHeroEngine(){
+  const back = _el('engineBack');
+  if(back) back.onclick = heroBack;
+  // klik „Umów wizytę / kontakt" w wynikach -> przewiń do rejestracji
+  const panel = _el('heroPanel');
+  if(panel) panel.addEventListener('click', e => {
+    if(e.target.closest('a[href="#umow"]')) document.getElementById('umow')?.scrollIntoView({behavior:'smooth'});
+  });
+}
+/* generyczne „Dobierz specjalistę" z nav / innych miejsc */
 function dobor(e){
   if(e && e.preventDefault) e.preventDefault();
+  window.scrollTo({ top:0, behavior:'smooth' });
   Assistant.start();
-  openAssistant();
-}
-function bindAssistantModal(){
-  const m = document.getElementById('assistantModal');
-  if(!m) return;
-  m.querySelectorAll('[data-close]').forEach(el => el.onclick = closeAssistant);
-  // klik w link „Umów wizytę / kontakt" w wynikach zamyka nakładkę i przewija
-  m.addEventListener('click', e => {
-    if(e.target.closest('a[href="#umow"]')) closeAssistant();
-  });
-  document.addEventListener('keydown', e => {
-    if(e.key === 'Escape' && m.classList.contains('open')) closeAssistant();
-  });
+  openHeroEngine();
 }
 
 /* ---------- Asystent (silnik UI) ---------- */
@@ -269,8 +278,8 @@ const Assistant = (() => {
     buildVisibleFlow();
     stepIdx = visibleFlow.findIndex(f => f.id === (who === 'children' ? 'age' : 'concerns'));
     if(stepIdx < 0) stepIdx = 0;
+    showHeroFlow();
     render();
-    openAssistant();
   }
 
   return { start, quickStart };
@@ -290,24 +299,22 @@ function initials(name){ return name.split(' ').slice(0,2).map(w => w[0]).join('
 function docCard(s){
   const slot = formatSlot(s.availDays);
   const price = s.priceFrom ? `od ${s.priceFrom} zł` : s.priceLabel;
+  const flags = [];
+  if(s.treats.includes('children')) flags.push('dzieci');
+  if(s.english) flags.push('EN');
+  if(s.dog) flags.push('pies terapeuta');
   return `
   <button class="doc" data-open="${s.id}">
-    <div class="doc-photo"><img src="${s.photo}" alt="${s.name}" loading="lazy"></div>
+    <div class="doc-photo"><img src="${s.photo}" alt="${s.name}" loading="lazy">
+      ${flags.length ? `<span class="doc-flags">${flags.map(f => `<span>${f}</span>`).join('')}</span>` : ''}
+    </div>
     <div class="doc-body">
       <div class="dn">${s.name}</div>
       <div class="dr">${s.role}</div>
       <div class="doc-meta">
-        <span><i class="ti ti-tag"></i> ${price}</span>
-        <span><i class="ti ti-calendar-check"></i> ${slot.rel}</span>
+        <span class="dm-price">${price}</span>
+        <span class="dm-slot"><i class="ti ti-calendar-check"></i> ${slot.rel}</span>
       </div>
-      <div class="db">${s.motto ? '„' + s.motto.replace(/[.]$/,'') + '"' : s.blurb}</div>
-      <div class="badges">
-        ${s.treats.includes('children') ? '<span class="tagb">dzieci/młodzież</span>' : ''}
-        ${s.treats.includes('adults') ? '<span class="tagb">dorośli</span>' : ''}
-        ${s.english ? '<span class="tagb en">po angielsku</span>' : ''}
-        ${s.dog ? '<span class="tagb dog">z psem terapeutą</span>' : ''}
-      </div>
-      <span class="dlink">Poznaj specjalistę <i class="ti ti-arrow-right"></i></span>
     </div>
   </button>`;
 }

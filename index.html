@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -95,20 +95,19 @@
       <img class="brand-logo" src="assets/brand/logo.webp" alt="Centrum Zakątek" width="152" height="76">
     </a>
     <nav class="nav-links">
-      <a href="#pomoc">Pomoc</a>
-      <a href="#wizyta">Jak to działa</a>
+      <a href="#zakres">Zakres pomocy</a>
       <a href="#zespol">Zespół</a>
       <a href="#cennik">Cennik</a>
-      <a href="#faq">FAQ</a>
+      <a href="#prywatnosc">Prywatność</a>
       <a href="#umow">Kontakt</a>
     </nav>
     <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm nav-phone" href="tel:575805505"><i class="ti ti-phone"></i> 575 805 505</a>
+      <a class="btn btn-primary btn-sm" href="#" onclick="dobor(event)"><i class="ti ti-sparkles"></i> Dobierz specjalistę</a>
       <div class="nav-social">
         <a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
         <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
       </div>
-      <a class="btn btn-ghost btn-sm nav-phone" href="tel:575805505"><i class="ti ti-phone"></i> 575 805 505</a>
-      <a class="btn btn-primary btn-sm" href="#" onclick="dobor(event)"><i class="ti ti-sparkles"></i> Dobierz specjalistę</a>
     </div>
   </div>
 </header>
@@ -117,9 +116,10 @@
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
     <div class="hero-left">
+      <span class="hero-eyebrow"><i class="ti ti-map-pin"></i> Toruń, ul. Bydgoska 32</span>
       <h1 id="hero-title">Centrum Zakątek</h1>
       <p class="hero-motto">Nowoczesna opieka psychiatryczna, psychologiczna i neurologiczna dla dorosłych, dzieci i rodzin.</p>
-      <p class="hero-lede">Nie musisz znać nazw specjalizacji. Opisz kilka objawów, a my pomożemy trafić do właściwego specjalisty z zespołu - psychiatry, psychologa, psychoterapeuty lub neurologa.</p>
+      <p class="hero-lede">Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w jednym miejscu w Toruniu. Doświadczony zespół, dyskrecja i terminy bez długiego oczekiwania.</p>
 
       <ul class="spec-pills">
         <li><i class="ti ti-stethoscope"></i> Psychiatria</li>
@@ -130,68 +130,85 @@
         <li><i class="ti ti-mood-kid"></i> Terapia dzieci</li>
       </ul>
 
-      <div class="hero-location"><i class="ti ti-map-pin"></i> Toruń, ul. Bydgoska 32</div>
-
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#" onclick="dobor(event)"><i class="ti ti-sparkles"></i> Dobierz specjalistę</a>
-        <a class="btn btn-ghost" href="tel:575805505"><i class="ti ti-phone"></i> 575 805 505</a>
+        <a class="btn btn-primary" href="tel:575805505"><i class="ti ti-phone"></i> 575 805 505</a>
+        <a class="btn btn-ghost" href="#zespol"><i class="ti ti-users"></i> Poznaj zespół</a>
       </div>
 
       <div class="hero-meta">
         <div><div class="num">27</div><div class="lbl">specjalistów</div></div>
         <div class="meta-div"></div>
-        <div><div class="num">2 min</div><div class="lbl">anonimowy dobór</div></div>
+        <div><div class="num">6</div><div class="lbl">specjalizacji</div></div>
         <div class="meta-div"></div>
-        <div><div class="num">RODO</div><div class="lbl">privacy-first</div></div>
+        <div><div class="num">RODO</div><div class="lbl">dyskrecja</div></div>
       </div>
     </div>
 
     <div class="hero-right">
-      <div class="hero-stage">
-        <div class="ai-panel">
-          <div class="assistant-head">
-            <span class="zai-avatar"><img src="assets/brand/favicon.svg" alt=""></span>
-            <div class="zai-id">
-              <div class="assistant-title">Szybki dobór specjalisty</div>
-              <div class="assistant-sub">anonimowo · bez logowania · ~2 minuty</div>
-            </div>
-          </div>
-
-          <div class="symptom-box">
-            <label for="heroSymptom">Opisz, co się dzieje</label>
-            <textarea id="heroSymptom" maxlength="300" placeholder="Np. obniżony nastrój, problemy ze snem, lęk..."></textarea>
-            <span id="heroSymptomCount">0/300</span>
-          </div>
-
-          <div class="zai-qr-label">Szybki start - wybierz obszar:</div>
-          <div class="chip-row">
-            <button class="chip" onclick="quick('depression')"><i class="ti ti-cloud-rain"></i> Nastrój</button>
-            <button class="chip" onclick="quick('anxiety')"><i class="ti ti-activity-heartbeat"></i> Lęk</button>
-            <button class="chip" onclick="quick('sleep')"><i class="ti ti-moon"></i> Sen</button>
-            <button class="chip" onclick="quick('relationships')"><i class="ti ti-users"></i> Relacje</button>
-            <button class="chip" onclick="quick('addiction')"><i class="ti ti-bottle"></i> Uzależnienie</button>
-            <button class="chip" onclick="quick('neuro')"><i class="ti ti-bolt"></i> Neurologia</button>
-            <button class="chip" onclick="quickChild()"><i class="ti ti-mood-kid"></i> Dzieci</button>
-            <button class="chip" onclick="quick(null)"><i class="ti ti-dots"></i> Inne</button>
-          </div>
-
-          <button class="btn btn-primary btn-block" onclick="startHeroAssistant()"><i class="ti ti-arrow-right"></i> Rozpocznij dobór</button>
-          <div class="zai-meta">
-            <span><i class="ti ti-lock"></i> Bez zapisu danych</span>
-            <span><i class="ti ti-clock-hour-4"></i> ~2 minuty</span>
-            <span><i class="ti ti-calendar-check"></i> Najbliższe terminy</span>
+      <div class="ai-panel" id="heroPanel">
+        <div class="panel-head">
+          <span class="zai-avatar"><img src="assets/brand/favicon.svg" alt=""></span>
+          <div class="zai-id">
+            <div class="assistant-title">Szybki dobór specjalisty</div>
+            <div class="assistant-sub">anonimowo · bez logowania · ~2 minuty</div>
           </div>
         </div>
 
-        <div class="people-wall" aria-label="Wybrani specjaliści Centrum Zakątek">
-          <img class="portrait-tile portrait-large" src="assets/team/grzegorz-kosowski.webp" alt="Grzegorz Kosowski" loading="eager">
-          <img class="portrait-tile" src="assets/team/marta-kosowska.webp" alt="Marta Kosowska" loading="eager">
-          <img class="portrait-tile" src="assets/team/beata-legowicz.webp" alt="Beata Łęgowicz" loading="eager">
-          <img class="portrait-tile" src="assets/team/anna-mietek-baranowska.webp" alt="Anna Miętek-Baranowska" loading="eager">
-          <img class="portrait-tile" src="assets/team/amelia-klobukowska.webp" alt="Amelia Kłobukowska" loading="eager">
-          <img class="portrait-tile" src="assets/team/slawomir-sadowski.webp" alt="Sławomir Sadowski" loading="eager">
+        <!-- OKŁADKA -->
+        <div class="panel-cover" id="heroCover">
+          <p class="cover-lede">Nie wiesz, do którego specjalisty się umówić? Odpowiedz na kilka pytań, a wskażemy osoby z zespołu dopasowane do Twojej sytuacji - z ceną i najbliższym wolnym terminem.</p>
+          <div class="cover-points">
+            <span><i class="ti ti-lock"></i> Bez podawania danych</span>
+            <span><i class="ti ti-clock-hour-4"></i> Zajmuje około 2 minut</span>
+            <span><i class="ti ti-calendar-check"></i> Z dostępnymi terminami</span>
+          </div>
+          <button class="btn btn-primary btn-block btn-lg" onclick="openHeroEngine()"><i class="ti ti-sparkles"></i> Dobierz specjalistę</button>
+          <p class="cover-foot">To narzędzie pomocnicze - nie stawia diagnozy. Możesz też po prostu <a href="tel:575805505">zadzwonić</a>.</p>
+        </div>
+
+        <!-- SILNIK (inline, bez nowego okna) -->
+        <div class="panel-engine" id="heroEngine" hidden>
+          <button class="engine-back" id="engineBack"><i class="ti ti-arrow-left"></i> Wróć</button>
+
+          <div id="heroIntro">
+            <div class="symptom-box">
+              <label for="heroSymptom">Opisz w kilku słowach, co się dzieje</label>
+              <textarea id="heroSymptom" maxlength="300" placeholder="Np. obniżony nastrój, problemy ze snem, lęk..."></textarea>
+              <span id="heroSymptomCount">0/300</span>
+            </div>
+            <div class="zai-qr-label">Albo wybierz obszar:</div>
+            <div class="chip-row">
+              <button class="chip" onclick="quick('depression')"><i class="ti ti-cloud-rain"></i> Nastrój</button>
+              <button class="chip" onclick="quick('anxiety')"><i class="ti ti-activity-heartbeat"></i> Lęk</button>
+              <button class="chip" onclick="quick('sleep')"><i class="ti ti-moon"></i> Sen</button>
+              <button class="chip" onclick="quick('relationships')"><i class="ti ti-users"></i> Relacje</button>
+              <button class="chip" onclick="quick('addiction')"><i class="ti ti-bottle"></i> Uzależnienie</button>
+              <button class="chip" onclick="quick('neuro')"><i class="ti ti-bolt"></i> Neurologia</button>
+              <button class="chip" onclick="quickChild()"><i class="ti ti-mood-kid"></i> Dzieci</button>
+              <button class="chip" onclick="quick(null)"><i class="ti ti-dots"></i> Inne</button>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="startHeroAssistant()"><i class="ti ti-arrow-right"></i> Rozpocznij dobór</button>
+          </div>
+
+          <div id="heroFlowWrap" hidden>
+            <div class="progress" id="assistantProgress"></div>
+            <div class="progress-label" id="assistantProgressLabel"></div>
+            <div class="assistant-body" id="assistantBody"></div>
+            <p class="assistant-note">Dobór nie stawia diagnozy medycznej. Ostateczny termin i specjalistę potwierdza rejestracja.</p>
+          </div>
         </div>
       </div>
+
+      <a class="people-strip" href="#zespol" aria-label="Zobacz cały zespół">
+        <span class="strip-thumbs">
+          <img src="assets/team/grzegorz-kosowski.webp" alt="">
+          <img src="assets/team/marta-kosowska.webp" alt="">
+          <img src="assets/team/anna-mietek-baranowska.webp" alt="">
+          <img src="assets/team/slawomir-sadowski.webp" alt="">
+          <img src="assets/team/amelia-klobukowska.webp" alt="">
+        </span>
+        <span class="strip-label"><b>27 specjalistów</b> w zespole - poznaj cały skład <i class="ti ti-arrow-right"></i></span>
+      </a>
     </div>
   </div>
 </section>
@@ -199,57 +216,54 @@
 <!-- ===== Trust ===== -->
 <section class="trust">
   <div class="wrap trust-inner">
-    <div class="trust-item"><i class="ti ti-shield-lock"></i> Dobór bez danych osobowych</div>
     <div class="trust-item"><i class="ti ti-certificate"></i> Lekarze, psycholodzy i terapeuci</div>
     <div class="trust-item"><i class="ti ti-mood-kid"></i> Dorośli, dzieci, młodzież i pary</div>
-    <div class="trust-item"><i class="ti ti-clock-hour-4"></i> Dobór z dostępnością terminów</div>
+    <div class="trust-item"><i class="ti ti-shield-lock"></i> Dyskrecja i ochrona danych (RODO)</div>
+    <div class="trust-item"><i class="ti ti-clock-hour-4"></i> Terminy bez długiego oczekiwania</div>
   </div>
 </section>
 
-<!-- ===== Problemy ===== -->
-<section id="pomoc" class="section-pad">
+<!-- ===== Zakres pomocy (specjalizacje) ===== -->
+<section id="zakres" class="section-pad">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">Mapa pomocy</span>
-      <h2 class="h-section">Objawy zamienione w prostą ścieżkę</h2>
-      <p class="lede">Kliknij obszar, który najbardziej pasuje do sytuacji. Od razu zawęzimy dobór do właściwych specjalistów z naszego zespołu.</p>
+      <span class="eyebrow">Zakres pomocy</span>
+      <h2 class="h-section">Pełna opieka zdrowia psychicznego w jednym miejscu</h2>
+      <p class="lede">Od pierwszej konsultacji po regularną terapię - dla dorosłych, dzieci, młodzieży i par. Jeśli nie wiesz, od czego zacząć, pomożemy wybrać.</p>
     </div>
-    <div class="prob-grid">
-      <div class="prob" onclick="quick('depression')"><div class="ic"><i class="ti ti-cloud-rain"></i></div><h4>Nastrój i depresja</h4><p>Smutek, brak energii, przygnębienie</p></div>
-      <div class="prob" onclick="quick('anxiety')"><div class="ic"><i class="ti ti-activity-heartbeat"></i></div><h4>Lęk i panika</h4><p>Napięcie, niepokój, napady paniki</p></div>
-      <div class="prob" onclick="quick('sleep')"><div class="ic"><i class="ti ti-moon"></i></div><h4>Sen</h4><p>Bezsenność, problemy z zasypianiem</p></div>
-      <div class="prob" onclick="quick('addiction')"><div class="ic"><i class="ti ti-bottle"></i></div><h4>Uzależnienia</h4><p>Substancje, hazard, wsparcie bliskich</p></div>
-      <div class="prob" onclick="quick('neuro')"><div class="ic"><i class="ti ti-bolt"></i></div><h4>Neurologia</h4><p>Bóle i zawroty głowy, drętwienia</p></div>
-      <div class="prob" onclick="quick('sexology')"><div class="ic"><i class="ti ti-user-question"></i></div><h4>Seksuologia</h4><p>Dyskretne wsparcie specjalisty</p></div>
+    <div class="svc-grid">
+      <article class="svc">
+        <span class="svc-ic"><i class="ti ti-stethoscope"></i></span>
+        <h3>Psychiatria</h3>
+        <p>Diagnoza i leczenie, w tym farmakoterapia. Depresja, lęk, bezsenność, wahania nastroju.</p>
+      </article>
+      <article class="svc">
+        <span class="svc-ic"><i class="ti ti-mood-kid"></i></span>
+        <h3>Psychiatria dzieci i&nbsp;młodzieży</h3>
+        <p>Wsparcie najmłodszych i nastolatków oraz ich rodzin, z należną delikatnością.</p>
+      </article>
+      <article class="svc">
+        <span class="svc-ic"><i class="ti ti-armchair"></i></span>
+        <h3>Psychoterapia</h3>
+        <p>Terapia indywidualna i&nbsp;par w różnych nurtach. Regularna praca nad zmianą.</p>
+      </article>
+      <article class="svc">
+        <span class="svc-ic"><i class="ti ti-message-circle-heart"></i></span>
+        <h3>Psychologia i&nbsp;diagnoza</h3>
+        <p>Konsultacje i diagnoza, m.in. ADHD, spektrum autyzmu, osobowość, trudne emocje.</p>
+      </article>
+      <article class="svc">
+        <span class="svc-ic"><i class="ti ti-brain"></i></span>
+        <h3>Neurologia</h3>
+        <p>Bóle i zawroty głowy, drętwienia, zaburzenia pamięci i&nbsp;koncentracji.</p>
+      </article>
+      <article class="svc">
+        <span class="svc-ic"><i class="ti ti-shield-lock"></i></span>
+        <h3>Seksuologia</h3>
+        <p>Dyskretne wsparcie w intymnych trudnościach - dla osób i&nbsp;par.</p>
+      </article>
     </div>
-  </div>
-</section>
-
-<!-- ===== Pierwsza wizyta (proces) ===== -->
-<section id="wizyta" class="section-pad soft">
-  <div class="wrap">
-    <div class="section-head center">
-      <span class="eyebrow">Ścieżka pacjenta</span>
-      <h2 class="h-section">Od niepewności do konkretnego terminu</h2>
-      <p class="lede center">Strona prowadzi spokojnie: najpierw rozpoznaje potrzebę, potem pokazuje specjalistów, cennik i kontakt do rejestracji.</p>
-    </div>
-    <div class="steps-grid" id="stepsGrid"></div>
-  </div>
-</section>
-
-<!-- ===== Linia przejścia ===== -->
-<div class="signal-divider" aria-hidden="true"><span></span></div>
-
-<!-- ===== Wartości (ciemny blok) ===== -->
-<section class="section-pad section-dark">
-  <div class="wrap dark-split">
-    <div class="section-head">
-      <span class="eyebrow">Standard Zakątka</span>
-      <h2 class="h-section">Najważniejsza jest relacja, nie technologia</h2>
-      <p class="lede">Krótki dobór skraca drogę do właściwej osoby, ale sercem opieki zostaje relacja, poufność i spokojna rozmowa ze specjalistą.</p>
-      <a class="btn btn-on-dark" href="#" onclick="dobor(event)"><i class="ti ti-sparkles"></i> Dobierz specjalistę</a>
-    </div>
-    <div class="values-grid" id="valuesGrid"></div>
+    <p class="svc-note"><i class="ti ti-info-circle"></i> <b>Psychiatra czy psycholog?</b> Psychiatra jest lekarzem i może włączyć leczenie farmakologiczne; psycholog i psychoterapeuta pracują rozmową. Często obie formy pomocy się uzupełniają - a jeśli masz wątpliwości, dobór podpowie, od czego zacząć.</p>
   </div>
 </section>
 
@@ -259,7 +273,7 @@
     <div class="section-head">
       <span class="eyebrow">Zespół</span>
       <h2 class="h-section">Poznaj nasz zespół specjalistów</h2>
-      <p class="lede">27 profili w jednym miejscu. Zdjęcia, zakres pomocy, ceny i najbliższe dostępne terminy są widoczne przed kontaktem.</p>
+      <p class="lede">27 osób w jednym miejscu. Kliknij kogoś, by zobaczyć pełny opis, ceny i&nbsp;najbliższy wolny termin.</p>
     </div>
     <div class="filters" id="teamFilters"></div>
     <div id="teamGroups"></div>
@@ -272,35 +286,41 @@
     <div class="section-head">
       <span class="eyebrow">Cennik</span>
       <h2 class="h-section">Ceny widoczne przed decyzją</h2>
-      <p class="lede">Obowiązuje od 1 stycznia 2026. Najważniejsze pozycje są pokazane na stronie, a rejestracja potwierdza finalny termin i koszt.</p>
+      <p class="lede">Obowiązuje od 1 stycznia 2026. Rejestracja potwierdza finalny termin i&nbsp;koszt wizyty.</p>
     </div>
     <div class="price-grid" id="priceGrid"></div>
   </div>
 </section>
 
-<!-- ===== FAQ ===== -->
-<section id="faq" class="section-pad soft">
-  <div class="wrap narrow">
-    <div class="section-head center">
-      <span class="eyebrow">Pytania i odpowiedzi</span>
-      <h2 class="h-section">Najczęstsze pytania</h2>
-    </div>
-    <div class="faq" id="faqList"></div>
-  </div>
-</section>
-
-<!-- ===== Prywatność ===== -->
-<section id="prywatnosc" class="section-pad privacy-section">
-  <div class="wrap privacy-grid">
+<!-- ===== Prywatność i komfort (zamiast FAQ + RODO) ===== -->
+<section id="prywatnosc" class="section-pad soft">
+  <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">RODO i bezpieczeństwo</span>
-      <h2 class="h-section">Wrażliwe dane wymagają jasnych zasad</h2>
-      <p class="lede">Nowa strona powinna mówić wprost, co dzieje się z odpowiedziami pacjenta, kiedy pojawia się zgoda marketingowa, a kiedy zgoda medyczna i kto odpowiada za kontakt.</p>
+      <span class="eyebrow">Prywatność i komfort</span>
+      <h2 class="h-section">Twoja sprawa zostaje między nami</h2>
+      <p class="lede">Zdrowie psychiczne to temat wrażliwy. Dbamy o dyskrecję i swobodę na każdym etapie - jeszcze zanim cokolwiek nam o sobie powiesz.</p>
     </div>
-    <div class="privacy-list">
-      <div><i class="ti ti-lock"></i><span>Dobór działa bez imienia, nazwiska i numeru telefonu.</span></div>
-      <div><i class="ti ti-file-check"></i><span>Formularze powinny mieć osobne zgody: kontakt, regulamin, polityka prywatności.</span></div>
-      <div><i class="ti ti-heart-handshake"></i><span>Tryb kryzysowy pokazuje numery natychmiastowej pomocy przed propozycją wizyty.</span></div>
+    <div class="priv-grid">
+      <article class="priv">
+        <span class="priv-ic"><i class="ti ti-user-off"></i></span>
+        <h3>Bez kont i logowania</h3>
+        <p>Przeglądasz ofertę i korzystasz z doboru anonimowo. Kontakt zostawiasz dopiero wtedy, gdy sam zdecydujesz.</p>
+      </article>
+      <article class="priv">
+        <span class="priv-ic"><i class="ti ti-shield-lock"></i></span>
+        <h3>Dane pod ochroną (RODO)</h3>
+        <p>Dokumentacja medyczna jest objęta tajemnicą zawodową i przepisami RODO. Nie udostępniamy jej osobom trzecim.</p>
+      </article>
+      <article class="priv">
+        <span class="priv-ic"><i class="ti ti-heart-handshake"></i></span>
+        <h3>Bez presji i zobowiązań</h3>
+        <p>Sam decydujesz, czy i kiedy umówić wizytę. Możesz najpierw zadzwonić i&nbsp;zapytać o&nbsp;wszystko, co ważne.</p>
+      </article>
+      <article class="priv">
+        <span class="priv-ic"><i class="ti ti-leaf"></i></span>
+        <h3>Spokojne miejsce</h3>
+        <p>Dyskretny gabinet w centrum Torunia, przy ul.&nbsp;Bydgoskiej&nbsp;32. Kameralna atmosfera, bez pośpiechu.</p>
+      </article>
     </div>
   </div>
 </section>
@@ -323,7 +343,7 @@
       <div class="cta-text">
         <span class="eyebrow">Rejestracja</span>
         <h2>Zrób pierwszy krok bez presji</h2>
-        <p>Zadzwoń lub napisz. Rejestracja pomoże dobrać specjalistę, termin i formę wizyty, a Twój wynik doboru może być punktem startu rozmowy.</p>
+        <p>Zadzwoń lub napisz. Rejestracja pomoże dobrać specjalistę, termin i&nbsp;formę wizyty - stacjonarnie w Toruniu lub online.</p>
       </div>
       <div class="cta-actions">
         <a class="btn btn-primary" href="tel:575805505"><i class="ti ti-phone"></i> 575 805 505</a>
@@ -369,27 +389,9 @@
   <i class="ti ti-heart-handshake"></i> Potrzebuję pomocy
 </button>
 
-<!-- ===== Nakładka: dobór specjalisty ===== -->
-<div id="assistantModal" class="amodal" aria-hidden="true">
-  <div class="amodal-backdrop" data-close></div>
-  <div class="amodal-dialog" role="dialog" aria-modal="true" aria-label="Dobór specjalisty">
-    <button class="amodal-close" aria-label="Zamknij" data-close><i class="ti ti-x"></i></button>
-    <div class="assistant-top">
-      <div class="who"><span class="zai-avatar sm"><img src="assets/brand/favicon.svg" alt=""></span> Dobór specjalisty</div>
-      <span class="anon"><i class="ti ti-lock"></i> Anonimowo · bez zapisu danych</span>
-    </div>
-    <div class="amodal-scroll">
-      <div class="progress" id="assistantProgress"></div>
-      <div class="progress-label" id="assistantProgressLabel"></div>
-      <div class="assistant-body" id="assistantBody"></div>
-      <p class="assistant-note">Dobór nie stawia diagnozy medycznej. Ostateczny termin i specjalistę potwierdza rejestracja.</p>
-    </div>
-  </div>
-</div>
-
-<script src="data.js?v=4"></script>
-<script src="assistant.js?v=4"></script>
-<script src="app.js?v=4"></script>
-<script src="enhance.js?v=4"></script>
+<script src="data.js?v=5"></script>
+<script src="assistant.js?v=5"></script>
+<script src="app.js?v=5"></script>
+<script src="enhance.js?v=5"></script>
 </body>
 </html>
