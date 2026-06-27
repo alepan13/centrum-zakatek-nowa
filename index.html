@@ -206,8 +206,8 @@
   .price-foot{font-family:var(--mono);font-size:var(--text-xs);color:var(--muted);margin-top:24px;letter-spacing:.03em}
 
   /* PROCES */
-  .proc .inner{max-width:760px}
-  .steps{position:relative;margin-top:42px;width:100%}
+  .proc .inner{max-width:1180px}
+  .steps{position:relative;margin-top:42px;width:100%;max-width:760px}
   .steps::before{content:"";position:absolute;left:19px;top:16px;bottom:20px;width:2px;border-radius:2px;background:linear-gradient(var(--accent),rgba(var(--accent-rgb),.12));transform:scaleY(0);transform-origin:top}
   .scene.show .steps::before{animation:growy 1.4s var(--ease) .15s forwards}
   .step{position:relative;display:grid;grid-template-columns:56px 1fr;gap:22px;padding:18px 0;align-items:start;opacity:0}
@@ -227,7 +227,8 @@
   .priv p{font-size:.88rem;color:var(--soft);line-height:1.55}
 
   /* KONTAKT */
-  .contact .inner{max-width:760px}
+  .contact .inner{max-width:1180px}
+  .contact p{max-width:52ch}
   .contact h2{font-size:clamp(2.4rem,5.5vw,4.2rem);max-width:15ch;line-height:1.03}
   .contact p{color:var(--soft);font-size:clamp(1.06rem,1.4vw,1.22rem);margin-top:22px;max-width:48ch;line-height:1.6}
   .mailrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:36px}
