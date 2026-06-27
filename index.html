@@ -43,21 +43,22 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  html{background:#F1E6C9}
+  html{background:#EFE5D6}
   body{font-family:var(--body);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100%;
-    background-color:#F2E8CC;
+    background-color:#F1E8DA;
     background-image:
-      radial-gradient(130% 100% at 82% 2%, rgba(190,172,118,.16), transparent 56%),
-      radial-gradient(120% 95% at 2% 100%, rgba(206,180,132,.13), transparent 60%),
-      linear-gradient(180deg,#F8F2E0,#F2E8CC 55%,#EDE0BF);
+      radial-gradient(130% 100% at 82% 2%, rgba(206,166,142,.14), transparent 56%),
+      radial-gradient(120% 95% at 2% 100%, rgba(198,168,148,.12), transparent 60%),
+      linear-gradient(180deg,#F7F1E7,#F1E8DA 55%,#ECE1D0);
     background-attachment:fixed,fixed,fixed;}
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(6,64,43,.16);color:var(--accent)}
   img{display:block;max-width:100%}
 
+  #brain{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:.6}
   #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
   .grade{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(92% 84% at 50% 42%,transparent 64%,rgba(120,98,52,.05) 100%)}
-  .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#F4ECD4 0%,rgba(244,236,212,.93) 26%,rgba(244,236,212,.55) 60%,transparent 100%)}
+  .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#F4ECDE 0%,rgba(244,236,222,.93) 26%,rgba(244,236,222,.55) 60%,transparent 100%)}
 
   .brandmark{position:fixed;top:26px;left:40px;z-index:8;font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:11px;color:var(--cream);text-shadow:var(--halo)}
   .brandmark .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 11px var(--glow);animation:breathe 4s ease-in-out infinite}
@@ -154,7 +155,7 @@
   .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:14px;margin-top:26px}
   .tc{display:flex;flex-direction:column;text-align:left;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);cursor:pointer;transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s}
   .tc:hover{transform:translateY(-3px);border-color:rgba(6,64,43,.3)}
-  .tc-ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:#E8DFC6}
+  .tc-ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:#E9E1D2}
   .tc-ph img{width:100%;height:100%;object-fit:cover;object-position:center 16%;transition:transform .4s ease;filter:saturate(.95)}
   .tc:hover .tc-ph img{transform:scale(1.05)}
   .tc-fl{position:absolute;left:8px;bottom:8px;display:flex;gap:5px;flex-wrap:wrap}
@@ -184,7 +185,7 @@
   .step{position:relative;display:grid;grid-template-columns:56px 1fr;gap:22px;padding:18px 0;align-items:start;opacity:0}
   .scene.show .step{animation:sin .7s cubic-bezier(.16,1,.3,1) both}
   .scene.show .step:nth-child(2){animation-delay:.2s}.scene.show .step:nth-child(3){animation-delay:.38s}.scene.show .step:nth-child(4){animation-delay:.56s}
-  .step .num{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--accent);background:#FBF5E4;border:1px solid rgba(6,64,43,.32);box-shadow:0 0 0 6px #F2E8CC}
+  .step .num{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--accent);background:#F8F2E6;border:1px solid rgba(6,64,43,.32);box-shadow:0 0 0 6px #F1E8DA}
   .step h4{font-family:var(--display);font-weight:500;font-size:1.3rem;margin-bottom:7px}
   .step p{color:var(--soft);font-size:.96rem;max-width:48ch;line-height:1.55}
 
@@ -228,6 +229,7 @@
 </head>
 <body>
 
+<canvas id="brain"></canvas>
 <canvas id="field"></canvas>
 <div class="grade"></div>
 <div class="topscrim"></div>
@@ -446,7 +448,7 @@
   var cv=document.getElementById('field'), ctx=cv.getContext('2d');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W,H,DPR,pts,signals=[];
-  var NODE='92,95,80', SIG='58,80,62'; /* szarość neuronów; sygnał z nutą zieleni */
+  var NODE='84,86,70', SIG='50,76,58'; /* szarość neuronów; sygnał z nutą zieleni */
   function resize(){ DPR=Math.min(window.devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
     var n=Math.round(Math.min(64, innerWidth/24)); pts=[]; for(var i=0;i<n;i++){ pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*0.09*DPR,vy:(Math.random()-.5)*0.09*DPR,r:(Math.random()*1.5+0.7)*DPR}); } signals=[]; }
   function draw(){
@@ -455,11 +457,11 @@
     for(var i=0;i<pts.length;i++){ var p=pts[i]; p.x+=p.vx; p.y+=p.vy;
       if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
       for(var j=i+1;j<pts.length;j++){ var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);
-        if(d<max){ ctx.strokeStyle='rgba('+NODE+','+(0.08*(1-d/max))+')'; ctx.lineWidth=DPR; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); } }
-      ctx.fillStyle='rgba('+NODE+',.32)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.2832); ctx.fill();
+        if(d<max){ ctx.strokeStyle='rgba('+NODE+','+(0.13*(1-d/max))+')'; ctx.lineWidth=DPR; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); } }
+      ctx.fillStyle='rgba('+NODE+',.5)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.2832); ctx.fill();
     }
     /* sygnały: spokojnie przesyłane między bliskimi neuronami */
-    if(!reduce && signals.length<5 && Math.random()<0.022){
+    if(!reduce && signals.length<6 && Math.random()<0.03){
       var a=(Math.random()*pts.length)|0, best=-1, bd=max;
       for(var k=0;k<pts.length;k++){ if(k===a)continue; var ddx=pts[a].x-pts[k].x,ddy=pts[a].y-pts[k].y,dd=Math.hypot(ddx,ddy); if(dd<bd){bd=dd;best=k;} }
       if(best>=0) signals.push({a:a,b:best,t:0,sp:0.0030+Math.random()*0.0024});
@@ -473,6 +475,43 @@
     if(!reduce) requestAnimationFrame(draw);
   }
   addEventListener('resize',resize); resize(); draw();
+})();
+</script>
+
+<!-- Mózg 3D - cieniutki akcent w tle (three.js z CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+(function(){
+  if(!window.THREE || !THREE.GLTFLoader) return;
+  var canvas=document.getElementById('brain'); if(!canvas) return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var renderer;
+  try{ renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true}); }catch(e){ return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 100);
+  camera.position.set(0,0,3.4);
+  function size(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
+  size(); addEventListener('resize',size);
+  var group=null;
+  new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
+    var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
+    if(!geo) return;
+    geo.computeBoundingSphere();
+    var c=geo.boundingSphere.center, r=geo.boundingSphere.radius||1;
+    var mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0058, sizeAttenuation:true, transparent:true, opacity:0.085, depthWrite:false});
+    var pts=new THREE.Points(geo, mat);
+    pts.position.set(-c.x,-c.y,-c.z);
+    group=new THREE.Group(); group.add(pts);
+    group.scale.setScalar(1.5/r);
+    group.position.set(0.8, 0.12, 0);   // bardziej w prawo, za treścią
+    group.rotation.x=-0.25;
+    scene.add(group);
+    renderer.render(scene,camera);
+  }, undefined, function(){ /* błąd ładowania - pomijamy mózg */ });
+  function tick(){ if(group) group.rotation.y += reduce?0:0.0011; renderer.render(scene,camera); requestAnimationFrame(tick); }
+  tick();
 })();
 </script>
 </body>
