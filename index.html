@@ -501,20 +501,39 @@
 
   <div class="seam"></div>
 
-  <section class="scene" id="dlaczego">
-    <div class="inner why-grid">
+  <section class="scene dobor-scene" id="dlaczego">
+    <div class="inner">
       <span class="sidx" aria-hidden="true">01</span>
-      <div class="col">
-        <div class="eyebrow reveal">Dlaczego Zakątek</div>
-        <h2 class="reveal">Nie musisz wiedzieć, do kogo się umówić. <span class="accentword">My pomożemy.</span></h2>
-        <p class="lede reveal">Pierwszy krok bywa najtrudniejszy. U nas wystarczy opisać, co się dzieje - resztę bierzemy na siebie: wskażemy właściwego specjalistę, formę pomocy i najbliższy wolny termin. Spokojnie, dyskretnie, w Twoim tempie.</p>
+      <div class="dobor-grid">
+        <div class="dobor-text">
+          <div class="eyebrow reveal">Dlaczego Zakątek</div>
+          <h2 class="reveal">Nie musisz wiedzieć, do kogo się umówić. <span class="accentword">My pomożemy.</span></h2>
+          <p class="dobor-lede reveal">Skorzystaj z naszego anonimowego asystenta AI - w kilku pytaniach dobierze specjalistę dopasowanego do Twojej sytuacji, z ceną i&nbsp;najbliższym wolnym terminem. Wolisz porozmawiać? Po prostu zadzwoń.</p>
+          <div class="dobor-cta reveal">
+            <button class="btn btn-primary btn-lg" id="doborBtn" data-dobor-start>Dobierz specjalistę<span class="btn-arrow">→</span></button>
+            <a class="btn btn-ghost" href="tel:575805505">Zadzwoń · 575 805 505</a>
+          </div>
+          <ul class="why-points reveal">
+            <li><b>Bez skierowania</b> - umawiasz się bezpośrednio</li>
+            <li><b>Stacjonarnie w Toruniu lub online</b></li>
+            <li><b>Pełna dyskrecja</b> i ochrona danych (RODO)</li>
+          </ul>
+        </div>
+        <div class="dobor-panel reveal" id="doborPanel">
+          <div class="dp-intro">
+            <div class="dp-bar">
+              <span class="dp-avatar"><span class="dp-pulse"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 21a7 7 0 0 1 14 0"/><circle cx="12" cy="7.5" r=".4" fill="currentColor"/></svg></span>
+              <div class="dp-id"><b>Asystent doboru</b><span class="dp-status"><span class="dp-online"></span>gotowy do pomocy · anonimowo</span></div>
+            </div>
+            <div class="dp-bubble">Cześć. Zadam Ci kilka prostych pytań i wskażę osoby z zespołu dopasowane do Twojej sytuacji - z ceną i&nbsp;wolnym terminem.</div>
+            <div class="dp-chips"><span class="dp-chip">Kilka pytań</span><span class="dp-chip">Dopasowanie</span><span class="dp-chip">Trzy propozycje</span></div>
+            <button class="dp-launch" data-dobor-start aria-label="Rozpocznij dobór specjalisty">
+              <span>Rozpocznij dobór<span class="dp-caret"></span></span>
+              <span class="dp-launch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
       </div>
-      <ul class="why-points reveal">
-        <li><b>Bez skierowania</b> - umawiasz się bezpośrednio</li>
-        <li><b>Stacjonarnie w Toruniu lub online</b></li>
-        <li><b>Pełna dyskrecja</b> i ochrona danych (RODO)</li>
-        <li><b>Krótkie terminy</b> - bez długiego oczekiwania</li>
-      </ul>
     </div>
   </section>
 
@@ -552,36 +571,6 @@
         </article>
       </div>
       <p class="svc-note reveal"><b>Psychiatra czy psycholog?</b> Psychiatra jest lekarzem i może włączyć leczenie farmakologiczne; psycholog i psychoterapeuta pracują rozmową. Często obie formy się uzupełniają - a jeśli masz wątpliwości, pomożemy wybrać.</p>
-    </div>
-  </section>
-
-  <section class="scene dobor-scene" id="dobor">
-    <div class="inner">
-      <div class="dobor-grid">
-        <div class="dobor-text">
-          <div class="eyebrow reveal">Dobór specjalisty · anonimowo</div>
-          <h2 class="reveal">Nie wiesz, do kogo się umówić? <span class="accentword">Nasz asystent dobierze to za Ciebie.</span></h2>
-          <p class="dobor-lede reveal">Odpowiedz na kilka pytań - anonimowo, bez logowania. Asystent wskaże osoby z zespołu dopasowane do Twojej sytuacji, od razu z ceną i najbliższym wolnym terminem.</p>
-          <div class="dobor-cta reveal">
-            <button class="btn btn-primary btn-lg" id="doborBtn" data-dobor-start>Dobierz specjalistę<span class="btn-arrow">→</span></button>
-            <span class="dobor-meta">~2 minuty · bez zapisu danych</span>
-          </div>
-        </div>
-        <div class="dobor-panel reveal" id="doborPanel">
-          <div class="dp-intro">
-            <div class="dp-bar">
-              <span class="dp-avatar"><span class="dp-pulse"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 21a7 7 0 0 1 14 0"/><circle cx="12" cy="7.5" r=".4" fill="currentColor"/></svg></span>
-              <div class="dp-id"><b>Asystent doboru</b><span class="dp-status"><span class="dp-online"></span>gotowy do pomocy · anonimowo</span></div>
-            </div>
-            <div class="dp-bubble">Cześć. Zadam Ci kilka prostych pytań i wskażę osoby z zespołu dopasowane do Twojej sytuacji - z ceną i&nbsp;wolnym terminem.</div>
-            <div class="dp-chips"><span class="dp-chip">Kilka pytań</span><span class="dp-chip">Dopasowanie</span><span class="dp-chip">Trzy propozycje</span></div>
-            <button class="dp-launch" data-dobor-start aria-label="Rozpocznij dobór specjalisty">
-              <span>Rozpocznij dobór<span class="dp-caret"></span></span>
-              <span class="dp-launch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -939,7 +928,7 @@
   function size(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
   size(); addEventListener('resize',size);
   var group=null, geom=null, mat=null, basePos=null, targetPos=null, count=0, BASE=0.82;
-  var FINALX=0.62, baseScale=1, introT=0, introStart=0;   // intro: start na środku -> przesuw w prawo
+  var FINALX=0.86, baseScale=1, introT=0, introStart=0;   // intro: start na środku -> przesuw w prawo (dalej od napisów)
   new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
     var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
     if(!geo) return;
