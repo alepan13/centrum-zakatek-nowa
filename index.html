@@ -734,7 +734,7 @@
   camera.position.set(0,0,3.4);
   function size(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
   size(); addEventListener('resize',size);
-  var group=null;
+  var group=null, geom=null, mat=null, basePos=null, targetPos=null, count=0, BASE=0.82;
   new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
     var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
     if(!geo) return;
@@ -746,11 +746,21 @@
     for(var i=0;i<src.count;i++){ var x=src.getX(i), y=src.getY(i), z=src.getZ(i);
       if(y>=cut){ out.push(x,y,z); }
       else if(Math.random()<sB*sB){ out.push(cx+(x-cx)*sB, cut-(cut-y)*0.55, cz+(z-cz)*sB); } }
+    count=out.length/3;
+    basePos=new Float32Array(out);
+    /* cel "rozwiania": każdy punkt dryfuje na zewnątrz w rzadkie, spokojne pole kropek */
+    targetPos=new Float32Array(count*3);
+    for(var j=0;j<count;j++){
+      var bx=basePos[j*3], by=basePos[j*3+1], bz=basePos[j*3+2], SP=2.25;
+      targetPos[j*3]   = bx*SP + (Math.random()-0.5)*1.7;
+      targetPos[j*3+1] = by*SP + (Math.random()-0.5)*1.7;
+      targetPos[j*3+2] = bz*SP*0.55 + (Math.random()-0.5)*0.7;
+    }
     var ng=new THREE.BufferGeometry();
-    ng.setAttribute('position', new THREE.Float32BufferAttribute(out,3));
+    ng.setAttribute('position', new THREE.Float32BufferAttribute(basePos.slice(),3));
     ng.computeBoundingSphere();
     var c=ng.boundingSphere.center, r=ng.boundingSphere.radius||1;
-    var mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0115, sizeAttenuation:true, transparent:true, opacity:0.2, depthWrite:false});
+    mat=new THREE.PointsMaterial({color:0x0e6a46, size:0.0115, sizeAttenuation:true, transparent:true, opacity:0.2, depthWrite:false});
     var pts=new THREE.Points(ng, mat);
     pts.position.set(-c.x,-c.y,-c.z);
     group=new THREE.Group(); group.add(pts);
@@ -758,13 +768,29 @@
     group.position.set(0.42, 0.06, 0);   // mniejszy, wyśrodkowany-prawo, za treścią
     group.rotation.x=-0.18;
     scene.add(group);
+    geom=ng;
     renderer.render(scene,camera);
   }, undefined, function(){ /* błąd ładowania - pomijamy mózg */ });
-  /* mózg mocny w hero, wygasza się przy zjeżdżaniu (czyste karty niżej) */
-  var BASE=0.82;
-  function fade(){ var t=Math.min(1, (window.pageYOffset||0)/(innerHeight*0.72)); canvas.style.opacity=(BASE*(1-t)+0.05*t).toFixed(3); }
-  addEventListener('scroll', fade, {passive:true}); addEventListener('resize', fade, {passive:true}); fade();
-  function tick(){ if(group) group.rotation.y += reduce?0:0.0011; renderer.render(scene,camera); requestAnimationFrame(tick); }
+  /* scroll w dół: mózg rozwiewa się w delikatne tło kropek; scroll w górę: wraca do mózgu */
+  var targetProg=0, curProg=0;
+  function onScroll(){ targetProg=Math.min(1, (window.pageYOffset||0)/(innerHeight*0.85)); }
+  addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll, {passive:true}); onScroll();
+  function tick(){
+    if(group) group.rotation.y += reduce?0:0.0011;
+    if(geom){
+      var dp=targetProg-curProg;
+      if(Math.abs(dp)>0.0006){
+        curProg += dp*(reduce?1:0.075);
+        var e=curProg*curProg*(3-2*curProg);              // smoothstep
+        var arr=geom.attributes.position.array;
+        for(var k=0;k<count*3;k++){ arr[k]=basePos[k]+(targetPos[k]-basePos[k])*e; }
+        geom.attributes.position.needsUpdate=true;
+        mat.opacity=0.2*(1-e)+0.15*e;                     // kropki zostają delikatne, nie znikają
+        canvas.style.opacity=(BASE*(1-e)+0.4*e).toFixed(3);
+      }
+    }
+    renderer.render(scene,camera); requestAnimationFrame(tick);
+  }
   tick();
 })();
 </script>
