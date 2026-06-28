@@ -38,9 +38,9 @@
     /* --- kolory --- */
     --accent:#06402B; --accent-rgb:6,64,43; --accent-2:#0B5A3B; --accent-ink:#F4ECD6;
     --cream:#23302A; --soft:#565C4C; --muted:#5C5847;
-    --line:rgba(35,48,40,.13); --glow:rgba(var(--accent-rgb),.14);
-    --clay:#9C6B45; --card:rgba(252,247,237,.92);
-    --shadow:0 1px 2px rgba(35,45,38,.05),0 18px 44px -28px rgba(35,45,38,.22); --shadow-sm:0 1px 2px rgba(35,45,38,.04),0 10px 26px -18px rgba(35,45,38,.16);
+    --line:rgba(35,48,40,.17); --glow:rgba(var(--accent-rgb),.14);
+    --clay:#9C6B45; --card:rgba(255,251,244,.985);
+    --shadow:0 2px 4px rgba(35,45,38,.06),0 22px 50px -26px rgba(35,45,38,.30); --shadow-sm:0 1px 3px rgba(35,45,38,.06),0 14px 30px -16px rgba(35,45,38,.22);
     /* --- tła --- */
     --bg:#F1E8DA; --bg-top:#F7F1E7; --bg-bottom:#ECE1D0; --surface:#F8F2E6;
     /* --- promienie --- */
@@ -56,6 +56,17 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
+  /* ukryty pasek przewijania (strona zapętla się w nieskończoność) */
+  html{scrollbar-width:none;-ms-overflow-style:none}
+  html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
+  /* efekt „przekroczenia granicy" przy zapętleniu */
+  .edgefx{position:fixed;inset:0;z-index:45;pointer-events:none}
+  .edgefx::before,.edgefx::after{content:"";position:absolute;left:0;right:0;height:160px;opacity:0}
+  .edgefx::before{top:0;background:linear-gradient(180deg,rgba(var(--accent-rgb),.28),transparent)}
+  .edgefx::after{bottom:0;background:linear-gradient(0deg,rgba(var(--accent-rgb),.28),transparent)}
+  .edgefx.flash-top::before{animation:edgepulse .65s var(--ease)}
+  .edgefx.flash-bottom::after{animation:edgepulse .65s var(--ease)}
+  @keyframes edgepulse{0%{opacity:0}28%{opacity:1}100%{opacity:0}}
   html{background:var(--bg)}
   body{font-family:var(--body);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100%;
     background-color:var(--bg);
@@ -75,15 +86,16 @@
   .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
   .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#F4ECDE 0%,rgba(244,236,222,.93) 26%,rgba(244,236,222,.55) 60%,transparent 100%)}
 
-  .brandmark{position:fixed;top:26px;left:40px;z-index:8;font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:11px;color:var(--cream);text-shadow:var(--halo)}
+  .brandmark{position:fixed;top:16px;left:34px;z-index:8;display:flex;align-items:center;cursor:pointer}
+  .brandmark img{height:74px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(35,45,38,.08))}
   .brandmark .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 11px var(--glow);animation:breathe 4s ease-in-out infinite}
-  @media(max-width:600px){ .brandmark{font-size:var(--text-xs);letter-spacing:.12em;gap:8px} }
+  @media(max-width:600px){ .brandmark{top:12px;left:16px} .brandmark img{height:52px} }
   @keyframes breathe{0%,100%{opacity:.5;transform:scale(.85)}50%{opacity:1;transform:scale(1.12)}}
   .loopnote{position:fixed;bottom:26px;left:40px;z-index:8;font-family:var(--mono);font-size:var(--text-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:9px;text-shadow:var(--halo)}
   .loopnote .sp{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--glow);animation:breathe 3s ease-in-out infinite}
 
-  .topnav{position:fixed;top:22px;right:28px;z-index:8;display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.12em;text-transform:uppercase}
-  .topnav a{display:inline-flex;align-items:center;height:40px;padding:0 15px;border-radius:var(--r-md);color:var(--soft);cursor:pointer;transition:color .25s,background .25s}
+  .topnav{position:fixed;top:22px;right:28px;z-index:8;display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.82rem;letter-spacing:.13em;text-transform:uppercase}
+  .topnav a{display:inline-flex;align-items:center;height:42px;padding:0 16px;border-radius:var(--r-md);color:var(--soft);cursor:pointer;transition:color .25s,background .25s}
   .topnav a:hover{color:var(--accent);background:rgba(var(--accent-rgb),.06)}
   .topnav>a{position:relative}
   .topnav>a::after{content:"";position:absolute;left:15px;right:15px;bottom:7px;height:1.5px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
@@ -146,6 +158,19 @@
   .scene.show .reveal:nth-child(3){animation-delay:.14s}
   .scene.show .reveal:nth-child(4){animation-delay:.21s}
   .scene.show .reveal:nth-child(5){animation-delay:.28s}
+  /* hero: miększe, płynniejsze wejście napisów po załadowaniu */
+  @keyframes heroin{from{opacity:0;transform:translateY(20px) scale(.985);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .scene.hero.show .reveal{animation:heroin 1.15s cubic-bezier(.16,1,.3,1) both}
+  .scene.hero.show .reveal:nth-child(1){animation-delay:.05s}
+  .scene.hero.show .reveal:nth-child(2){animation-delay:.18s}
+  .scene.hero.show .reveal:nth-child(3){animation-delay:.32s}
+  .scene.hero.show .reveal:nth-child(4){animation-delay:.46s}
+  /* cytat w hero - pojawia się pod mózgiem i „odjeżdża" na swoje miejsce (jak mózg) */
+  .hero-quote{position:absolute;z-index:3;right:4.5vw;bottom:8vh;max-width:34ch;text-align:right;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(1.05rem,1.5vw,1.5rem);line-height:1.45;color:var(--accent);opacity:0;text-shadow:0 1px 10px rgba(241,232,218,.7)}
+  .hero-quote em{color:var(--cream);font-style:italic}
+  .scene.hero.show .hero-quote{animation:qdrive 1.5s cubic-bezier(.16,1,.3,1) .35s both}
+  @keyframes qdrive{from{opacity:0;transform:translate(-150px,28px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @media(max-width:900px){ .hero-quote{right:auto;left:26px;bottom:5vh;text-align:left;max-width:30ch;font-size:1.05rem} }
 
   .hero .live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--glow);animation:breathe 3.4s ease-in-out infinite}
   .hero-meta{display:flex;gap:34px;flex-wrap:wrap;margin-top:46px}
@@ -217,17 +242,51 @@
   .pp{white-space:nowrap;font-family:var(--display);font-weight:500;font-size:1.05rem;color:var(--accent)}
   .price-foot{font-family:var(--mono);font-size:var(--text-xs);color:var(--muted);margin-top:24px;letter-spacing:.03em}
 
-  /* PROCES */
+  /* ROZWIJANE SEKCJE: teaser + przyciski */
+  .collapse-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;font-weight:500;color:var(--accent-ink);background:var(--accent);border:1px solid transparent;border-radius:var(--r-md);padding:14px 24px;cursor:pointer;transition:transform .25s var(--ease),background .25s,border-color .25s}
+  .collapse-cta:hover{background:var(--accent-2);transform:translateY(-2px)}
+  .collapse-cta span{transition:transform .25s var(--ease)}
+  .collapse-cta:hover span{transform:translateY(2px)}
+  .collapse-cta.ghost{background:transparent;color:var(--accent);border-color:var(--line);margin-top:30px}
+  .collapse-cta.ghost:hover{background:rgba(var(--accent-rgb),.06);border-color:var(--accent)}
+  .collapse-cta.ghost:hover span{transform:translateY(-2px)}
+  .team-full,.price-full{animation:fadein .5s ease both}
+  /* teaser zespołu */
+  .team-teaser{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:30px;padding:24px 28px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
+  .tt-avatars{display:flex;flex:none}
+  .tt-avatars img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:center 16%;border:2px solid var(--surface);margin-left:-16px;box-shadow:0 2px 7px rgba(35,45,38,.18)}
+  .tt-avatars img:first-child{margin-left:0}
+  .tt-text{flex:1;min-width:260px;color:var(--soft);font-size:1rem;line-height:1.55}
+  .tt-text b{color:var(--cream);font-family:var(--display);font-weight:500;font-size:1.18rem;display:block;margin-bottom:4px}
+  /* teaser cennika */
+  .price-teaser{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;margin-top:36px;padding:28px 30px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
+  .pt-rows{display:flex;flex-direction:column}
+  .pt-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:12px 0;border-bottom:1px solid rgba(35,48,40,.09);font-size:.98rem;color:var(--soft)}
+  .pt-row:last-child{border-bottom:0}
+  .pt-row b{font-family:var(--display);font-weight:500;color:var(--accent);white-space:nowrap;font-size:1.05rem}
+  .pt-side p{color:var(--soft);line-height:1.6;margin-bottom:22px}
+  @media(max-width:760px){ .team-teaser{gap:18px} .tt-text{min-width:200px} .price-teaser{grid-template-columns:1fr;gap:22px} }
+
+  /* PROCES - poziomy timeline na desktop */
   .proc .inner{max-width:1320px}
-  .steps{position:relative;margin-top:42px;width:100%;max-width:760px}
-  .steps::before{content:"";position:absolute;left:19px;top:16px;bottom:20px;width:2px;border-radius:2px;background:linear-gradient(var(--accent),rgba(var(--accent-rgb),.12));transform:scaleY(0);transform-origin:top}
-  .scene.show .steps::before{animation:growy 1.4s var(--ease) .15s forwards}
-  .step{position:relative;display:grid;grid-template-columns:56px 1fr;gap:22px;padding:18px 0;align-items:start;opacity:0}
-  .scene.show .step{animation:sin .7s var(--ease) both}
-  .scene.show .step:nth-child(2){animation-delay:.2s}.scene.show .step:nth-child(3){animation-delay:.38s}.scene.show .step:nth-child(4){animation-delay:.56s}
-  .step .num{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:var(--text-sm);color:var(--accent);background:var(--surface);border:1px solid rgba(var(--accent-rgb),.32);box-shadow:0 0 0 6px var(--bg)}
-  .step h4{font-family:var(--display);font-weight:500;font-size:1.3rem;margin-bottom:7px}
-  .step p{color:var(--soft);font-size:.96rem;max-width:48ch;line-height:1.55}
+  .steps{position:relative;margin-top:46px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+  .steps::before{content:"";position:absolute;left:40px;right:40px;top:20px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),rgba(var(--accent-rgb),.14));transform:scaleX(0);transform-origin:left}
+  .scene.show .steps::before{animation:growx 1.5s var(--ease) .15s forwards}
+  @keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .step{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:0;opacity:0}
+  .scene.show .step{animation:rin .7s var(--ease) both}
+  .scene.show .step:nth-child(2){animation-delay:.16s}.scene.show .step:nth-child(3){animation-delay:.32s}.scene.show .step:nth-child(4){animation-delay:.48s}
+  .step .num{position:relative;z-index:1;width:40px;height:40px;margin-bottom:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:var(--text-sm);color:var(--accent);background:var(--surface);border:1px solid rgba(var(--accent-rgb),.32);box-shadow:0 0 0 7px var(--bg)}
+  .step h4{font-family:var(--display);font-weight:500;font-size:1.22rem;margin-bottom:8px}
+  .step p{color:var(--soft);font-size:.92rem;max-width:30ch;line-height:1.55}
+  @media(max-width:760px){
+    .steps{grid-template-columns:1fr;gap:0;max-width:760px}
+    .steps::before{left:19px;right:auto;top:16px;bottom:20px;width:2px;height:auto;background:linear-gradient(var(--accent),rgba(var(--accent-rgb),.12));transform:scaleY(0);transform-origin:top}
+    .scene.show .steps::before{animation:growy 1.4s var(--ease) .15s forwards}
+    .step{display:grid;grid-template-columns:56px 1fr;gap:22px;padding:18px 0;align-items:start}
+    .step .num{margin-bottom:0}
+    .step p{max-width:48ch}
+  }
 
   /* PRYWATNOŚĆ */
   /* prywatność + komfort: kompaktowy pasek pod procesem (high level) */
@@ -399,7 +458,8 @@
 <div class="grade"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="topscrim"></div>
-<div class="brandmark"><span class="dot"></span>Centrum Zakątek</div>
+<div class="edgefx" id="edgefx" aria-hidden="true"></div>
+<a class="brandmark" data-goto="hero" href="#hero" aria-label="Centrum Zakątek - strona główna"><img src="assets/brand/logo-mark.png" alt="Centrum Zakątek"></a>
 <nav class="topnav">
   <a data-goto="zakres">Zakres</a>
   <a data-goto="zespol">Zespół</a>
@@ -432,6 +492,7 @@
         <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
       </div>
     </div></div>
+    <blockquote class="hero-quote">Czasem największą odwagą jest <em>poprosić o&nbsp;pomoc.</em><br>Resztę przejdziemy razem - w&nbsp;Twoim tempie.</blockquote>
   </section>
 
   <div class="seam"></div>
@@ -525,16 +586,13 @@
       <span class="sidx" aria-hidden="true">03</span>
       <div class="eyebrow reveal">Zespół</div>
       <h2 class="reveal">27 specjalistów. <span class="accentword">Realnych ludzi.</span></h2>
-      <p class="lede reveal">Kliknij osobę, by zobaczyć pełny opis, zakres pomocy, cenę i&nbsp;najbliższy wolny termin.</p>
-      <div class="filters reveal" id="teamFilters"></div>
-      <div id="teamGrid" class="reveal"></div>
-    </div>
-  </section>
-
-  <section class="scene quote-scene">
-    <div class="inner">
-      <blockquote class="bigquote reveal"><span class="qmark" aria-hidden="true">„</span>Czasem największą odwagą jest <em>poprosić o pomoc.</em> Resztę przejdziemy razem - w Twoim tempie.</blockquote>
-      <div class="qattr reveal"><span class="qline"></span> zespół Centrum Zakątek</div>
+      <p class="lede reveal">Doświadczeni specjaliści w pięciu obszarach. Rozwiń, by zobaczyć profile - z ceną i&nbsp;najbliższym wolnym terminem.</p>
+      <div class="team-teaser reveal" id="teamTeaser"></div>
+      <div class="team-full" id="teamFull" hidden>
+        <div class="filters" id="teamFilters"></div>
+        <div id="teamGrid"></div>
+        <button class="collapse-cta ghost" id="teamCollapse">Zwiń zespół <span>↑</span></button>
+      </div>
     </div>
   </section>
 
@@ -543,8 +601,12 @@
       <span class="sidx" aria-hidden="true">04</span>
       <div class="eyebrow reveal">Cennik</div>
       <h2 class="reveal">Ceny widoczne <span class="accentword">przed decyzją.</span></h2>
-      <div class="price-grid" id="priceGrid"></div>
-      <p class="price-foot reveal">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
+      <div class="price-teaser reveal" id="priceTeaser"></div>
+      <div class="price-full" id="priceFull" hidden>
+        <div class="price-grid" id="priceGrid"></div>
+        <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
+        <button class="collapse-cta ghost" id="priceCollapse">Zwiń cennik <span>↑</span></button>
+      </div>
     </div>
   </section>
 
@@ -661,12 +723,36 @@
     tf.querySelectorAll('.filt').forEach(function(b){ b.onclick=function(){ tf.querySelectorAll('.filt').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); renderTeam(b.dataset.k); }; }); }
   renderTeam('all');
 
-  /* ---------- cennik ---------- */
+  /* ---------- zespół: rozwijany (teaser -> pełny widok) ---------- */
+  (function(){
+    var teaser=document.getElementById('teamTeaser'), full=document.getElementById('teamFull');
+    if(!teaser||!full||!HAS_DATA) return;
+    var sample=SPECIALISTS.slice(0,9);
+    teaser.innerHTML='<div class="tt-avatars">'+sample.map(function(s){return '<img src="'+s.photo+'" alt="" loading="lazy">';}).join('')+'</div>'
+      +'<div class="tt-text"><b>'+SPECIALISTS.length+' specjalistów</b>Psychiatrzy, neurolog, psycholodzy i terapeuci oraz specjaliści dla dzieci. Rozwiń, by zobaczyć profile - z ceną i najbliższym wolnym terminem.</div>'
+      +'<button class="collapse-cta" data-team-expand>Zobacz cały zespół <span>↓</span></button>';
+    function setTeam(open){ teaser.style.display=open?'none':''; full.hidden=!open; if(window.__loopRebuild) window.__loopRebuild(); }
+    teaser.querySelector('[data-team-expand]').onclick=function(){ setTeam(true); };
+    var tc=document.getElementById('teamCollapse'); if(tc) tc.onclick=function(){ setTeam(false); var z=document.getElementById('zespol'); if(z) z.scrollIntoView({behavior:'smooth'}); };
+    typoPass(teaser);
+  })();
+
+  /* ---------- cennik: rozwijany (teaser -> pełny widok) ---------- */
   var pg=document.getElementById('priceGrid');
   if(pg && typeof PRICING!=='undefined'){ pg.innerHTML=PRICING.map(function(g){
     return '<div class="pc"><h3>'+g.group+'</h3>'
       + g.items.map(function(it){return '<div class="pr"><span>'+it[0]+'</span><span class="pp">'+it[1]+'</span></div>';}).join('')+'</div>';
   }).join(''); }
+  (function(){
+    var teaser=document.getElementById('priceTeaser'), full=document.getElementById('priceFull');
+    if(!teaser||!full||typeof PRICING==='undefined') return;
+    teaser.innerHTML='<div class="pt-rows">'+PRICING.slice(0,4).map(function(g){return '<div class="pt-row"><span>'+g.group+'</span><b>'+g.items[0][1]+'</b></div>';}).join('')+'</div>'
+      +'<div class="pt-side"><p>Pełny cennik wszystkich wizyt - psychiatria, psychoterapia, diagnozy oraz wsparcie dla dzieci. Bez ukrytych kosztów, ceny widoczne przed decyzją.</p><button class="collapse-cta" data-price-expand>Pokaż pełny cennik <span>↓</span></button></div>';
+    function setPrice(open){ teaser.style.display=open?'none':''; full.hidden=!open; if(window.__loopRebuild) window.__loopRebuild(); }
+    teaser.querySelector('[data-price-expand]').onclick=function(){ setPrice(true); };
+    var pc=document.getElementById('priceCollapse'); if(pc) pc.onclick=function(){ setPrice(false); var c=document.getElementById('cennik'); if(c) c.scrollIntoView({behavior:'smooth'}); };
+    typoPass(teaser);
+  })();
 
   /* ---------- reveal scen (scroll + fallback, niezależne od środowiska) ---------- */
   var scenes=[].slice.call(document.querySelectorAll('.scene'));
@@ -792,29 +878,41 @@
 <script>
 (function(){
   var main=document.querySelector('main'); if(!main) return;
-  var de=document.documentElement;
-  /* klon treści = bezszwowe zapętlenie (klon czysto wizualny, nieklikalny, bez id) */
-  var clone=main.cloneNode(true);
-  clone.className=(clone.className?clone.className+' ':'')+'loopclone';
-  clone.setAttribute('aria-hidden','true');
-  clone.style.pointerEvents='none';
-  clone.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
-  clone.querySelectorAll('.scene').forEach(function(s){ s.classList.add('show'); });
-  clone.querySelectorAll('.reveal,.svc,.pc,.tc,.step,.priv,.assure').forEach(function(e){ e.style.opacity=1; e.style.transform='none'; e.style.animation='none'; });
-  main.after(clone);
-  var H=0, enabled=false;
-  function measure(){ H=main.offsetHeight; window.__loopH=H; enabled=H>innerHeight*1.3; }
-  measure(); addEventListener('resize',measure,{passive:true});
+  var de=document.documentElement, edge=document.getElementById('edgefx');
+  /* 3 kopie: [above][main][below] - scroll trzymany w środkowej (realnej) kopii -> pętla w OBIE strony */
+  function mkClone(){
+    var c=main.cloneNode(true);
+    c.className=(c.className?c.className+' ':'')+'loopclone';
+    c.setAttribute('aria-hidden','true'); c.style.pointerEvents='none';
+    c.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
+    c.querySelectorAll('.scene').forEach(function(s){ s.classList.add('show'); });
+    c.querySelectorAll('.reveal,.svc,.pc,.tc,.step,.priv,.assure,.hero-quote').forEach(function(e){ e.style.opacity=1; e.style.transform='none'; e.style.animation='none'; e.style.filter='none'; });
+    return c;
+  }
+  var above, below, H=0, enabled=false, ready=false, locking=false;
+  function jump(to){ var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0,to); de.style.scrollBehavior=p; }
+  function flash(dir){ if(!edge)return; edge.classList.remove('flash-top','flash-bottom'); void edge.offsetWidth; edge.classList.add(dir>0?'flash-bottom':'flash-top'); }
+  function build(){ above=mkClone(); below=mkClone(); main.before(above); main.after(below); }
+  function measure(){ H=main.offsetHeight; window.__loopH=H; enabled=H>innerHeight*1.2; if(enabled && !ready){ ready=true; jump(H); } }
+  build(); try{ history.scrollRestoration='manual'; }catch(e){} measure();
   addEventListener('load',function(){ setTimeout(measure,60); });
   setTimeout(measure,400); setTimeout(measure,1600);
-  var locking=false;
-  function jump(to){ var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0,to); de.style.scrollBehavior=p; }
+  addEventListener('resize',function(){ measure(); },{passive:true});
   function norm(){
     if(!enabled||locking) return;
     var y=window.pageYOffset||de.scrollTop;
-    if(y>=H){ locking=true; jump(y-H); locking=false; }   // w dół: bezszwowo z powrotem na górę kopii
+    if(y>=2*H){ locking=true; jump(y-H); flash(1); locking=false; }       // przekroczono dół -> wraca, błysk dolny
+    else if(y<H){ locking=true; jump(y+H); flash(-1); locking=false; }    // przekroczono górę -> wraca, błysk górny
   }
   addEventListener('scroll',norm,{passive:true});
+  /* przebudowa klonów po zmianie wysokości (rozwijanie/zwijanie sekcji) z zachowaniem pozycji */
+  window.__loopRebuild=function(){
+    if(!ready){ measure(); return; }
+    var rel=Math.max(0, Math.min(H, (window.pageYOffset||0) - H));
+    document.querySelectorAll('.loopclone').forEach(function(c){ c.remove(); });
+    build(); H=main.offsetHeight; window.__loopH=H; enabled=H>innerHeight*1.2;
+    jump(H + Math.min(rel, Math.max(0,H-1)));
+  };
 })();
 </script>
 
@@ -877,7 +975,8 @@
   var targetProg=0, curProg=0;
   function onScroll(){
     var y=window.pageYOffset||0, vhd=innerHeight*0.85, H=window.__loopH||0;
-    var t = H>0 ? Math.min(y/vhd, (H-y)/(innerHeight*0.6)) : y/vhd; // pętla: mózg wraca też przy dnie (zanim zapętli)
+    var rel = H>0 ? (((y-H)%H)+H)%H : y;                           // pozycja w obrębie środkowej kopii [0,H)
+    var t = H>0 ? Math.min(rel/vhd, (H-rel)/(innerHeight*0.6)) : rel/vhd; // mózg składa się też przy dnie (zanim zapętli)
     targetProg=Math.max(0, Math.min(1, t));
   }
   addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll, {passive:true}); onScroll();
