@@ -56,6 +56,11 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
+  /* przewijanie sekcja-po-sekcji (natywne); snap-stop:always = nie przeskakuje wielu sekcji przy mocnym scrollu */
+  @media(min-width:761px){
+    html{scroll-snap-type:y proximity}
+    main>.scene{scroll-snap-align:start;scroll-snap-stop:always}
+  }
   /* ukryty pasek przewijania (strona zapętla się w nieskończoność) */
   html{scrollbar-width:none;-ms-overflow-style:none}
   html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
@@ -900,6 +905,7 @@
 <script>
 (function(){
   var de=document.documentElement, edge=document.getElementById('edgefx');
+  try{ history.scrollRestoration='manual'; }catch(e){}   // nie przywracaj pozycji przy reload -> start na hero
   function maxY(){ return Math.max(0,(document.documentElement.scrollHeight||0) - innerHeight); }
   function flash(dir){ if(!edge)return; edge.classList.remove('flash-top','flash-bottom'); void edge.offsetWidth; edge.classList.add(dir>0?'flash-bottom':'flash-top'); }
   var wrapping=false;
@@ -926,27 +932,6 @@
   addEventListener('touchstart', function(e){ if(e.touches[0]) tY=e.touches[0].clientY; }, {passive:true});
   addEventListener('touchmove', function(e){ if(!e.touches[0])return; var cy=e.touches[0].clientY, d=tY-cy; tY=cy; if(Math.abs(d)>1) atEdgeScroll(d>0?1:-1); }, {passive:true});
 
-  /* auto-scroll: delikatny dryf po sekcjach. Pauza na każdą interakcję, wznowienie po bezczynności.
-     Ciągły (pikselowy) dryf -> bezpieczny dla rozwijanej sekcji zespół, niezależnie od jej wysokości. */
-  var reduceA = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var autoOn=false, autoLast=0, idleT=0;
-  function canAuto(){ return !reduceA && !window.__astBusy && maxY() > innerHeight*0.6; }
-  function startAuto(){ if(canAuto()){ autoOn=true; autoLast=0; } }
-  function pauseAuto(){ autoOn=false; autoLast=0; clearTimeout(idleT); idleT=setTimeout(startAuto, 5000); }
-  ['wheel','touchstart','keydown','mousedown','pointerdown'].forEach(function(ev){ addEventListener(ev, pauseAuto, {passive:true}); });
-  function autoTick(ts){
-    if(autoOn && !wrapping && !window.__astBusy){
-      if(!autoLast) autoLast=ts;
-      var dt=Math.min(64, ts-autoLast); autoLast=ts;
-      var y=window.pageYOffset||de.scrollTop, m=maxY();
-      if(m < innerHeight*0.6){ autoOn=false; }
-      else if(y>=m-1){ autoOn=false; wrapTo(0,1); setTimeout(function(){ if(canAuto()){ autoOn=true; autoLast=0; } }, 760); }
-      else { var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0, y + 62*dt/1000); de.style.scrollBehavior=p; }
-    } else { autoLast=0; }
-    requestAnimationFrame(autoTick);
-  }
-  requestAnimationFrame(autoTick);
-  idleT=setTimeout(startAuto, 6000);
 })();
 </script>
 
