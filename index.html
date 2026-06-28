@@ -67,6 +67,8 @@
   .edgefx.flash-top::before{animation:edgepulse .65s var(--ease)}
   .edgefx.flash-bottom::after{animation:edgepulse .65s var(--ease)}
   @keyframes edgepulse{0%{opacity:0}28%{opacity:1}100%{opacity:0}}
+  main{transition:opacity .16s ease}
+  body.wrapping main{opacity:.12}   /* przygaśnięcie maskujące skok przy zapętleniu */
   html{background:var(--bg)}
   body{font-family:var(--body);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100%;
     background-color:var(--bg);
@@ -880,45 +882,35 @@
 })();
 </script>
 
-<!-- Infinite scroll: bezszwowa pętla strony -->
+<!-- Infinite scroll: zawijanie na krawędziach z efektem „przekroczenia granicy" (bez klonów - niezawodne) -->
 <script>
 (function(){
-  var main=document.querySelector('main'); if(!main) return;
   var de=document.documentElement, edge=document.getElementById('edgefx');
-  /* 3 kopie: [above][main][below] - scroll trzymany w środkowej (realnej) kopii -> pętla w OBIE strony */
-  function mkClone(){
-    var c=main.cloneNode(true);
-    c.className=(c.className?c.className+' ':'')+'loopclone';
-    c.setAttribute('aria-hidden','true'); c.style.pointerEvents='none';
-    c.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
-    c.querySelectorAll('.scene').forEach(function(s){ s.classList.add('show'); });
-    c.querySelectorAll('.reveal,.svc,.pc,.tc,.step,.priv,.assure,.hero-quote').forEach(function(e){ e.style.opacity=1; e.style.transform='none'; e.style.animation='none'; e.style.filter='none'; });
-    return c;
-  }
-  var above, below, H=0, enabled=false, ready=false, locking=false;
-  function jump(to){ var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0,to); de.style.scrollBehavior=p; }
+  function maxY(){ return Math.max(0,(document.documentElement.scrollHeight||0) - innerHeight); }
   function flash(dir){ if(!edge)return; edge.classList.remove('flash-top','flash-bottom'); void edge.offsetWidth; edge.classList.add(dir>0?'flash-bottom':'flash-top'); }
-  function build(){ above=mkClone(); below=mkClone(); main.before(above); main.after(below); }
-  function measure(){ H=main.offsetHeight; window.__loopH=H; enabled=H>innerHeight*1.2; if(enabled && !ready){ ready=true; jump(H); } }
-  build(); try{ history.scrollRestoration='manual'; }catch(e){} measure();
-  addEventListener('load',function(){ setTimeout(measure,60); });
-  setTimeout(measure,400); setTimeout(measure,1600);
-  addEventListener('resize',function(){ measure(); },{passive:true});
-  function norm(){
-    if(!enabled||locking) return;
-    var y=window.pageYOffset||de.scrollTop;
-    if(y>=2*H){ locking=true; jump(y-H); flash(1); locking=false; }       // przekroczono dół -> wraca, błysk dolny
-    else if(y<H){ locking=true; jump(y+H); flash(-1); locking=false; }    // przekroczono górę -> wraca, błysk górny
+  var wrapping=false;
+  function wrapTo(target, dir){
+    if(wrapping) return; wrapping=true;
+    flash(dir); document.body.classList.add('wrapping');
+    setTimeout(function(){
+      var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0,target); de.style.scrollBehavior=p;
+      setTimeout(function(){ document.body.classList.remove('wrapping'); wrapping=false; }, 180);
+    }, 150);
   }
-  addEventListener('scroll',norm,{passive:true});
-  /* przebudowa klonów po zmianie wysokości (rozwijanie/zwijanie sekcji) z zachowaniem pozycji */
-  window.__loopRebuild=function(){
-    if(!ready){ measure(); return; }
-    var rel=Math.max(0, Math.min(H, (window.pageYOffset||0) - H));
-    document.querySelectorAll('.loopclone').forEach(function(c){ c.remove(); });
-    build(); H=main.offsetHeight; window.__loopH=H; enabled=H>innerHeight*1.2;
-    jump(H + Math.min(rel, Math.max(0,H-1)));
-  };
+  function atEdgeScroll(dir){            // dir>0 = w dół, dir<0 = w górę
+    var m=maxY(); if(m < innerHeight*0.6) return;   // krótka strona - nie zapętlaj
+    var y=window.pageYOffset||de.scrollTop;
+    if(dir>0 && y>=m-2){ wrapTo(0,1); }            // dno -> góra
+    else if(dir<0 && y<=2){ wrapTo(m,-1); }        // góra -> dno
+  }
+  addEventListener('wheel', function(e){ if(Math.abs(e.deltaY)>0) atEdgeScroll(e.deltaY>0?1:-1); }, {passive:true});
+  addEventListener('keydown', function(e){
+    var k=e.key; if(k==='ArrowDown'||k==='PageDown'||k===' ') atEdgeScroll(1);
+    else if(k==='ArrowUp'||k==='PageUp') atEdgeScroll(-1);
+  });
+  var tY=0;
+  addEventListener('touchstart', function(e){ if(e.touches[0]) tY=e.touches[0].clientY; }, {passive:true});
+  addEventListener('touchmove', function(e){ if(!e.touches[0])return; var cy=e.touches[0].clientY, d=tY-cy; tY=cy; if(Math.abs(d)>1) atEdgeScroll(d>0?1:-1); }, {passive:true});
 })();
 </script>
 
@@ -980,10 +972,8 @@
   /* scroll w dół: mózg rozwiewa się w delikatne tło kropek; scroll w górę: wraca do mózgu */
   var targetProg=0, curProg=0;
   function onScroll(){
-    var y=window.pageYOffset||0, vhd=innerHeight*0.85, H=window.__loopH||0;
-    var rel = H>0 ? (((y-H)%H)+H)%H : y;                           // pozycja w obrębie środkowej kopii [0,H)
-    var t = H>0 ? Math.min(rel/vhd, (H-rel)/(innerHeight*0.6)) : rel/vhd; // mózg składa się też przy dnie (zanim zapętli)
-    targetProg=Math.max(0, Math.min(1, t));
+    var y=window.pageYOffset||0, vhd=innerHeight*0.85;
+    targetProg=Math.max(0, Math.min(1, y/vhd));
   }
   addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll, {passive:true}); onScroll();
   function tick(){
