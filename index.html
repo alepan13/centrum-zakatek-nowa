@@ -251,6 +251,10 @@
   .collapse-cta span{transition:transform .25s var(--ease)}
   .collapse-cta:hover span{transform:translateY(2px)}
   .collapse-cta.ghost{background:transparent;color:var(--accent);border-color:var(--line);margin-top:30px}
+  .collapse-cta.sm{margin-top:0;padding:9px 16px;font-size:.72rem;color:var(--soft)}
+  .collapse-cta.sm:hover{color:var(--accent)}
+  .full-top{display:flex;justify-content:flex-end;margin-bottom:10px}
+  #teamGrid{margin-top:40px}
   .collapse-cta.ghost:hover{background:rgba(var(--accent-rgb),.06);border-color:var(--accent)}
   .collapse-cta.ghost:hover span{transform:translateY(-2px)}
   .team-full,.price-full{animation:fadein .5s ease both}
@@ -368,6 +372,11 @@
   /* === DOBÓR: ciepły, spójny — asystent inline w jednym panelu === */
   .dobor-scene .inner{max-width:1320px}
   .dobor-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,58px);align-items:center}
+  .dobor-right{display:flex;flex-direction:column}
+  .dobor-or{display:flex;align-items:center;gap:16px;margin:20px 2px 16px;font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .dobor-or::before,.dobor-or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .dobor-alt{display:flex;gap:12px}
+  .dobor-alt .btn{flex:1;justify-content:center;min-width:0;padding:15px 18px}
   .dobor-text .eyebrow{margin-bottom:18px}
   .dobor-text h2{font-size:clamp(1.9rem,3.2vw,2.7rem);max-width:18ch;line-height:1.1}
   .dobor-lede{margin-top:18px;max-width:48ch;color:var(--soft);font-size:clamp(1.04rem,1.3vw,1.18rem);line-height:1.6}
@@ -453,7 +462,7 @@
   .spec-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
   .spec-price{font-size:.86rem;color:var(--accent);font-weight:700}
   .spec-cta{display:flex;gap:9px;flex-wrap:wrap}
-  @media(max-width:760px){ .dobor-grid{grid-template-columns:1fr;gap:30px} .dobor-cta{gap:16px} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
+  @media(max-width:760px){ .dobor-grid{grid-template-columns:1fr;gap:30px} .dobor-alt{flex-direction:column} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
 </style>
 </head>
 <body>
@@ -509,28 +518,31 @@
           <div class="eyebrow reveal">Dlaczego Zakątek</div>
           <h2 class="reveal">Nie musisz wiedzieć, do kogo się umówić. <span class="accentword">My pomożemy.</span></h2>
           <p class="dobor-lede reveal">Skorzystaj z naszego anonimowego asystenta AI - w kilku pytaniach dobierze specjalistę dopasowanego do Twojej sytuacji, z ceną i&nbsp;najbliższym wolnym terminem. Wolisz porozmawiać? Po prostu zadzwoń.</p>
-          <div class="dobor-cta reveal">
-            <button class="btn btn-primary btn-lg" id="doborBtn" data-dobor-start>Dobierz specjalistę<span class="btn-arrow">→</span></button>
-            <a class="btn btn-ghost" href="tel:575805505">Zadzwoń · 575 805 505</a>
-          </div>
           <ul class="why-points reveal">
             <li><b>Bez skierowania</b> - umawiasz się bezpośrednio</li>
             <li><b>Stacjonarnie w Toruniu lub online</b></li>
             <li><b>Pełna dyskrecja</b> i ochrona danych (RODO)</li>
           </ul>
         </div>
-        <div class="dobor-panel reveal" id="doborPanel">
-          <div class="dp-intro">
-            <div class="dp-bar">
-              <span class="dp-avatar"><span class="dp-pulse"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 21a7 7 0 0 1 14 0"/><circle cx="12" cy="7.5" r=".4" fill="currentColor"/></svg></span>
-              <div class="dp-id"><b>Asystent doboru</b><span class="dp-status"><span class="dp-online"></span>gotowy do pomocy · anonimowo</span></div>
+        <div class="dobor-right reveal">
+          <div class="dobor-panel" id="doborPanel">
+            <div class="dp-intro">
+              <div class="dp-bar">
+                <span class="dp-avatar"><span class="dp-pulse"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 21a7 7 0 0 1 14 0"/><circle cx="12" cy="7.5" r=".4" fill="currentColor"/></svg></span>
+                <div class="dp-id"><b>Asystent doboru</b><span class="dp-status"><span class="dp-online"></span>gotowy do pomocy · anonimowo</span></div>
+              </div>
+              <div class="dp-bubble">Cześć. Zadam Ci kilka prostych pytań i wskażę osoby z zespołu dopasowane do Twojej sytuacji - z ceną i&nbsp;wolnym terminem.</div>
+              <div class="dp-chips"><span class="dp-chip">Kilka pytań</span><span class="dp-chip">Dopasowanie</span><span class="dp-chip">Trzy propozycje</span></div>
+              <button class="dp-launch" data-dobor-start aria-label="Rozpocznij dobór specjalisty">
+                <span>Rozpocznij dobór<span class="dp-caret"></span></span>
+                <span class="dp-launch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </button>
             </div>
-            <div class="dp-bubble">Cześć. Zadam Ci kilka prostych pytań i wskażę osoby z zespołu dopasowane do Twojej sytuacji - z ceną i&nbsp;wolnym terminem.</div>
-            <div class="dp-chips"><span class="dp-chip">Kilka pytań</span><span class="dp-chip">Dopasowanie</span><span class="dp-chip">Trzy propozycje</span></div>
-            <button class="dp-launch" data-dobor-start aria-label="Rozpocznij dobór specjalisty">
-              <span>Rozpocznij dobór<span class="dp-caret"></span></span>
-              <span class="dp-launch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            </button>
+          </div>
+          <div class="dobor-or" aria-hidden="true">lub</div>
+          <div class="dobor-alt">
+            <a class="btn btn-ghost" data-goto="umow" href="#umow">Napisz do nas</a>
+            <a class="btn btn-primary" href="tel:575805505">Zadzwoń · 575&nbsp;805&nbsp;505</a>
           </div>
         </div>
       </div>
@@ -582,9 +594,10 @@
       <p class="lede reveal">Doświadczeni specjaliści w pięciu obszarach. Rozwiń, by zobaczyć profile - z ceną i&nbsp;najbliższym wolnym terminem.</p>
       <div class="team-teaser reveal" id="teamTeaser"></div>
       <div class="team-full" id="teamFull" hidden>
+        <div class="full-top"><button class="collapse-cta ghost sm" data-team-collapse>Zwiń <span>↑</span></button></div>
         <div class="filters" id="teamFilters"></div>
         <div id="teamGrid"></div>
-        <button class="collapse-cta ghost" id="teamCollapse">Zwiń zespół <span>↑</span></button>
+        <button class="collapse-cta ghost" data-team-collapse>Zwiń zespół <span>↑</span></button>
       </div>
     </div>
   </section>
@@ -596,9 +609,10 @@
       <h2 class="reveal">Ceny widoczne <span class="accentword">przed decyzją.</span></h2>
       <div class="price-teaser reveal" id="priceTeaser"></div>
       <div class="price-full" id="priceFull" hidden>
+        <div class="full-top"><button class="collapse-cta ghost sm" data-price-collapse>Zwiń <span>↑</span></button></div>
         <div class="price-grid" id="priceGrid"></div>
         <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
-        <button class="collapse-cta ghost" id="priceCollapse">Zwiń cennik <span>↑</span></button>
+        <button class="collapse-cta ghost" data-price-collapse>Zwiń cennik <span>↑</span></button>
       </div>
     </div>
   </section>
@@ -691,6 +705,8 @@
       +'</span><span class="tc-b"><span class="tc-n">'+s.name+'</span><span class="tc-r">'+s.role+'</span><span class="tc-m">'+price+' · '+slot(s.availDays)+'</span></span></button>'; }
   var HAS_DATA = (typeof SPECIALISTS!=='undefined');
   function gridOf(list){ return '<div class="team-grid">'+list.map(card).join('')+'</div>'; }
+  /* w grupie psychiatrów Grzegorz Kosowski jako pierwszy */
+  function psychFirst(list){ var i=list.findIndex(function(s){return s.id==='kosowski';}); if(i>0){ list=list.slice(); list.unshift(list.splice(i,1)[0]); } return list; }
   function renderTeam(key){
     if(!HAS_DATA) return;
     var g=document.getElementById('teamGrid'); if(!g) return;
@@ -698,6 +714,7 @@
       var html='';
       GROUPS.forEach(function(grp){
         var list=SPECIALISTS.filter(function(s){return s.group===grp.key;});
+        if(grp.key==='psychiatra') list=psychFirst(list);
         if(!list.length) return;
         html+='<div class="team-group"><div class="group-head"><h3>'+grp.title+'</h3><span class="group-count">'+list.length+'</span></div>'+gridOf(list)+'</div>';
       });
@@ -706,6 +723,7 @@
       var list=SPECIALISTS.slice();
       if(key==='dzieci') list=list.filter(function(s){return s.treats&&s.treats.indexOf('children')>=0;});
       else if(key!=='all') list=list.filter(function(s){return s.group===key;});
+      if(key==='psychiatra') list=psychFirst(list);
       g.innerHTML=gridOf(list);
     }
     g.querySelectorAll('.tc').forEach(function(b){ b.onclick=function(){ openSpec(b.dataset.id); }; });
@@ -726,7 +744,7 @@
       +'<button class="collapse-cta" data-team-expand>Zobacz cały zespół <span>↓</span></button>';
     function setTeam(open){ teaser.style.display=open?'none':''; full.hidden=!open; if(window.__loopRebuild) window.__loopRebuild(); }
     teaser.querySelector('[data-team-expand]').onclick=function(){ setTeam(true); };
-    var tc=document.getElementById('teamCollapse'); if(tc) tc.onclick=function(){ setTeam(false); var z=document.getElementById('zespol'); if(z) z.scrollIntoView({behavior:'smooth'}); };
+    full.querySelectorAll('[data-team-collapse]').forEach(function(b){ b.onclick=function(){ setTeam(false); var z=document.getElementById('zespol'); if(z) z.scrollIntoView({behavior:'smooth'}); }; });
     typoPass(teaser);
   })();
 
@@ -743,7 +761,7 @@
       +'<div class="pt-side"><p>Pełny cennik wszystkich wizyt - psychiatria, psychoterapia, diagnozy oraz wsparcie dla dzieci. Bez ukrytych kosztów, ceny widoczne przed decyzją.</p><button class="collapse-cta" data-price-expand>Pokaż pełny cennik <span>↓</span></button></div>';
     function setPrice(open){ teaser.style.display=open?'none':''; full.hidden=!open; if(window.__loopRebuild) window.__loopRebuild(); }
     teaser.querySelector('[data-price-expand]').onclick=function(){ setPrice(true); };
-    var pc=document.getElementById('priceCollapse'); if(pc) pc.onclick=function(){ setPrice(false); var c=document.getElementById('cennik'); if(c) c.scrollIntoView({behavior:'smooth'}); };
+    full.querySelectorAll('[data-price-collapse]').forEach(function(b){ b.onclick=function(){ setPrice(false); var c=document.getElementById('cennik'); if(c) c.scrollIntoView({behavior:'smooth'}); }; });
     typoPass(teaser);
   })();
 
@@ -817,9 +835,9 @@
   var astBody=document.getElementById('doborPanel');
   var doborIntro=astBody?astBody.innerHTML:'';
   function bindStart(root){ (root||document).querySelectorAll('[data-dobor-start]').forEach(function(b){ b.onclick=doborStart; }); }
-  function resetPanel(){ if(!astBody)return; astBody.innerHTML=doborIntro; bindStart(astBody); typoPass(astBody); }
+  function resetPanel(){ if(!astBody)return; astBody.innerHTML=doborIntro; bindStart(astBody); typoPass(astBody); window.__astBusy=false; }
   function buildFlow(){ AST.flow=FLOW.filter(function(f){return !f.show||f.show(AST.answers);}); }
-  function doborStart(){ if(typeof FLOW==='undefined'){ window.location.href='tel:575805505'; return; } if(!astBody)return; AST.answers={}; AST.idx=0; buildFlow(); renderQ(); }
+  function doborStart(){ if(typeof FLOW==='undefined'){ window.location.href='tel:575805505'; return; } if(!astBody)return; window.__astBusy=true; AST.answers={}; AST.idx=0; buildFlow(); renderQ(); }
   function closeAction(){ return '<button class="link-btn" data-close>✕ Zamknij</button>'; }
   function renderQ(){
     if(AST.idx>=AST.flow.length) return renderResults();
@@ -907,6 +925,28 @@
   var tY=0;
   addEventListener('touchstart', function(e){ if(e.touches[0]) tY=e.touches[0].clientY; }, {passive:true});
   addEventListener('touchmove', function(e){ if(!e.touches[0])return; var cy=e.touches[0].clientY, d=tY-cy; tY=cy; if(Math.abs(d)>1) atEdgeScroll(d>0?1:-1); }, {passive:true});
+
+  /* auto-scroll: delikatny dryf po sekcjach. Pauza na każdą interakcję, wznowienie po bezczynności.
+     Ciągły (pikselowy) dryf -> bezpieczny dla rozwijanej sekcji zespół, niezależnie od jej wysokości. */
+  var reduceA = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var autoOn=false, autoLast=0, idleT=0;
+  function canAuto(){ return !reduceA && !window.__astBusy && maxY() > innerHeight*0.6; }
+  function startAuto(){ if(canAuto()){ autoOn=true; autoLast=0; } }
+  function pauseAuto(){ autoOn=false; autoLast=0; clearTimeout(idleT); idleT=setTimeout(startAuto, 5000); }
+  ['wheel','touchstart','keydown','mousedown','pointerdown'].forEach(function(ev){ addEventListener(ev, pauseAuto, {passive:true}); });
+  function autoTick(ts){
+    if(autoOn && !wrapping && !window.__astBusy){
+      if(!autoLast) autoLast=ts;
+      var dt=Math.min(64, ts-autoLast); autoLast=ts;
+      var y=window.pageYOffset||de.scrollTop, m=maxY();
+      if(m < innerHeight*0.6){ autoOn=false; }
+      else if(y>=m-1){ autoOn=false; wrapTo(0,1); setTimeout(function(){ if(canAuto()){ autoOn=true; autoLast=0; } }, 760); }
+      else { var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0, y + 62*dt/1000); de.style.scrollBehavior=p; }
+    } else { autoLast=0; }
+    requestAnimationFrame(autoTick);
+  }
+  requestAnimationFrame(autoTick);
+  idleT=setTimeout(startAuto, 6000);
 })();
 </script>
 
