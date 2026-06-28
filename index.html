@@ -756,17 +756,23 @@
 
   /* ---------- reveal scen (scroll + fallback, niezależne od środowiska) ---------- */
   var scenes=[].slice.call(document.querySelectorAll('.scene'));
-  function vh(){ return window.innerHeight||document.documentElement.clientHeight; }
-  function checkScenes(){ for(var i=scenes.length-1;i>=0;i--){ var s=scenes[i];
-    if(s.classList.contains('hero') && !document.body.classList.contains('introReady')) continue; // hero czeka na intro (mózg najpierw)
-    var r=s.getBoundingClientRect(); if(r.top < vh()*0.9 && r.bottom>0){ s.classList.add('show'); scenes.splice(i,1); } } }
-  /* intro: tekst hero pojawia się gdy mózg dojeżdża w prawo (lub od razu przy reduced-motion) */
-  var introWait = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1150;
-  setTimeout(function(){ document.body.classList.add('introReady'); checkScenes(); }, introWait);
-  var ticking=false;
-  function onScroll(){ if(ticking)return; ticking=true; requestAnimationFrame(function(){checkScenes();ticking=false;}); }
-  addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll,{passive:true});
-  checkScenes(); requestAnimationFrame(checkScenes); setTimeout(checkScenes,250);
+  var reduceM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var heroScene=document.querySelector('.scene.hero');
+  function showScene(s){ if(s) s.classList.add('show'); }
+  /* reveal przez IntersectionObserver - niezawodny niezależnie od zapętlonego scrolla */
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ showScene(e.target); io.unobserve(e.target); } });
+    },{rootMargin:'0px 0px -8% 0px', threshold:0.06});
+    scenes.forEach(function(s){ if(s!==heroScene) io.observe(s); });
+  } else {
+    scenes.forEach(function(s){ if(s!==heroScene) showScene(s); });
+  }
+  /* hero czeka na intro (mózg najpierw); potem pokazujemy */
+  var introWait = reduceM ? 0 : 1150;
+  setTimeout(function(){ document.body.classList.add('introReady'); showScene(heroScene); }, introWait);
+  /* siatka bezpieczeństwa: jeśli po 3.5s coś nadal ukryte (np. zablokowane IO), pokaż wszystko */
+  setTimeout(function(){ scenes.forEach(showScene); }, 3500);
 
   /* ---------- nawigacja ---------- */
   document.querySelectorAll('[data-goto]').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); var t=document.getElementById(a.getAttribute('data-goto')); if(t)t.scrollIntoView({behavior:'smooth'}); }); });
