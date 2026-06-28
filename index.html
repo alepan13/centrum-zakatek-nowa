@@ -279,6 +279,81 @@
   body.forced .steps::before{transform:scaleY(1)!important;animation:none!important}
   body.forced .accentword::after{transform:scaleX(1)!important;animation:none!important}
   body.forced .svc-art .dl{stroke-dashoffset:0!important;animation:none!important}
+
+  /* ===== Zespół: grupy + większe karty ===== */
+  .team-group{margin-bottom:46px}
+  .group-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:24px}
+  .group-head h3{font-family:var(--display);font-weight:500;font-size:1.5rem;color:var(--cream);line-height:1.1}
+  .group-count{font-size:.85rem;color:var(--muted);font-weight:600}
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:20px}
+  .tc-ph{aspect-ratio:4/5}
+  .tc-b{padding:16px 16px 18px}
+  .tc-n{font-size:1.1rem}
+  /* ===== Dobór - band ===== */
+  .dobor-band{display:grid;grid-template-columns:1.4fr auto;gap:40px;align-items:center;border:1px solid rgba(var(--accent-rgb),.2);background:linear-gradient(135deg,rgba(var(--accent-rgb),.06),rgba(var(--accent-rgb),.015));border-radius:var(--r-lg);padding:clamp(30px,4vw,52px);box-shadow:var(--shadow-sm)}
+  .dobor-text .eyebrow{margin-bottom:18px}
+  .dobor-text h2{font-size:clamp(1.7rem,3vw,2.6rem);max-width:18ch}
+  .dobor-text .lede{margin-top:18px;max-width:52ch}
+  .dobor-cta{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .dobor-meta{font-size:.82rem;color:var(--muted)}
+  .btn-lg{padding:18px 30px;font-size:.95rem}
+  /* ===== Modal ===== */
+  .modal{position:fixed;inset:0;z-index:60;display:none}
+  .modal.open{display:block}
+  .modal-bg{position:absolute;inset:0;background:rgba(20,28,22,.42);backdrop-filter:blur(5px)}
+  .modal-card{position:relative;width:min(680px,calc(100% - 28px));max-height:90vh;margin:5vh auto;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 40px 100px -40px rgba(20,30,24,.5);overflow:hidden;animation:rin .4s var(--ease) both}
+  .modal-x{position:absolute;right:14px;top:14px;z-index:2;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--cream);cursor:pointer}
+  .modal-x:hover{color:var(--accent);border-color:var(--accent)}
+  .modal-scroll{overflow-y:auto;padding:30px}
+  .dlg-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+  .dlg-kick{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .dlg-prog{display:flex;gap:5px;flex:1;max-width:200px}
+  .dlg-prog span{height:5px;flex:1;border-radius:3px;background:var(--line)}
+  .dlg-prog span.on{background:var(--accent)}
+  .dlg-q{font-family:var(--display);font-size:1.5rem;line-height:1.2;color:var(--cream);margin-bottom:6px;padding-right:30px}
+  .dlg-hint{font-size:.92rem;color:var(--soft);margin-bottom:18px}
+  .qtiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .qtile{text-align:left;padding:15px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--cream);font:inherit;font-size:.96rem;font-weight:500;cursor:pointer;transition:transform .2s var(--ease),border-color .2s,background .2s}
+  .qtile:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .qtile.sel{border-color:var(--accent);background:rgba(var(--accent-rgb),.07);box-shadow:inset 0 0 0 1px var(--accent)}
+  .qtile.crisis{border-color:#c9a59c}
+  .dlg-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
+  .dlg-actr{display:flex;gap:10px}
+  .link-btn{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;font-size:.9rem;cursor:pointer}
+  .link-btn:hover{color:var(--accent)}
+  .btn-sm{padding:10px 16px;font-size:.8rem}
+  .dlg-note{display:flex;gap:9px;margin-top:14px;border:1px solid var(--line);background:var(--card);border-radius:var(--r-md);padding:13px 15px;font-size:.86rem;color:var(--soft);line-height:1.5}
+  .dlg-note b{color:var(--cream)}
+  .rescard{border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+  .rescard.top{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow-sm)}
+  .rc-h{display:flex;align-items:center;gap:13px}
+  .rc-h img{width:54px;height:54px;border-radius:var(--r-sm);object-fit:cover;object-position:center 16%;flex:none}
+  .rc-id{flex:1;min-width:0}
+  .rc-n{font-family:var(--display);font-size:1.1rem;color:var(--cream);line-height:1.1}
+  .rc-r{font-size:.82rem;color:var(--accent);font-weight:600;margin-top:3px}
+  .rc-lead{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);background:rgba(var(--accent-rgb),.08);padding:5px 9px;border-radius:var(--r-sm);white-space:nowrap}
+  .rc-why{font-size:.9rem;color:var(--soft);line-height:1.55;margin:11px 0 12px}
+  .rc-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.84rem}
+  .rc-match{color:var(--muted);font-weight:600}
+  .rc-price{color:var(--accent);font-weight:700;white-space:nowrap}
+  .rc-cta{display:flex;gap:9px;margin-top:13px;flex-wrap:wrap}
+  .crisisbox{background:#f7e9e6;border:1px solid #e3bcb2;border-radius:var(--r-md);padding:18px}
+  .crisisbox h3{font-family:var(--display);font-size:1.3rem;color:#7a2e1e;margin-bottom:8px}
+  .crisisbox p{color:#6b3326;font-size:.92rem;margin-bottom:12px}
+  .crline{background:#fff;border-radius:var(--r-sm);padding:10px 12px;margin-bottom:7px;font-size:.92rem;color:#3a2520}
+  .crline b{color:#7a2e1e}
+  .spec-top{display:flex;align-items:center;gap:16px;padding-right:40px}
+  .spec-top img{width:100px;height:100px;border-radius:var(--r-md);object-fit:cover;object-position:center 14%;flex:none}
+  .spec-n{font-family:var(--display);font-size:1.7rem;color:var(--cream);line-height:1.05}
+  .spec-r{font-size:.9rem;color:var(--accent);font-weight:600;margin-top:5px}
+  .spec-fl{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+  .spec-fl span{font-size:.72rem;font-weight:600;color:var(--accent);background:rgba(var(--accent-rgb),.08);padding:3px 8px;border-radius:var(--r-xs)}
+  .spec-motto{margin:18px 0 0;padding-left:14px;border-left:3px solid var(--accent);font-family:var(--display);font-style:italic;font-size:1.1rem;color:var(--accent);line-height:1.4}
+  .spec-desc{font-size:.96rem;line-height:1.7;color:var(--soft);margin-top:16px}
+  .spec-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+  .spec-price{font-size:.86rem;color:var(--accent);font-weight:700}
+  .spec-cta{display:flex;gap:9px;flex-wrap:wrap}
+  @media(max-width:760px){ .dobor-band{grid-template-columns:1fr;gap:24px} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
 </style>
 </head>
 <body>
@@ -380,6 +455,22 @@
     </div>
   </section>
 
+  <section class="scene dobor-scene" id="dobor">
+    <div class="inner">
+      <div class="dobor-band reveal">
+        <div class="dobor-text">
+          <div class="eyebrow">Dobór specjalisty</div>
+          <h2>Nie wiesz, do kogo się umówić?</h2>
+          <p class="lede">Odpowiedz na kilka pytań - anonimowo, bez logowania. Wskażemy osoby z zespołu dopasowane do Twojej sytuacji, z ceną i najbliższym wolnym terminem.</p>
+        </div>
+        <div class="dobor-cta">
+          <button class="btn btn-primary btn-lg" id="doborBtn">Dobierz specjalistę</button>
+          <span class="dobor-meta">~2 minuty · bez zapisu danych</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="scene" id="zespol">
     <div class="inner">
       <span class="sidx" aria-hidden="true">03</span>
@@ -387,7 +478,7 @@
       <h2 class="reveal">27 specjalistów. <span class="accentword">Realnych ludzi.</span></h2>
       <p class="lede reveal">Kliknij osobę, by zobaczyć pełny opis, zakres pomocy, cenę i&nbsp;najbliższy wolny termin.</p>
       <div class="filters reveal" id="teamFilters"></div>
-      <div class="team-grid" id="teamGrid"></div>
+      <div id="teamGrid" class="reveal"></div>
     </div>
   </section>
 
@@ -455,7 +546,17 @@
 
 </main>
 
+<!-- Modal: profil specjalisty / dobór -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-bg" data-mclose></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Centrum Zakątek">
+    <button class="modal-x" data-mclose aria-label="Zamknij"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-scroll"><div id="modalBody"></div></div>
+  </div>
+</div>
+
 <script src="data.js?v=7"></script>
+<script src="assistant.js?v=7"></script>
 <script>
 (function(){
   /* ---------- polska typografia (port pl() z car-rfq/ktomaauto) ---------- */
@@ -487,12 +588,26 @@
       +(fl.length?'<span class="tc-fl">'+fl.map(function(x){return '<span>'+x+'</span>';}).join('')+'</span>':'')
       +'</span><span class="tc-b"><span class="tc-n">'+s.name+'</span><span class="tc-r">'+s.role+'</span><span class="tc-m">'+price+' · '+slot(s.availDays)+'</span></span></button>'; }
   var HAS_DATA = (typeof SPECIALISTS!=='undefined');
+  function gridOf(list){ return '<div class="team-grid">'+list.map(card).join('')+'</div>'; }
   function renderTeam(key){
     if(!HAS_DATA) return;
-    var list = SPECIALISTS.slice();
-    if(key==='dzieci') list=list.filter(function(s){return s.treats&&s.treats.indexOf('children')>=0;});
-    else if(key!=='all') list=list.filter(function(s){return s.group===key;});
-    var g=document.getElementById('teamGrid'); if(g){ g.innerHTML=list.map(card).join(''); typoPass(g); }
+    var g=document.getElementById('teamGrid'); if(!g) return;
+    if(key==='all' && typeof GROUPS!=='undefined'){
+      var html='';
+      GROUPS.forEach(function(grp){
+        var list=SPECIALISTS.filter(function(s){return s.group===grp.key;});
+        if(!list.length) return;
+        html+='<div class="team-group"><div class="group-head"><h3>'+grp.title+'</h3><span class="group-count">'+list.length+'</span></div>'+gridOf(list)+'</div>';
+      });
+      g.innerHTML=html;
+    } else {
+      var list=SPECIALISTS.slice();
+      if(key==='dzieci') list=list.filter(function(s){return s.treats&&s.treats.indexOf('children')>=0;});
+      else if(key!=='all') list=list.filter(function(s){return s.group===key;});
+      g.innerHTML=gridOf(list);
+    }
+    g.querySelectorAll('.tc').forEach(function(b){ b.onclick=function(){ openSpec(b.dataset.id); }; });
+    typoPass(g);
   }
   var tf=document.getElementById('teamFilters');
   if(tf){ tf.innerHTML=FILTERS.map(function(f,i){return '<button class="filt'+(i===0?' on':'')+'" data-k="'+f[0]+'">'+f[1]+'</button>';}).join('');
@@ -534,6 +649,71 @@
     var h1=document.querySelector('.hero h1');
     if(h1 && parseFloat(getComputedStyle(h1).opacity) < 0.5){ document.body.classList.add('forced'); }
   },1500);
+
+  /* ---------- modal (profil specjalisty / dobór) ---------- */
+  var modal=document.getElementById('modal'), modalBody=document.getElementById('modalBody');
+  function openModal(){ if(!modal)return; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; var sc=modal.querySelector('.modal-scroll'); if(sc)sc.scrollTop=0; }
+  function closeModal(){ if(!modal)return; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  if(modal){ modal.querySelectorAll('[data-mclose]').forEach(function(el){el.onclick=closeModal;}); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&modal.classList.contains('open')) closeModal(); }); }
+
+  function openSpec(id){
+    if(typeof SPECIALISTS==='undefined'||!modalBody) return;
+    var s=SPECIALISTS.filter(function(x){return x.id===id;})[0]; if(!s) return;
+    var fl=flags(s);
+    modalBody.innerHTML='<div class="spec-top"><img src="'+s.photo+'" alt="'+s.name+'"><div><div class="spec-n">'+s.name+'</div><div class="spec-r">'+s.role+'</div>'
+      +(fl.length?'<div class="spec-fl">'+fl.map(function(x){return '<span>'+x+'</span>';}).join('')+'</div>':'')+'</div></div>'
+      +(s.motto?'<blockquote class="spec-motto">„'+s.motto.replace(/[.]$/,'')+'"</blockquote>':'')
+      +'<p class="spec-desc">'+s.desc+'</p>'
+      +'<div class="spec-foot"><span class="spec-price">'+(s.priceFrom?('od '+s.priceFrom+' zł · '+s.priceLabel):s.priceLabel)+' · termin '+slot(s.availDays)+'</span>'
+      +'<div class="spec-cta"><a class="btn btn-ghost btn-sm" href="'+s.url+'" target="_blank" rel="noopener">Profil na stronie</a><a class="btn btn-primary btn-sm" href="tel:575805505">Umów wizytę</a></div></div>';
+    openModal(); typoPass(modalBody);
+  }
+  window.openSpec=openSpec;
+
+  /* ---------- silnik doboru ---------- */
+  var AST={answers:{},idx:0,flow:[]};
+  function buildFlow(){ AST.flow=FLOW.filter(function(f){return !f.show||f.show(AST.answers);}); }
+  function doborStart(){ if(typeof FLOW==='undefined'){ window.location.href='tel:575805505'; return; } AST.answers={}; AST.idx=0; buildFlow(); openModal(); renderQ(); }
+  function renderQ(){
+    if(AST.idx>=AST.flow.length) return renderResults();
+    var step=AST.flow[AST.idx], multi=step.type==='multi', cur=AST.answers[step.id]||(multi?[]:null);
+    var tiles=step.options.map(function(o){ var sel=multi?cur.indexOf(o.k)>=0:cur===o.k; return '<button class="qtile'+(sel?' sel':'')+(o.crisis?' crisis':'')+'" data-k="'+o.k+'">'+o.l+'</button>'; }).join('');
+    modalBody.innerHTML='<div class="dlg-head"><span class="dlg-kick">Dobór specjalisty · anonimowo</span><div class="dlg-prog">'+AST.flow.map(function(_x,i){return '<span class="'+(i<=AST.idx?'on':'')+'"></span>';}).join('')+'</div></div>'
+      +'<div class="dlg-q">'+step.q+'</div>'+(multi?'<div class="dlg-hint">Możesz wybrać kilka, potem „Dalej".</div>':'')
+      +'<div class="qtiles">'+tiles+'</div>'
+      +'<div class="dlg-actions">'+(AST.idx>0?'<button class="link-btn" data-back>← Wstecz</button>':'<span></span>')+'<div class="dlg-actr">'
+      +(step.optional?'<button class="btn btn-ghost btn-sm" data-skip>Pomiń</button>':'')+(multi?'<button class="btn btn-primary btn-sm" data-next>Dalej →</button>':'')+'</div></div>';
+    modalBody.querySelectorAll('.qtile').forEach(function(t){ t.onclick=function(){ pick(step,t.dataset.k); }; });
+    var b=modalBody.querySelector('[data-back]'); if(b)b.onclick=function(){ if(AST.idx>0){AST.idx--;renderQ();} };
+    var n=modalBody.querySelector('[data-next]'); if(n)n.onclick=function(){ buildFlow(); AST.idx++; renderQ(); };
+    var sk=modalBody.querySelector('[data-skip]'); if(sk)sk.onclick=function(){ AST.answers[step.id]=[]; buildFlow(); AST.idx++; renderQ(); };
+    typoPass(modalBody);
+  }
+  function pick(step,k){ var o=step.options.filter(function(x){return x.k===k;})[0];
+    if(o&&o.crisis){ AST.answers[step.id]=k; return renderCrisis(); }
+    if(step.type==='multi'){ var arr=AST.answers[step.id]||[]; var i=arr.indexOf(k); if(i>=0)arr.splice(i,1);else arr.push(k); AST.answers[step.id]=arr; renderQ(); }
+    else { AST.answers[step.id]=k; buildFlow(); AST.idx++; renderQ(); } }
+  function renderResults(){
+    var rec=recommend(AST.answers), top=rec.top, match=[94,79,66];
+    var cards=top.map(function(e,i){ var r=reasonFor(i,e,AST.answers), s=e.s;
+      return '<div class="rescard'+(i===0?' top':'')+'"><div class="rc-h"><img src="'+s.photo+'" alt="'+s.name+'"><div class="rc-id"><div class="rc-n">'+s.name+'</div><div class="rc-r">'+s.role+'</div></div><span class="rc-lead">'+r.lead+'</span></div>'
+        +'<p class="rc-why">'+r.why+'</p><div class="rc-foot"><span class="rc-match">Dopasowanie '+match[i]+'%</span><span class="rc-price">'+(s.priceFrom?('od '+s.priceFrom+' zł'):s.priceLabel)+' · '+slot(s.availDays)+'</span></div>'
+        +'<div class="rc-cta"><a class="btn btn-primary btn-sm" href="tel:575805505">Umów wizytę</a><button class="btn btn-ghost btn-sm" data-spec="'+s.id+'">Poznaj profil</button></div></div>'; }).join('');
+    modalBody.innerHTML='<div class="dlg-head"><span class="dlg-kick">Twoja propozycja · TOP 3</span></div><div class="dlg-hint">Na podstawie Twoich odpowiedzi i dostępności terminów. To sugestia, nie diagnoza.</div>'+cards
+      +'<div class="dlg-note">Ostateczny dobór i termin potwierdza rejestracja: <b>575&nbsp;805&nbsp;505</b>.</div><div class="dlg-actions"><button class="link-btn" data-restart>↻ Zacznij od nowa</button><span></span></div>';
+    modalBody.querySelector('[data-restart]').onclick=doborStart;
+    modalBody.querySelectorAll('[data-spec]').forEach(function(b){ b.onclick=function(){ openSpec(b.dataset.spec); }; });
+    modalBody.querySelectorAll('a[href="tel:575805505"]').forEach(function(a){ a.addEventListener('click',closeModal); });
+    typoPass(modalBody);
+  }
+  function renderCrisis(){
+    modalBody.innerHTML='<div class="crisisbox"><h3>Nie jesteś sam/sama. Pomoc jest teraz dostępna.</h3><p>To, co czujesz, jest ważne. Zanim umówisz wizytę, skontaktuj się natychmiast z bezpłatną, całodobową pomocą:</p>'
+      +'<div class="crline"><b>112</b> - numer alarmowy</div><div class="crline"><b>116 123</b> - telefon zaufania dla dorosłych (24/7)</div><div class="crline"><b>116 111</b> - dla dzieci i młodzieży</div><div class="crline"><b>800 70 2222</b> - Centrum Wsparcia (24/7)</div></div>'
+      +'<div class="dlg-actions"><button class="link-btn" data-restart>← Wróć</button><a class="btn btn-primary btn-sm" href="tel:112">Zadzwoń 112</a></div>';
+    modalBody.querySelector('[data-restart]').onclick=doborStart; typoPass(modalBody);
+  }
+  window.dobor=doborStart;
+  var doborBtn=document.getElementById('doborBtn'); if(doborBtn) doborBtn.onclick=doborStart;
 
 })();
 </script>
