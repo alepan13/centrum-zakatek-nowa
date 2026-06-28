@@ -118,6 +118,9 @@
   h1,h2,h3,h4{font-family:var(--display);font-weight:400;letter-spacing:-.012em;text-shadow:none}
   h1{font-size:clamp(2.5rem,5.4vw,4.6rem);line-height:1.03;text-wrap:balance;max-width:15ch}
   h2{font-size:clamp(2rem,3.9vw,3.3rem);line-height:1.08;text-wrap:balance;max-width:18ch}
+  /* zasady pisowni (z wzorca Ai Agent): nagłówki/eksponowane wyrównane, proza bez sierot */
+  h3,h4{text-wrap:balance}
+  p,li,.lede,.rc-why,.modal-desc{text-wrap:pretty}
   .accentword{color:var(--accent);font-style:italic;position:relative}
   .accentword::after{content:"";position:absolute;left:.02em;right:.04em;bottom:-.04em;height:2px;border-radius:2px;background:var(--accent);opacity:.45;transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease) .4s}
   .scene.show .accentword::after{animation:uline 1s var(--ease) .4s forwards}
@@ -248,7 +251,7 @@
   .why-points li::before{content:"";position:absolute;left:0;top:27px;width:12px;height:1.5px;background:var(--accent)}
   /* pull-quote */
   .quote-scene{padding-top:9vh;padding-bottom:9vh}
-  .bigquote{position:relative;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(1.9rem,4vw,3.2rem);line-height:1.24;color:var(--cream);max-width:22ch}
+  .bigquote{position:relative;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(1.9rem,4vw,3.2rem);line-height:1.24;color:var(--cream);max-width:42ch;text-wrap:balance}
   .bigquote em{color:var(--accent)}
   .qmark{position:absolute;left:-.06em;top:-.55em;font-size:2.4em;color:rgba(var(--accent-rgb),.16);font-style:normal;line-height:1}
   .qattr{display:inline-flex;align-items:center;gap:12px;margin-top:28px;font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
