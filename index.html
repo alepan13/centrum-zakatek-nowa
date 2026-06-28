@@ -85,12 +85,14 @@
   .topnav{position:fixed;top:22px;right:28px;z-index:8;display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.12em;text-transform:uppercase}
   .topnav a{display:inline-flex;align-items:center;height:40px;padding:0 15px;border-radius:var(--r-md);color:var(--soft);cursor:pointer;transition:color .25s,background .25s}
   .topnav a:hover{color:var(--accent);background:rgba(var(--accent-rgb),.06)}
-  .topnav a:not(.navcta){position:relative}
-  .topnav a:not(.navcta)::after{content:"";position:absolute;left:15px;right:15px;bottom:7px;height:1.5px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
-  .topnav a:not(.navcta):hover::after{transform:scaleX(1)}
-  .topnav .navcta{margin-left:8px;color:var(--accent-ink);background:var(--accent);font-weight:600;letter-spacing:.06em}
-  .topnav .navcta:hover{background:var(--accent-2)}
-  @media(max-width:980px){ .topnav{top:16px;right:12px} .topnav a:not(.navcta){display:none} }
+  .topnav>a{position:relative}
+  .topnav>a::after{content:"";position:absolute;left:15px;right:15px;bottom:7px;height:1.5px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+  .topnav>a:hover::after{transform:scaleX(1)}
+  .navsoc{display:flex;align-items:center;gap:7px;margin-left:12px}
+  .navsoc a{width:40px;height:40px;padding:0;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--cream);background:var(--card);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:color .25s,border-color .25s,background .25s,transform .25s}
+  .navsoc a:hover{color:var(--accent);border-color:var(--accent);background:rgba(var(--accent-rgb),.06);transform:translateY(-1px)}
+  .navsoc svg{width:18px;height:18px}
+  @media(max-width:980px){ .topnav{top:16px;right:12px} .topnav>a{display:none} }
   .navtoggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);cursor:pointer;margin-left:8px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .navtoggle span,.navtoggle span::before,.navtoggle span::after{display:block;width:18px;height:2px;background:var(--accent);border-radius:2px;transition:transform .25s,opacity .2s}
   .navtoggle span{position:relative}
@@ -106,9 +108,9 @@
   @media(max-width:980px){ .navtoggle{display:inline-flex} }
   @media(min-width:981px){ .mobilemenu{display:none!important} }
 
-  .scene{position:relative;z-index:2;padding:11vh 7vw;overflow:hidden}
+  .scene{position:relative;z-index:2;padding:11vh 4.5vw;overflow:hidden}
   .scene.hero{min-height:90vh;display:flex;align-items:center}
-  .inner{position:relative;z-index:1;width:100%;max-width:1180px;margin:0 auto}
+  .inner{position:relative;z-index:1;width:100%;max-width:1320px;margin:0 auto}
   .col{width:100%;max-width:620px;position:relative;z-index:1}
   .sidx{position:absolute;top:-2vh;right:0;font-family:var(--display);font-weight:500;font-size:clamp(4.5rem,11vw,10rem);line-height:1;color:rgba(var(--accent-rgb),.055);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
   @media(max-width:760px){ .sidx{font-size:clamp(2.8rem,15vw,4.5rem);top:-1vh} }
@@ -216,7 +218,7 @@
   .price-foot{font-family:var(--mono);font-size:var(--text-xs);color:var(--muted);margin-top:24px;letter-spacing:.03em}
 
   /* PROCES */
-  .proc .inner{max-width:1180px}
+  .proc .inner{max-width:1320px}
   .steps{position:relative;margin-top:42px;width:100%;max-width:760px}
   .steps::before{content:"";position:absolute;left:19px;top:16px;bottom:20px;width:2px;border-radius:2px;background:linear-gradient(var(--accent),rgba(var(--accent-rgb),.12));transform:scaleY(0);transform-origin:top}
   .scene.show .steps::before{animation:growy 1.4s var(--ease) .15s forwards}
@@ -239,7 +241,7 @@
   @media(max-width:620px){ .assure{gap:22px} .assure-list{grid-template-columns:1fr} }
 
   /* KONTAKT */
-  .contact .inner{max-width:1180px}
+  .contact .inner{max-width:1320px}
   .contact p{max-width:52ch}
   /* głębia kart */
   .svc,.pc,.priv,.tc{box-shadow:var(--shadow-sm)}
@@ -301,7 +303,7 @@
   .scene--panel::before{top:0}.scene--panel::after{bottom:0}
 
   /* === DOBÓR: ciepły, spójny — asystent inline w jednym panelu === */
-  .dobor-scene .inner{max-width:1180px}
+  .dobor-scene .inner{max-width:1320px}
   .dobor-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,58px);align-items:center}
   .dobor-text .eyebrow{margin-bottom:18px}
   .dobor-text h2{font-size:clamp(1.9rem,3.2vw,2.7rem);max-width:18ch;line-height:1.1}
@@ -403,7 +405,10 @@
   <a data-goto="zespol">Zespół</a>
   <a data-goto="cennik">Cennik</a>
   <a data-goto="prywatnosc">Prywatność</a>
-  <a class="navcta" href="tel:575805505">575 805 505</a>
+  <div class="navsoc">
+    <a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.5-3H14V4.3c0-.8.3-1.3 1.5-1.3H17V.3C16.6.2 15.6 0 14.5 0 12 0 10.3 1.5 10.3 4.1V6H8v3h2.3v9H14V9z"/></svg></a>
+    <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+  </div>
   <button class="navtoggle" id="navtoggle" aria-label="Menu" aria-expanded="false" aria-controls="mobilemenu"><span></span></button>
 </nav>
 <div class="mobilemenu" id="mobilemenu">
@@ -425,11 +430,6 @@
       <div class="cta reveal">
         <a class="btn btn-primary" href="tel:575805505">Umów wizytę · 575 805 505</a>
         <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
-      </div>
-      <div class="hero-meta reveal">
-        <div><span class="num">27</span><span class="lbl">specjalistów</span></div>
-        <div><span class="num">6</span><span class="lbl">specjalizacji</span></div>
-        <div><span class="num">RODO</span><span class="lbl">dyskrecja</span></div>
       </div>
     </div></div>
   </section>
@@ -671,7 +671,12 @@
   /* ---------- reveal scen (scroll + fallback, niezależne od środowiska) ---------- */
   var scenes=[].slice.call(document.querySelectorAll('.scene'));
   function vh(){ return window.innerHeight||document.documentElement.clientHeight; }
-  function checkScenes(){ for(var i=scenes.length-1;i>=0;i--){ var s=scenes[i]; var r=s.getBoundingClientRect(); if(r.top < vh()*0.9 && r.bottom>0){ s.classList.add('show'); scenes.splice(i,1); } } }
+  function checkScenes(){ for(var i=scenes.length-1;i>=0;i--){ var s=scenes[i];
+    if(s.classList.contains('hero') && !document.body.classList.contains('introReady')) continue; // hero czeka na intro (mózg najpierw)
+    var r=s.getBoundingClientRect(); if(r.top < vh()*0.9 && r.bottom>0){ s.classList.add('show'); scenes.splice(i,1); } } }
+  /* intro: tekst hero pojawia się gdy mózg dojeżdża w prawo (lub od razu przy reduced-motion) */
+  var introWait = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1150;
+  setTimeout(function(){ document.body.classList.add('introReady'); checkScenes(); }, introWait);
   var ticking=false;
   function onScroll(){ if(ticking)return; ticking=true; requestAnimationFrame(function(){checkScenes();ticking=false;}); }
   addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll,{passive:true});
@@ -691,11 +696,11 @@
 
   typoPass(document.body);
 
-  /* auto-wykrycie zablokowanych animacji: jeśli po 1.5s hero wciąż niewidoczne, wymuś widoczność */
+  /* auto-wykrycie zablokowanych animacji: jeśli po intro hero wciąż niewidoczne, wymuś widoczność */
   setTimeout(function(){
     var h1=document.querySelector('.hero h1');
     if(h1 && parseFloat(getComputedStyle(h1).opacity) < 0.5){ document.body.classList.add('forced'); }
-  },1500);
+  },2300);
 
   /* ---------- modal (profil specjalisty / dobór) ---------- */
   var modal=document.getElementById('modal'), modalBody=document.getElementById('modalBody');
@@ -783,6 +788,36 @@
 })();
 </script>
 
+<!-- Infinite scroll: bezszwowa pętla strony -->
+<script>
+(function(){
+  var main=document.querySelector('main'); if(!main) return;
+  var de=document.documentElement;
+  /* klon treści = bezszwowe zapętlenie (klon czysto wizualny, nieklikalny, bez id) */
+  var clone=main.cloneNode(true);
+  clone.className=(clone.className?clone.className+' ':'')+'loopclone';
+  clone.setAttribute('aria-hidden','true');
+  clone.style.pointerEvents='none';
+  clone.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
+  clone.querySelectorAll('.scene').forEach(function(s){ s.classList.add('show'); });
+  clone.querySelectorAll('.reveal,.svc,.pc,.tc,.step,.priv,.assure').forEach(function(e){ e.style.opacity=1; e.style.transform='none'; e.style.animation='none'; });
+  main.after(clone);
+  var H=0, enabled=false;
+  function measure(){ H=main.offsetHeight; window.__loopH=H; enabled=H>innerHeight*1.3; }
+  measure(); addEventListener('resize',measure,{passive:true});
+  addEventListener('load',function(){ setTimeout(measure,60); });
+  setTimeout(measure,400); setTimeout(measure,1600);
+  var locking=false;
+  function jump(to){ var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0,to); de.style.scrollBehavior=p; }
+  function norm(){
+    if(!enabled||locking) return;
+    var y=window.pageYOffset||de.scrollTop;
+    if(y>=H){ locking=true; jump(y-H); locking=false; }   // w dół: bezszwowo z powrotem na górę kopii
+  }
+  addEventListener('scroll',norm,{passive:true});
+})();
+</script>
+
 <!-- Mózg 3D - cieniutki akcent w tle (three.js z CDN) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -794,12 +829,14 @@
   var renderer;
   try{ renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true}); }catch(e){ return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  canvas.style.opacity='0';                               // intro: mózg pojawi się płynnie
   var scene=new THREE.Scene();
   var camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 100);
   camera.position.set(0,0,3.4);
   function size(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
   size(); addEventListener('resize',size);
   var group=null, geom=null, mat=null, basePos=null, targetPos=null, count=0, BASE=0.82;
+  var FINALX=0.62, baseScale=1, introT=0, introStart=0;   // intro: start na środku -> przesuw w prawo
   new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
     var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
     if(!geo) return;
@@ -829,8 +866,8 @@
     var pts=new THREE.Points(ng, mat);
     pts.position.set(-c.x,-c.y,-c.z);
     group=new THREE.Group(); group.add(pts);
-    group.scale.setScalar(1.05/r);
-    group.position.set(0.42, 0.06, 0);   // mniejszy, wyśrodkowany-prawo, za treścią
+    baseScale=1.05/r; group.scale.setScalar(baseScale);
+    group.position.set(0, 0.06, 0);      // start: środek ekranu (intro przesunie w prawo do FINALX)
     group.rotation.x=-0.18;
     scene.add(group);
     geom=ng;
@@ -838,9 +875,24 @@
   }, undefined, function(){ /* błąd ładowania - pomijamy mózg */ });
   /* scroll w dół: mózg rozwiewa się w delikatne tło kropek; scroll w górę: wraca do mózgu */
   var targetProg=0, curProg=0;
-  function onScroll(){ targetProg=Math.min(1, (window.pageYOffset||0)/(innerHeight*0.85)); }
+  function onScroll(){
+    var y=window.pageYOffset||0, vhd=innerHeight*0.85, H=window.__loopH||0;
+    var t = H>0 ? Math.min(y/vhd, (H-y)/(innerHeight*0.6)) : y/vhd; // pętla: mózg wraca też przy dnie (zanim zapętli)
+    targetProg=Math.max(0, Math.min(1, t));
+  }
   addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll, {passive:true}); onScroll();
   function tick(){
+    if(group){                                            // intro: środek -> prawo + fade-in + delikatne „osiadanie"
+      if(reduce){ if(introT<1){ introT=1; group.position.x=FINALX; canvas.style.opacity=BASE; } }
+      else if(introT<1){
+        if(!introStart) introStart=performance.now();
+        var it=(performance.now()-introStart-300)/1200; introT=it<0?0:(it>1?1:it);
+        var ie=introT<.5?4*introT*introT*introT:1-Math.pow(-2*introT+2,3)/2; // easeInOutCubic
+        group.position.x=FINALX*ie;
+        group.scale.setScalar(baseScale*(1+0.10*(1-ie)));
+        canvas.style.opacity=(BASE*Math.min(1,introT*1.7)).toFixed(3);
+      }
+    }
     var e=curProg*curProg*(3-2*curProg);                  // stan rozwiania (0=mózg,1=rozsypka)
     if(group) group.rotation.y += reduce?0:0.0011*(1-0.45*e); // kształt mózgu: pełna prędkość; rozwiane: ~wolniej
     if(geom){
@@ -858,6 +910,10 @@
     renderer.render(scene,camera); requestAnimationFrame(tick);
   }
   tick();
+  /* fallback: gdy rAF jest wstrzymany (karta w tle / podgląd headless) - osadź mózg w stanie końcowym */
+  setTimeout(function(){
+    if(group && introT<1){ introT=1; group.position.x=FINALX; group.scale.setScalar(baseScale); canvas.style.opacity=BASE; renderer.render(scene,camera); }
+  }, 2600);
 })();
 </script>
 </body>
