@@ -106,7 +106,7 @@
   @media(max-width:980px){ .navtoggle{display:inline-flex} }
   @media(min-width:981px){ .mobilemenu{display:none!important} }
 
-  .scene{position:relative;z-index:2;padding:13vh 7vw;overflow:hidden}
+  .scene{position:relative;z-index:2;padding:11vh 7vw;overflow:hidden}
   .scene.hero{min-height:90vh;display:flex;align-items:center}
   .inner{position:relative;z-index:1;width:100%;max-width:1180px;margin:0 auto}
   .col{width:100%;max-width:620px;position:relative;z-index:1}
@@ -228,13 +228,15 @@
   .step p{color:var(--soft);font-size:.96rem;max-width:48ch;line-height:1.55}
 
   /* PRYWATNOŚĆ */
-  .priv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
-  .priv{padding:var(--space-4);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);opacity:0}
-  .scene.show .priv{animation:fadein .8s ease both}
-  .scene.show .priv:nth-child(2){animation-delay:.1s}.scene.show .priv:nth-child(3){animation-delay:.2s}.scene.show .priv:nth-child(4){animation-delay:.3s}
-  .priv-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:var(--r-md);background:rgba(var(--accent-rgb),.08);color:var(--accent);font-size:22px;margin-bottom:16px}
-  .priv h3{font-family:var(--display);font-weight:500;font-size:1.15rem;color:var(--cream);margin-bottom:8px;line-height:1.2}
-  .priv p{font-size:.88rem;color:var(--soft);line-height:1.55}
+  /* prywatność + komfort: kompaktowy pasek pod procesem (high level) */
+  .assure{margin-top:48px;padding-top:30px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:26px 44px;align-items:center}
+  .assure-head{max-width:30ch}
+  .assure-eyebrow{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:9px}
+  .assure-head p{color:var(--soft);font-size:.95rem;line-height:1.5}
+  .assure-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 26px;flex:1;min-width:300px}
+  .assure-list li{display:flex;align-items:center;gap:12px;color:var(--cream);font-size:.93rem;line-height:1.3}
+  .assure-ic{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:var(--r-md);background:rgba(var(--accent-rgb),.08);color:var(--accent)}
+  @media(max-width:620px){ .assure{gap:22px} .assure-list{grid-template-columns:1fr} }
 
   /* KONTAKT */
   .contact .inner{max-width:1180px}
@@ -266,13 +268,12 @@
   .crisis{color:var(--clay)}
 
   @media(max-width:980px){
-    .scene{padding:13vh 26px}
+    .scene{padding:10vh 26px}
     .svc-grid,.price-grid{grid-template-columns:repeat(2,1fr)}
-    .priv-grid{grid-template-columns:repeat(2,1fr)}
     .brandmark{left:20px}.loopnote{left:20px}
   }
   @media(max-width:620px){
-    .svc-grid,.price-grid,.priv-grid{grid-template-columns:1fr}
+    .svc-grid,.price-grid{grid-template-columns:1fr}
     .team-grid{grid-template-columns:1fr 1fr}
     .hero-meta{gap:24px}
   }
@@ -512,21 +513,19 @@
         <div class="step"><span class="num">03</span><div><h4>Wizyta</h4><p>Stacjonarnie w Toruniu lub online. Pierwsza wizyta porządkuje sytuację i ustala dalsze kroki.</p></div></div>
         <div class="step"><span class="num">04</span><div><h4>Opieka</h4><p>Prowadzimy dalej w Twoim tempie - z jasnym planem i stałym kontaktem do specjalisty.</p></div></div>
       </div>
-    </div></div>
-  </section>
-
-  <section class="scene" id="prywatnosc">
-    <div class="inner">
-      <span class="sidx" aria-hidden="true">06</span>
-      <div class="eyebrow reveal">Prywatność i komfort</div>
-      <h2 class="reveal">Twoja sprawa zostaje <span class="accentword">między nami.</span></h2>
-      <div class="priv-grid">
-        <article class="priv"><span class="priv-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 11-7.4"/><path d="M17 21l5-5"/><path d="M22 21l-5-5"/></svg></span><h3>Bez kont i logowania</h3><p>Przeglądasz ofertę anonimowo. Kontakt zostawiasz dopiero wtedy, gdy sam zdecydujesz.</p></article>
-        <article class="priv"><span class="priv-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Dane pod ochroną (RODO)</h3><p>Dokumentacja medyczna objęta tajemnicą zawodową i przepisami RODO. Nie udostępniamy jej.</p></article>
-        <article class="priv"><span class="priv-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9c0 6-8 11-8 11S4 15 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1z"/></svg></span><h3>Bez presji i zobowiązań</h3><p>Sam decydujesz, czy i kiedy umówić wizytę. Możesz najpierw zadzwonić i zapytać o wszystko.</p></article>
-        <article class="priv"><span class="priv-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C13 5 17 7 17 7s-1 7-6 13z"/><path d="M11 20c0-4 1-7 4-10"/></svg></span><h3>Spokojne miejsce</h3><p>Dyskretny gabinet w centrum Torunia, przy ul. Bydgoskiej 32. Kameralna atmosfera.</p></article>
+      <div class="assure reveal" id="prywatnosc">
+        <div class="assure-head">
+          <span class="assure-eyebrow">Prywatność i komfort</span>
+          <p>Twoja sprawa zostaje między nami - od pierwszego telefonu po dalszą opiekę.</p>
+        </div>
+        <ul class="assure-list">
+          <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 11-7.4"/><path d="M17 21l5-5"/><path d="M22 21l-5-5"/></svg></span>Bez kont i logowania - przeglądasz anonimowo</li>
+          <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>Dane pod ochroną (RODO i tajemnica zawodowa)</li>
+          <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9c0 6-8 11-8 11S4 15 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1z"/></svg></span>Bez presji i zobowiązań - decydujesz sam</li>
+          <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C13 5 17 7 17 7s-1 7-6 13z"/><path d="M11 20c0-4 1-7 4-10"/></svg></span>Spokojny gabinet w centrum Torunia, ul. Bydgoska 32</li>
+        </ul>
       </div>
-    </div>
+    </div></div>
   </section>
 
   <section class="scene contact" id="umow">
