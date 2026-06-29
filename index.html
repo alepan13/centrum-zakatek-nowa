@@ -61,7 +61,7 @@
   /* przewijanie sekcja-po-sekcji (natywne); snap-stop:always = nie przeskakuje wielu sekcji przy mocnym scrollu */
   @media(min-width:761px){
     html{scroll-snap-type:y proximity}
-    main>.scene{scroll-snap-align:start;scroll-snap-stop:always}
+    main>.scene{scroll-snap-align:start}
   }
   /* ukryty pasek przewijania (strona zapętla się w nieskończoność) */
   html{scrollbar-width:none;-ms-overflow-style:none}
@@ -906,34 +906,7 @@
 <!-- Infinite scroll: zawijanie na krawędziach z efektem „przekroczenia granicy" (bez klonów - niezawodne) -->
 <script>
 (function(){
-  var de=document.documentElement, edge=document.getElementById('edgefx');
-  try{ history.scrollRestoration='manual'; }catch(e){}   // nie przywracaj pozycji przy reload -> start na hero
-  function maxY(){ return Math.max(0,(document.documentElement.scrollHeight||0) - innerHeight); }
-  function flash(dir){ if(!edge)return; edge.classList.remove('flash-top','flash-bottom'); void edge.offsetWidth; edge.classList.add(dir>0?'flash-bottom':'flash-top'); }
-  var wrapping=false;
-  function wrapTo(target, dir){
-    if(wrapping) return; wrapping=true;
-    flash(dir); document.body.classList.add('wrapping');
-    setTimeout(function(){
-      var p=de.style.scrollBehavior; de.style.scrollBehavior='auto'; window.scrollTo(0,target); de.style.scrollBehavior=p;
-      setTimeout(function(){ document.body.classList.remove('wrapping'); wrapping=false; }, 180);
-    }, 150);
-  }
-  function atEdgeScroll(dir){            // dir>0 = w dół, dir<0 = w górę
-    var m=maxY(); if(m < innerHeight*0.6) return;   // krótka strona - nie zapętlaj
-    var y=window.pageYOffset||de.scrollTop;
-    if(dir>0 && y>=m-2){ wrapTo(0,1); }            // dno -> góra
-    else if(dir<0 && y<=2){ wrapTo(m,-1); }        // góra -> dno
-  }
-  addEventListener('wheel', function(e){ if(Math.abs(e.deltaY)>0) atEdgeScroll(e.deltaY>0?1:-1); }, {passive:true});
-  addEventListener('keydown', function(e){
-    var k=e.key; if(k==='ArrowDown'||k==='PageDown'||k===' ') atEdgeScroll(1);
-    else if(k==='ArrowUp'||k==='PageUp') atEdgeScroll(-1);
-  });
-  var tY=0;
-  addEventListener('touchstart', function(e){ if(e.touches[0]) tY=e.touches[0].clientY; }, {passive:true});
-  addEventListener('touchmove', function(e){ if(!e.touches[0])return; var cy=e.touches[0].clientY, d=tY-cy; tY=cy; if(Math.abs(d)>1) atEdgeScroll(d>0?1:-1); }, {passive:true});
-
+  try{ history.scrollRestoration='manual'; }catch(e){}   // start na hero (bez przywracania pozycji)
 })();
 </script>
 
