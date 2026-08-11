@@ -1,11 +1,14 @@
 # Centrum Zakątek — nowa strona (prototyp)
 
-Statyczny prototyp nowej strony Centrum Zakątek z anonimowym, kafelkowym
-asystentem doboru specjalisty (mock, bez backendu AI).
+Statyczny, jednoplikowy prototyp nowej strony Centrum Zakątek z anonimowym,
+kafelkowym asystentem doboru specjalisty (mock, bez backendu AI).
+
+Klinika: psychiatria, psychoterapia, psychologia, neurologia i seksuologia
+dla dzieci i dorosłych, Toruń.
 
 ## Uruchomienie lokalne
 
-W katalogu `centrum-zakatek-nowa/`:
+Z katalogu projektu:
 
 ```bash
 python3 -m http.server 8000
@@ -13,18 +16,32 @@ python3 -m http.server 8000
 
 Następnie otwórz: http://localhost:8000
 
-(Nie wymaga instalacji żadnych zależności. Działa też offline — fonty i ikony
-ładują się z CDN, ale strona działa również bez nich, z fontami systemowymi.)
+Nie wymaga instalacji zależności. Font (Montserrat) i three.js ładują się z CDN
+— bez sieci strona nadal działa, z fontem systemowym i bez sceny 3D.
 
 ## Pliki
 
 | Plik | Rola |
 |------|------|
-| `index.html` | struktura strony (hero, asystent, zespół, cennik, kontakt) |
-| `styles.css` | styl (paleta szałwiowa, responsywność, dark-ready) |
-| `data.js` | baza 27 realnych specjalistów + cennik (z centrumzakatek.pl) |
-| `assistant.js` | przepływ 6–8 pytań + silnik scoringu → TOP 3 |
-| `app.js` | renderowanie UI: kreator, katalog, cennik, filtry |
+| `index.html` | **całość warstwy prezentacji** — struktura, style (inline `<style>`), logika UI i scena 3D (inline `<script>`) |
+| `data.js` | baza 27 realnych specjalistów, cennik i dostępność (z centrumzakatek.pl) |
+| `assistant.js` | definicja przepływu pytań + silnik scoringu → TOP 3 |
+| `assets/brand/` | logo i favicon — źródło prawdy identyfikacji |
+| `assets/team/` | portrety specjalistów (WebP) |
+| `assets/brain.glb` | model 3D mózgu, tło hero |
+
+> [!note] Prototyp jest jednoplikowy z rozmysłem
+> Style i logika renderowania mieszkają **w `index.html`**, nie w osobnych
+> plikach. Wcześniejsze `styles.css`, `app.js` i `enhance.js` opisywały starszą,
+> nieaktualną wersję strony (ciepły papier + Fraunces zamiast bieli i szałwii),
+> nie były już przez nic ładowane i zostały usunięte — są w historii gita,
+> gdyby kiedyś były potrzebne.
+
+## Identyfikacja wizualna
+
+Paleta marki: **biel + szałwiowa zieleń + czerń**. Tokeny w `:root`
+(`index.html`): `--accent:#5b795a`, `--sage:#85997e`, `--cream:#1c211d`,
+`--bg:#fbfcfa`. Typografia: **Montserrat** we wszystkich rolach.
 
 ## Asystent — jak działa
 
@@ -36,3 +53,9 @@ Następnie otwórz: http://localhost:8000
 
 To wersja mock (reguły w JS). Docelowo rozmowę prowadzi model AI (Claude)
 z tym samym protokołem kryzysowym; zob. propozycja wariantu hybrydowego.
+
+## Status
+
+Prototyp. Nie jest wdrożony — `centrumzakatek.pl` nadal serwuje starą stronę.
+`sitemap.xml` zawiera jeden URL i wymaga rozbudowy po wdrożeniu architektury
+podstron.
