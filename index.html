@@ -266,6 +266,19 @@
   .collapse-cta.ghost:hover span{transform:translateY(-2px)}
   .team-full,.price-full{animation:fadein .5s ease both}
   /* teaser zespołu */
+  /* Smuga portretów za kursorem. Karty leżą pod treścią sekcji (.inner ma
+     z-index 1), więc wychodzą zza nagłówka i omijają biały kafel zespołu. */
+  .team-trail{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .team-trail img{
+    position:absolute;top:0;left:0;
+    width:190px;height:238px;
+    object-fit:cover;object-position:top center;
+    border-radius:var(--r-lg);
+    box-shadow:var(--shadow);
+    will-change:transform,opacity;
+  }
+  @media(max-width:900px){ .team-trail{display:none} }
+
   .team-teaser{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:30px;padding:24px 28px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
   .tt-avatars{display:flex;flex:none}
   .tt-avatars img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:center 16%;border:2px solid var(--surface);margin-left:-16px;box-shadow:0 2px 7px rgba(35,45,38,.18)}
@@ -594,6 +607,7 @@
   </section>
 
   <section class="scene" id="zespol">
+    <div class="team-trail" id="teamTrail" aria-hidden="true"></div>
     <div class="inner">
       <span class="sidx" aria-hidden="true">03</span>
       <div class="eyebrow reveal">Zespół</div>
@@ -907,6 +921,107 @@
 <script>
 (function(){
   try{ history.scrollRestoration='manual'; }catch(e){}   // start na hero (bez przywracania pozycji)
+})();
+</script>
+
+<!-- Smuga portretów za kursorem w sekcji zespołu -->
+<script>
+/* Karty wysypują się wzdłuż drogi kursora: co SPAWN px przebytej trasy wpada
+   jedna, żywych jest najwyżej TRAIL, a wypchnięcie najstarszej odgrywa jej
+   wyjście. Stąd ogon się rozpuszcza, a nie tylko blednie.
+
+   Sprężyny liczone ręcznie, bo prototyp nie ma żadnej biblioteki animacji:
+   a = tension*(cel - x) - friction*v, masa 1. Te same współczynniki, których
+   używa wersja reactowa. */
+(function(){
+  var layer = document.getElementById('teamTrail');
+  var zone  = document.getElementById('zespol');
+  if(!layer || !zone) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(!window.matchMedia('(pointer: fine)').matches) return;
+
+  /* Zdjęcia bierzemy z bazy specjalistów, nie z osobnej listy — dopisanie
+     osoby w data.js dokłada ją do smugi samo. */
+  var pool = (typeof SPECIALISTS !== 'undefined') ? SPECIALISTS : [];
+  var SRC = pool.map(function(x){ return x.photo; }).filter(Boolean);
+  if(!SRC.length) return;
+
+  var SPAWN = 90;      // px trasy kursora między kartami
+  var TRAIL = 5;       // ile żyje naraz
+  var TILT  = 12;      // maksymalne przechylenie w stopniach
+  var ENTER = {t:130, f:28};
+  var LEAVE = {t:300, f:24};
+  var FADE  = {t:900, f:40};   // krycie prawie natychmiastowe — czytelny jest skok skali
+
+  var cards = [], dying = [], seq = 0, last = null, raf = 0, prevTime = 0;
+
+  function spawn(x, y){
+    var img = new Image();
+    img.src = SRC[seq % SRC.length];
+    img.alt = '';
+    img.decoding = 'async';
+    layer.appendChild(img);
+    cards.push({
+      el: img, x: x, y: y,
+      tilt: (Math.random() - 0.5) * 2 * TILT,
+      scale: 0.4, vs: 0, op: 0, vo: 0,
+      cfg: ENTER, target: {scale: 1, op: 1}, dying: false
+    });
+    seq++;
+    while(cards.length > TRAIL) kill(cards[0]);
+    if(!raf){ prevTime = performance.now(); raf = requestAnimationFrame(step); }
+  }
+
+  function kill(c){
+    if(c.dying) return;
+    c.dying = true;
+    c.cfg = LEAVE;
+    c.target = {scale: 0.4, op: 0};
+    cards.splice(cards.indexOf(c), 1);
+    dying.push(c);
+  }
+
+  function integrate(c, dt){
+    var as = c.cfg.t * (c.target.scale - c.scale) - c.cfg.f * c.vs;
+    c.vs += as * dt; c.scale += c.vs * dt;
+    var ao = FADE.t * (c.target.op - c.op) - FADE.f * c.vo;
+    c.vo += ao * dt; c.op += c.vo * dt;
+    c.el.style.opacity = c.op;
+    /* Pozycja jest przybita w miejscu narodzin — animuje się wyłącznie skala,
+       więc karta rośnie tam, gdzie była, zamiast dojeżdżać do kursora. */
+    c.el.style.transform =
+      'translate3d(' + c.x + 'px,' + c.y + 'px,0) translate(-50%,-50%) rotate(' +
+      c.tilt + 'deg) scale(' + c.scale + ')';
+  }
+
+  function step(now){
+    var dt = Math.min((now - prevTime) / 1000, 0.064);  // strażnik przełączenia karty
+    prevTime = now;
+    for(var i = 0; i < cards.length; i++) integrate(cards[i], dt);
+    for(var j = dying.length - 1; j >= 0; j--){
+      var c = dying[j];
+      integrate(c, dt);
+      if(c.op < 0.01 && Math.abs(c.vs) < 0.01){
+        if(c.el.parentNode) c.el.parentNode.removeChild(c.el);
+        dying.splice(j, 1);
+      }
+    }
+    raf = (cards.length || dying.length) ? requestAnimationFrame(step) : 0;
+  }
+
+  zone.addEventListener('pointermove', function(e){
+    if(e.pointerType !== 'mouse') return;   // dotyk nie zostawia trasy, sypałby na każde tapnięcie
+    var b = layer.getBoundingClientRect();
+    var x = e.clientX - b.left, y = e.clientY - b.top;
+    if(last && Math.hypot(x - last.x, y - last.y) < SPAWN) return;
+    last = {x: x, y: y};
+    spawn(x, y);
+  }, {passive: true});
+
+  zone.addEventListener('pointerleave', function(){
+    last = null;
+    while(cards.length) kill(cards[0]);
+  });
 })();
 </script>
 
