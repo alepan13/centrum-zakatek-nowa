@@ -96,6 +96,13 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   /* przewijanie sekcja-po-sekcji (natywne); proximity = nie walczy z użytkownikiem na długich sekcjach */
+  /* Punkt zatrzymania przewijania musi omijać przypiętą górną belkę: logo
+     sięga ~97 px, więc sekcja dosunięta do krawędzi chowałaby pod nim swój
+     nagłówek. To jest zadanie scroll-padding, nie paddingu sekcji - inaczej
+     każda sekcja płaciłaby 110 px pustki tylko po to, żeby jedna sytuacja
+     wyglądała dobrze. Dotyczy tak samo snapowania, jak i skoków z nawigacji. */
+  html{scroll-padding-top:118px}
+  @media(max-width:600px){ html{scroll-padding-top:88px} }
   @media(min-width:761px){
     html{scroll-snap-type:y proximity}
     main>.scene{scroll-snap-align:start}
@@ -186,7 +193,11 @@
   @media(max-width:980px){ .navtoggle{display:inline-flex} }
   @media(min-width:981px){ .mobilemenu{display:none!important} }
 
-  .scene{position:relative;z-index:2;padding:11vh 4.5vw;overflow:hidden}
+  /* Rytm pionowy: 11vh dawało 99 px na kazdej sekcji niezaleznie od tego,
+     ile w niej tresci - siedem identycznych odstepow czyta sie jako pustka,
+     nie jako oddech. clamp trzyma je w rozsadnym zakresie takze na bardzo
+     wysokich i bardzo niskich ekranach. */
+  .scene{position:relative;z-index:2;padding:clamp(52px,7.5vh,88px) 4.5vw;overflow:hidden}
   /* safe center: gdy treść jest wyższa od pola, wyrównuje do góry zamiast
      wychodzić nad padding - inaczej nagłówek wjeżdża pod logo i nawigację */
   .scene.hero{min-height:90vh;display:flex;align-items:safe center;padding-top:max(11vh,104px)}
@@ -215,16 +226,42 @@
   /* pretty, nie balance: twarda spacja przed półpauzą skleja „razem –" w jeden
      token i balance wypycha go w krótki wiersz na środku - pretty łamie ten
      takt naturalnie, z krótkim wierszem na końcu */
-  .h1-beat{display:block;margin-top:.28em;text-wrap:pretty}
-  h2{font-size:clamp(2rem,3.9vw,3.3rem);line-height:1.08;letter-spacing:-.026em;text-wrap:balance;max-width:18ch}
+  /* Łamania w hero są sterowane <br>, więc wyłączamy tu balance i pretty -
+     łamacz nie ma nic do wyrównywania, a mógłby przesunąć wiersz, który
+     został ustawiony ręcznie. Na wąskim ekranie zawijanie działa normalnie,
+     bo <br> tylko DODAJE łamania, nie zabrania ich w innych miejscach. */
+  .hero h1{text-wrap:wrap;max-width:none}
+  /* Kolumna hero musi zmieścić najdłuższy zamierzony wiersz nagłówka.
+     Zmierzone przy maksymalnym stopniu (3,5 rem = 56 px): „jest poprosić
+     odwagą jest" potrzebuje 669 px przy 56 px stopnia. 44 rem daje zapas,
+     a że stopień jest przycięty clampem, ta wartość nie urośnie. Lede
+     zostaje wąskie, bo trzyma własne max-width w ch. */
+  .hero .col{max-width:44rem}
+  /* drugi takt: ten sam nagłówek, ciszej. Rozmiar w em, więc skaluje się
+     razem z h1 na każdej szerokości. */
+  .h1-beat{display:block;margin-top:.72em;font-size:.72em;text-wrap:wrap}
+  /* drugie podkreślenie dociąga po pierwszym - dwa takty czytają się po kolei */
+  .h1-beat .accentword{transition-delay:1.15s}
+  /* Krok w skali, nie szum: 56 -> 40 -> 22 px. Miary nie ograniczamy tu
+     sztywno - robią to kontenery (.inner 1320, .col 620). Wcześniejsze
+     max-width:18ch dawało 645 px w kontenerze o 1295 px, więc nagłówek
+     łamał się na cztery wiersze, mając obok połowę pustego pola. */
+  h2{font-size:clamp(1.85rem,3vw,2.5rem);line-height:1.1;letter-spacing:-.022em;text-wrap:balance}
   /* zasady pisowni (z wzorca Ai Agent): nagłówki/eksponowane wyrównane, proza bez sierot */
   h3{letter-spacing:-.008em}h4{letter-spacing:0}
   h3,h4{text-wrap:balance}
   /* wdowy i bękarty w ostatnim wierszu to zadanie łamacza, nie twardej spacji */
   p,li,.lede,.rc-why,.dp-bubble,.foot,.tt-text,.assure-list li,.dlg-hint,.spec-desc,.pt-side p{text-wrap:pretty}
-  .accentword{color:var(--accent);font-style:italic;position:relative}
-  .accentword::after{content:"";position:absolute;left:.02em;right:.04em;bottom:-.04em;height:2px;border-radius:2px;background:var(--accent);opacity:.45;transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease) .4s}
-  .scene.show .accentword::after{transform:scaleX(1)}
+  /* Podkreślenie jako tło, nie ::after. Inline, który zawija się na dwa wiersze,
+     ma dwa fragmenty; absolutnie pozycjonowany ::after zna tylko jeden z nich
+     i na wąskim ekranie podkreślał połowę frazy. box-decoration-break:clone
+     powtarza tło pod każdym fragmentem. */
+  .accentword{color:var(--accent);font-style:italic;
+    -webkit-box-decoration-break:clone;box-decoration-break:clone;
+    background-image:linear-gradient(rgba(var(--accent-rgb),.45),rgba(var(--accent-rgb),.45));
+    background-repeat:no-repeat;background-position:0 calc(100% - .06em);background-size:0 2px;
+    transition:background-size 1s var(--ease) .4s}
+  .scene.show .accentword{background-size:100% 2px}
   .lede{font-size:clamp(1.08rem,1.35vw,1.26rem);color:var(--soft);margin-top:24px;max-width:46ch;line-height:1.62}
 
   .btn{font-family:var(--label);font-size:var(--text-sm);letter-spacing:.07em;text-transform:uppercase;padding:15px 26px;border-radius:var(--r-md);display:inline-flex;align-items:center;gap:9px;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s;cursor:pointer;border:1px solid transparent}
@@ -263,7 +300,8 @@
   .seam{position:relative;z-index:2;height:1px;max-width:1180px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--line),transparent)}
 
   /* SPECJALIZACJE (svc) */
-  .svc-head{max-width:680px}
+  /* nagłówek sekcji ma prawo do całej szerokości .inner; ogranicza go tylko rag */
+  .svc-head{max-width:none}
   .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
   .svc{position:relative;padding:var(--space-4);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);
     opacity:0;transition-property:opacity,transform,border-color;
@@ -430,7 +468,7 @@
   .why-points li b{color:var(--ink);font-weight:600}
   .why-points li::before{content:"";position:absolute;left:0;top:27px;width:12px;height:1.5px;background:var(--accent)}
   /* pull-quote */
-  .contact h2{font-size:clamp(2.4rem,5.5vw,4.2rem);max-width:15ch;line-height:1.03}
+  .contact h2{font-size:clamp(2.1rem,4vw,3rem);line-height:1.05}
   .contact p{color:var(--soft);font-size:clamp(1.06rem,1.4vw,1.22rem);margin-top:22px;max-width:48ch;line-height:1.6}
   .mailrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:36px}
   .pagefoot{position:relative;z-index:2;padding:0 4.5vw 9vh}
@@ -443,7 +481,7 @@
   .crisis b{font-weight:700}
 
   @media(max-width:980px){
-    .scene{padding:10vh 26px}
+    .scene{padding:clamp(44px,6.5vh,72px) 26px}
     .svc-grid,.price-grid{grid-template-columns:repeat(2,1fr)}
     .brandmark{left:20px}
   }
@@ -473,7 +511,7 @@
   /* awaryjne wymuszenie widoczności, gdy animacje CSS nie ruszają (np. kontekst headless) */
   body.forced .reveal,body.forced .svc,body.forced .pc,body.forced .step{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
   body.forced .steps::before{transform:scaleY(1)!important;animation:none!important}
-  body.forced .accentword::after{transform:scaleX(1)!important;animation:none!important}
+  body.forced .accentword{background-size:100% 2px!important;transition:none!important}
   body.forced .svc-art .dl{stroke-dashoffset:0!important;animation:none!important}
 
   /* ===== Zespół: grupy + większe karty ===== */
@@ -502,7 +540,7 @@
   .dobor-alt{display:flex;gap:12px}
   .dobor-alt .btn{flex:1;justify-content:center;min-width:0;padding:15px 18px}
   .dobor-text .eyebrow{margin-bottom:18px}
-  .dobor-text h2{font-size:clamp(1.9rem,3.2vw,2.7rem);max-width:18ch;line-height:1.1}
+  .dobor-text h2{font-size:clamp(1.75rem,2.5vw,2.1rem);line-height:1.12}
   .dobor-lede{margin-top:18px;max-width:48ch;color:var(--soft);font-size:clamp(1.04rem,1.3vw,1.18rem);line-height:1.6}
   /* panel asystenta (jeden, inline — bez popupu) */
   .dobor-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:clamp(22px,2.4vw,30px);min-height:348px;display:flex;flex-direction:column;justify-content:flex-start}
@@ -655,8 +693,8 @@
   <section class="scene hero" id="hero">
     <div class="inner"><div class="col">
       <div class="eyebrow reveal"><span class="live"></span>Centrum zdrowia psychicznego · Toruń</div>
-      <h1 class="reveal">Największą odwagą jest <span class="accentword">poprosić o&nbsp;pomoc.</span><span class="h1-beat">Resztę przejdziemy razem - w&nbsp;Twoim tempie.</span></h1>
-      <p class="lede reveal">Pomoc psychiatryczna, psychologiczna i neurologiczna - dla dorosłych, dzieci i rodzin.</p>
+      <h1 class="reveal">Największą odwagą jest<br><span class="accentword">poprosić o&nbsp;pomoc.</span><span class="h1-beat">Resztę przejdziemy razem,<br><span class="accentword">w&nbsp;Twoim tempie.</span></span></h1>
+      <p class="lede reveal">Pomoc psychiatryczna, psychologiczna i neurologiczna<br>dla dorosłych, dzieci i rodzin.</p>
       <div class="cta reveal">
         <a class="btn btn-primary" href="tel:575805505">Umów wizytę · 575 805 505</a>
         <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
@@ -834,8 +872,8 @@
   </div>
 </div>
 
-<script src="data.js?v=13"></script>
-<script src="assistant.js?v=13"></script>
+<script src="data.js?v=14"></script>
+<script src="assistant.js?v=14"></script>
 <script>
 (function(){
   /* ---------- polska typografia (port 1:1 z vehi.market, src/lib/typo.ts) ----------
