@@ -24,6 +24,23 @@
 <meta name="theme-color" content="#fbfcfa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#131711" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
+<script>
+/* ===== Motyw: rozstrzygnięcie przed pierwszym malowaniem =====
+   Ten skrypt musi być tutaj - w <head>, synchronicznie, przed arkuszem.
+   Gdyby jechał razem z resztą kodu na dole strony, użytkownik z wybranym
+   trybem ciemnym zobaczyłby najpierw jasny kadr i dopiero potem przeskok.
+
+   Stany są trzy, nie dwa. Brak wpisu w pamięci = brak atrybutu = decyduje
+   system, na bieżąco (macOS potrafi przełączyć się sam o zmierzchu i strona
+   ma za nim pójść bez odświeżania). Wpis = użytkownik zdecydował i jego
+   wybór wygrywa z systemem do odwołania. */
+(function(){
+  try{
+    var t = localStorage.getItem('zakatek-motyw');
+    if(t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  }catch(e){}   // tryb prywatny bez dostępu do localStorage: zostaje systemowy
+})();
+</script>
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 <link rel="alternate icon" href="assets/brand/favicon-src.ico">
 <link rel="preload" href="assets/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -58,6 +75,10 @@
     unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 
   :root{
+    /* Bez tego natywne części strony - pasek przewijania, pole tekstowe,
+       kursor w formularzu - zostają jasne także w trybie ciemnym.
+       Atrybut data-theme niżej nadpisuje tę deklarację na konkretną wartość. */
+    color-scheme: light dark;
     /* --- kolory --- */
     /* paleta marki Zakątek: biel + szałwiowa zieleń + czerń */
     --accent:#5b795a; --accent-rgb:91,121,90; --accent-2:#4c6749; --accent-ink:#ffffff;
@@ -76,6 +97,15 @@
     --shadow:0 2px 5px rgba(40,55,42,.05),0 20px 46px -28px rgba(40,55,42,.20); --shadow-sm:0 1px 3px rgba(40,55,42,.05),0 13px 28px -18px rgba(40,55,42,.14);
     /* --- tła --- */
     --bg:#fbfcfa; --bg-top:#ffffff; --bg-bottom:#eef2eb; --surface:#ffffff;
+    /* ===== warstwy, które nie są zwykłym kolorem =====
+       Wcześniej te cztery rzeczy - kurtyna nad modalem, ściemniacz u góry,
+       ziarno i cień logo - miały w trybie ciemnym własne, zdublowane reguły
+       komponentów. Teraz są tokenami, więc motyw przełącza wyłącznie tę
+       jedną listę, a nie osiem selektorów rozsypanych po arkuszu. */
+    --veil:rgba(20,28,22,.42); --veil-solid:rgba(20,28,22,.74);
+    --scrim-rgb:255,255,255; --grain-op:.045;
+    --chip-bg:rgba(255,255,255,.94); --chip-solid:#ffffff;
+    --logo-shadow:rgba(35,45,38,.08);
     /* --- promienie --- */
     --r-xs:6px; --r-sm:10px; --r-md:13px; --r-lg:18px;
     /* --- spacing --- */
@@ -119,11 +149,11 @@
      Wcześniej na dotyku nie działo się nic między tapnięciem a wynikiem -
      :hover ratował tylko myszkę. Wygaszamy też własną poświatę przeglądarki,
      bo mamy swoją, i zdejmujemy opóźnienie podwójnego tapnięcia. */
-  .btn,.tc,.qtile,.filt,.collapse-cta,.dp-launch,.navsoc a,.navtoggle,
+  .btn,.tc,.qtile,.filt,.collapse-cta,.dp-launch,.navsoc a,.navtoggle,.themetoggle,
   .modal-x,.link-btn,.topnav a,.mobilemenu a,.skip{
     touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .btn:active,.collapse-cta:active,.dp-launch:active,.qtile:active,.filt:active,
-  .navsoc a:active,.navtoggle:active,.modal-x:active,.link-btn:active,
+  .navsoc a:active,.navtoggle:active,.themetoggle:active,.modal-x:active,.link-btn:active,
   .topnav a:active,.mobilemenu a:active{
     transform:scale(.97);transition-duration:.1s;transition-timing-function:ease-out}
   /* karty zespołu są duże - przy dużej powierzchni ten sam procent czyta się
@@ -156,13 +186,24 @@
       radial-gradient(120% 90% at 88% 0%, rgba(var(--accent-rgb),.06), transparent 55%),
       radial-gradient(110% 90% at 0% 100%, rgba(var(--accent-rgb),.05), transparent 58%),
       linear-gradient(180deg,var(--bg-top),var(--bg) 55%,var(--bg-bottom))}
-  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
-  .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#ffffff 0%,rgba(255,255,255,.92) 26%,rgba(255,255,255,.5) 60%,transparent 100%)}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
+  .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,rgb(var(--scrim-rgb)) 0%,rgba(var(--scrim-rgb),.92) 26%,rgba(var(--scrim-rgb),.5) 60%,transparent 100%)}
 
   .brandmark{position:fixed;top:16px;left:34px;z-index:8;display:flex;align-items:center;cursor:pointer}
   /* logo skaluje się z wysokością okna: 94 px na niskim ekranie zjadałoby
      ósmą część widoku i wchodziło na nagłówek hero */
-  .brandmark img{height:clamp(62px,9vh,94px);width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(35,45,38,.08))}
+  .brandmark img{height:clamp(62px,9vh,94px);width:auto;display:block;filter:drop-shadow(0 2px 6px var(--logo-shadow))}
+  /* Znak ma dwa warianty rysunku, więc nie da się go przemalować tokenem.
+     Oba leżą w kodzie, a widoczny jest ten zgodny z motywem - dzięki temu
+     logo idzie za wyborem użytkownika, a nie tylko za ustawieniem systemu
+     (element <picture> potrafi czytać wyłącznie media, nie atrybut). */
+  .brandmark .lm-dark{display:none}
+  @media(prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .brandmark .lm-light{display:none}
+    :root:not([data-theme="light"]) .brandmark .lm-dark{display:block}
+  }
+  :root[data-theme="dark"] .brandmark .lm-light{display:none}
+  :root[data-theme="dark"] .brandmark .lm-dark{display:block}
   @media(max-width:600px){ .brandmark{top:10px;left:14px} }
   /* 2,2 s = 0,45 Hz: poza pasmem, które męczy, i z mniejszym skokiem skali */
   @keyframes breathe{0%,100%{opacity:.65;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
@@ -173,7 +214,9 @@
   .topnav>a{position:relative}
   .topnav>a::after{content:"";position:absolute;left:15px;right:15px;bottom:7px;height:1.5px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
   .topnav>a:hover::after{transform:scaleX(1)}
-  .navsoc{display:flex;align-items:center;gap:7px;margin-left:12px}
+  /* przełącznik i ikony społecznościowe czyta się jako jedną grupę narzędzi
+     (7 px między nimi), odsuniętą od tekstowej nawigacji (12 px) */
+  .navsoc{display:flex;align-items:center;gap:7px;margin-left:3px}
   .navsoc a{width:44px;height:44px;padding:0;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);background:var(--card);transition:color .25s,border-color .25s,background .25s,transform .25s}
   .navsoc a:hover{color:var(--accent);border-color:var(--accent);background:rgba(var(--accent-rgb),.06);transform:translateY(-1px)}
   .navsoc svg{width:18px;height:18px}
@@ -354,7 +397,7 @@
   .tc-fl{position:absolute;left:8px;bottom:8px;display:flex;gap:5px;flex-wrap:wrap}
   /* plakietka była ostatnim beżem po palecie „ciepły papier" - i jedynym
      tekstem na stronie poniżej 4,5:1. Biel + ciemniejsza zieleń: 6,3:1 */
-  .tc-fl span{background:rgba(255,255,255,.94);color:var(--accent-2);font-family:var(--label);font-size:var(--text-2xs);letter-spacing:.04em;padding:3px 7px;border-radius:var(--r-xs);font-weight:600}
+  .tc-fl span{background:var(--chip-bg);color:var(--accent-2);font-family:var(--label);font-size:var(--text-2xs);letter-spacing:.04em;padding:3px 7px;border-radius:var(--r-xs);font-weight:600}
   .tc-b{padding:13px 14px 15px;display:flex;flex-direction:column;gap:4px}
   .tc-n{font-family:var(--display);font-weight:500;font-size:1.02rem;color:var(--ink);line-height:1.12}
   .tc-r{font-family:var(--body);font-size:.8rem;font-weight:600;letter-spacing:0;color:var(--accent);line-height:1.3}
@@ -494,20 +537,15 @@
     .team-full,.price-full,.team-full.out,.price-full.out{transform:none!important;transition:opacity .2s ease!important}
     .modal-bg{transition:opacity .2s ease!important}
     .btn:active,.tc:active,.qtile:active,.filt:active,.collapse-cta:active,.dp-launch:active,
-    .navsoc a:active,.navtoggle:active,.modal-x:active,.link-btn:active,.topnav a:active,.mobilemenu a:active{transform:none!important}
+    .navsoc a:active,.navtoggle:active,.themetoggle:active,.modal-x:active,.link-btn:active,.topnav a:active,.mobilemenu a:active{transform:none!important}
   }
   /* ===== Pozostałe preferencje systemowe ===== */
   @media(prefers-reduced-transparency:reduce){
-    .modal-bg{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(20,28,22,.74)}
+    .modal-bg{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--veil-solid)}
     .grain{display:none}
-    .tc-fl span{background:#fff}
+    .tc-fl span{background:var(--chip-solid)}
   }
-  @media(prefers-contrast:more){
-    :root{--line:rgba(28,38,30,.34);--muted:#4f564f;--soft:#454c46}
-    .svc,.pc,.tc,.rescard,.qtile,.filt,.dlg-note,.svc-note,.team-teaser,.price-teaser,.dobor-panel{border-color:rgba(28,38,30,.42)}
-    :focus-visible{outline-width:3px}
-    .btn-ghost{border-color:var(--accent)}
-  }
+  /* prefers-contrast mieszka niżej, razem z motywami - patrz komentarz tam */
   /* awaryjne wymuszenie widoczności, gdy animacje CSS nie ruszają (np. kontekst headless) */
   body.forced .reveal,body.forced .svc,body.forced .pc,body.forced .step{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
   body.forced .steps::before{transform:scaleY(1)!important;animation:none!important}
@@ -571,7 +609,7 @@
      w połowie zamykania wraca płynnie, zamiast przeskakiwać. */
   .modal{position:fixed;inset:0;z-index:60;display:none}
   .modal.open{display:block}
-  .modal-bg{position:absolute;inset:0;background:rgba(20,28,22,.42);backdrop-filter:blur(5px);
+  .modal-bg{position:absolute;inset:0;background:var(--veil);backdrop-filter:blur(5px);
     opacity:0;transition:opacity .3s var(--ease)}
   .modal.in .modal-bg{opacity:1}
   .modal.out .modal-bg{opacity:0;transition-timing-function:var(--ease-in)}
@@ -640,9 +678,17 @@
      tu dublowany. Akcent musi się rozjaśnić: szałwia #5b795a na ciemnym tle
      daje 2,9:1, więc na ciemnym pracuje jaśniejszy wariant. Paleta alarmowa
      ma własny wariant, a nie odziedziczony: ekran kryzysowy ma zostać ciepły
-     i odrębny również w nocy. */
+     i odrębny również w nocy.
+
+     Wejścia do trybu ciemnego są dwa i dlatego są tu dwa selektory:
+       1. system mówi „ciemno", a użytkownik niczego nie wybrał — działa bez
+          JS i przełącza się razem z macOS o zmierzchu;
+       2. użytkownik wybrał ciemny przyciskiem — data-theme wygrywa z systemem.
+     Deklaracje muszą zostać identyczne w obu; przy zmianie palety zmieniamy
+     obie listy albo żadnej. */
   @media(prefers-color-scheme:dark){
-    :root{
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
       --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
       --sage:#7d9077; --sage-2:#5d6d59;
       --ink:#e8eee6; --soft:#aab3a7; --muted:#8b948a;
@@ -653,13 +699,79 @@
       --shadow-sm:0 1px 3px rgba(0,0,0,.3),0 13px 28px -18px rgba(0,0,0,.5);
       --alert-bg:#2e1c17; --alert-line:#573229; --alert-ink:#f0b9a5;
       --alert-body:#dcb1a3; --alert-surface:#1d1310; --alert-text:#e9d5cd; --alert-hint:#8a5346;
+      --veil:rgba(6,9,6,.62); --veil-solid:rgba(6,9,6,.82);
+      --scrim-rgb:24,29,22; --grain-op:.03;
+      --chip-bg:rgba(27,32,26,.94); --chip-solid:#1b201a;
+      --logo-shadow:rgba(0,0,0,.45);
     }
-    .modal-bg{background:rgba(6,9,6,.62)}
-    .topscrim{background:linear-gradient(180deg,var(--bg-top) 0%,rgba(24,29,22,.92) 26%,rgba(24,29,22,.5) 60%,transparent 100%)}
-    .tc-fl span{background:rgba(27,32,26,.94);color:var(--accent-2)}
-    .grain{opacity:.03}
-    .brandmark img{filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
   }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
+    --sage:#7d9077; --sage-2:#5d6d59;
+    --ink:#e8eee6; --soft:#aab3a7; --muted:#8b948a;
+    --line:rgba(226,238,222,.15); --halo-ring:rgba(var(--accent-rgb),.20);
+    --clay:#d9a780; --card:#1b201a; --photo:#232a22;
+    --bg:#131711; --bg-top:#181d16; --bg-bottom:#0e120d; --surface:#1b201a;
+    --shadow:0 2px 5px rgba(0,0,0,.34),0 20px 46px -28px rgba(0,0,0,.7);
+    --shadow-sm:0 1px 3px rgba(0,0,0,.3),0 13px 28px -18px rgba(0,0,0,.5);
+    --alert-bg:#2e1c17; --alert-line:#573229; --alert-ink:#f0b9a5;
+    --alert-body:#dcb1a3; --alert-surface:#1d1310; --alert-text:#e9d5cd; --alert-hint:#8a5346;
+    --veil:rgba(6,9,6,.62); --veil-solid:rgba(6,9,6,.82);
+    --scrim-rgb:24,29,22; --grain-op:.03;
+    --chip-bg:rgba(27,32,26,.94); --chip-solid:#1b201a;
+    --logo-shadow:rgba(0,0,0,.45);
+  }
+  /* wybór jasnego to też wybór: bez tego pole tekstowe i pasek przewijania
+     zostałyby ciemne na systemie ustawionym na noc */
+  :root[data-theme="light"]{color-scheme:light}
+
+  /* ===== Wzmocniony kontrast (systemowy) =====
+     Ten blok MUSI stać po motywach i tylko dlatego stoi tutaj, a nie przy
+     reszcie preferencji systemowych. Powód jest mechaniczny: `:root` waży
+     mniej niż `:root[data-theme="dark"]`, a media query nie dokłada wagi -
+     więc gdy blok leżał wyżej, paleta nocna nadpisywała wzmocnienie i
+     ustawienie „zwiększ kontrast" w trybie ciemnym nie robiło nic.
+     Wartości nocne są własne, nie odbite: na ciemnym tle kontrast podnosi
+     się rozjaśnianiem tekstu, a nie przyciemnianiem. */
+  @media(prefers-contrast:more){
+    :root{--line:rgba(28,38,30,.34);--line-hc:rgba(28,38,30,.42);--muted:#4f564f;--soft:#454c46}
+    @media(prefers-color-scheme:dark){
+      :root:not([data-theme="light"]){--line:rgba(226,238,222,.38);--line-hc:rgba(226,238,222,.46);--muted:#c6cfc3;--soft:#d7dfd4}
+    }
+    :root[data-theme="dark"]{--line:rgba(226,238,222,.38);--line-hc:rgba(226,238,222,.46);--muted:#c6cfc3;--soft:#d7dfd4}
+    .svc,.pc,.tc,.rescard,.qtile,.filt,.dlg-note,.svc-note,.team-teaser,.price-teaser,.dobor-panel{border-color:var(--line-hc)}
+    :focus-visible{outline-width:3px}
+    .btn-ghost{border-color:var(--accent)}
+  }
+
+  /* ===== Przełącznik motywu =====
+     Rysunek jest jeden - okrąg z promieniami - a nie dwie wymienne ikony.
+     Zaćmienie robi maska: kula cienia wjeżdża na tarczę i wygryza z niej
+     księżyc, promienie w tym samym czasie chowają się do środka. Jeden ruch,
+     jedna metafora, żadnego przeskoku między dwoma obrazkami. */
+  .themetoggle{width:44px;height:44px;padding:0;margin-left:8px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--ink);cursor:pointer;transition:color .25s,border-color .25s,background .25s,transform .25s}
+  .themetoggle:hover{color:var(--accent);border-color:var(--accent);background:rgba(var(--accent-rgb),.06);transform:translateY(-1px)}
+  .themetoggle svg{width:19px;height:19px}
+  .tt-disc{fill:currentColor;transition:transform .45s var(--ease)}
+  .tt-rays{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;transform-origin:12px 12px;transition:transform .45s var(--ease),opacity .3s var(--ease)}
+  /* Cień wygryza z tarczy prawdziwą dziurę (maska), a nie kółko w kolorze tła:
+     kółko trzeba by przemalowywać przy każdym stanie przycisku i i tak by się
+     rozjechało na hoverze. */
+  .tt-bite{transform:translate(9px,-9px);transition:transform .45s var(--ease)}
+  /* stan „ciemno": promienie do środka i zgaszone, cień wjeżdża na tarczę */
+  .themetoggle[aria-pressed="true"] .tt-rays{transform:scale(.55);opacity:0}
+  .themetoggle[aria-pressed="true"] .tt-disc{transform:scale(1.18)}
+  .themetoggle[aria-pressed="true"] .tt-bite{transform:translate(3.4px,-3.4px)}
+  @media(prefers-reduced-motion:reduce){
+    .tt-disc,.tt-rays,.tt-bite{transition:none}
+  }
+  /* Zaćmienie jest odpowiedzią na kliknięcie, a nie powitaniem. Dopóki skrypt
+     nie ustawi stanu początkowego, ikona nie ma prawa się animować - inaczej
+     wejście na stronę w trybie ciemnym otwierałoby się samoczynnym ruchem. */
+  :root:not(.motyw-gotowy) .tt-disc,
+  :root:not(.motyw-gotowy) .tt-rays,
+  :root:not(.motyw-gotowy) .tt-bite{transition:none}
 </style>
 </head>
 <body>
@@ -669,12 +781,21 @@
 <canvas id="brain" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 <div class="topscrim"></div>
-<a class="brandmark" data-goto="hero" href="#hero" aria-label="Centrum Zakątek - strona główna"><picture><source srcset="assets/brand/logo-mark-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/brand/logo-mark.webp" alt="Centrum Zakątek" width="133" height="94"></picture></a>
+<a class="brandmark" data-goto="hero" href="#hero" aria-label="Centrum Zakątek - strona główna"><img class="lm lm-light" src="assets/brand/logo-mark.webp" alt="Centrum Zakątek" width="133" height="94"><img class="lm lm-dark" src="assets/brand/logo-mark-dark.webp" alt="" aria-hidden="true" width="133" height="94"></a>
 <nav class="topnav">
   <a data-goto="zakres">Zakres</a>
   <a data-goto="zespol">Zespół</a>
   <a data-goto="cennik">Cennik</a>
   <a data-goto="prywatnosc">Prywatność</a>
+  <button class="themetoggle" id="themetoggle" type="button" aria-pressed="false" aria-label="Tryb ciemny" title="Tryb ciemny">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <defs><mask id="ttMask" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+        <rect width="24" height="24" fill="#fff"/><circle class="tt-bite" cx="12" cy="12" r="5" fill="#000"/>
+      </mask></defs>
+      <g class="tt-rays" fill="none"><path d="M12 1.6v2.2M12 20.2v2.2M22.4 12h-2.2M3.8 12H1.6M19.4 4.6l-1.6 1.6M6.2 17.8l-1.6 1.6M19.4 19.4l-1.6-1.6M6.2 6.2 4.6 4.6"/></g>
+      <g mask="url(#ttMask)"><circle class="tt-disc" cx="12" cy="12" r="5"/></g>
+    </svg>
+  </button>
   <div class="navsoc">
     <a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.5-3H14V4.3c0-.8.3-1.3 1.5-1.3H17V.3C16.6.2 15.6 0 14.5 0 12 0 10.3 1.5 10.3 4.1V6H8v3h2.3v9H14V9z"/></svg></a>
     <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
@@ -1279,6 +1400,69 @@
 })();
 </script>
 
+<!-- Przełącznik motywu: stan, pamięć i nadążanie za systemem -->
+<script>
+/* Rozstrzygnięcie przy wejściu zrobił już skrypt w <head>. Tutaj mieszka to,
+   co dzieje się później: klik, zapis wyboru i śledzenie systemu.
+
+   Trzy stany, jeden przycisk:
+     brak wpisu  -> „jak system", i tak zostaje, dopóki ktoś nie kliknie;
+     light/dark  -> wybór człowieka, ważniejszy niż ustawienie systemu.
+   Przycisk przełącza jasny<->ciemny względem tego, co widać w tej chwili,
+   więc pierwszy klik zawsze robi to, czego użytkownik się spodziewa. */
+(function(){
+  var root = document.documentElement;
+  var btn  = document.getElementById('themetoggle');
+  var KEY  = 'zakatek-motyw';
+  var sys  = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function zapisany(){
+    try{ var v = localStorage.getItem(KEY); return (v === 'light' || v === 'dark') ? v : null; }
+    catch(e){ return null; }
+  }
+  function widoczny(){
+    return root.getAttribute('data-theme') || (sys.matches ? 'dark' : 'light');
+  }
+
+  /* Pasek adresu na telefonie ma iść za motywem także wtedy, gdy wybór kłóci
+     się z systemem. Para <meta media="..."> z <head> tego nie umie, więc
+     dokładamy jeden wpis bez media - przeglądarka bierze pierwszy pasujący,
+     a ten pasuje zawsze. Bez JS zostaje para systemowa i to jest w porządku. */
+  var meta = document.createElement('meta');
+  meta.setAttribute('name','theme-color');
+  document.head.insertBefore(meta, document.head.firstChild);
+
+  function zsynchronizuj(){
+    var t = widoczny(), ciemno = (t === 'dark');
+    meta.setAttribute('content', ciemno ? '#131711' : '#fbfcfa');
+    if(btn) btn.setAttribute('aria-pressed', ciemno ? 'true' : 'false');
+    /* chmura punktów czyta kolor akcentu raz, przy starcie - musi wiedzieć,
+       że właśnie się zmienił, inaczej zostałaby ciemnozielona na czarnym */
+    document.dispatchEvent(new CustomEvent('motyw', { detail:{ motyw:t } }));
+  }
+
+  if(btn) btn.addEventListener('click', function(){
+    var nowy = (widoczny() === 'dark') ? 'light' : 'dark';
+    root.setAttribute('data-theme', nowy);
+    try{ localStorage.setItem(KEY, nowy); }catch(e){}
+    zsynchronizuj();
+  });
+
+  /* macOS potrafi przerzucić się w ciemny sam, o zmierzchu. Idziemy za nim
+     na żywo - ale tylko dopóki użytkownik nie zdecydował inaczej. */
+  function systemZmienil(){ if(!zapisany()) zsynchronizuj(); }
+  if(sys.addEventListener) sys.addEventListener('change', systemZmienil);
+  else if(sys.addListener) sys.addListener(systemZmienil);
+
+  zsynchronizuj();
+  /* Stan początkowy jest już ustawiony, więc od tej chwili animacja ikony może
+     wejść - nie ma czego animować wstecz. Klatka i budzik naraz, bo w karcie
+     w tle requestAnimationFrame potrafi nie przyjść wcale. */
+  var odblokuj = function(){ root.classList.add('motyw-gotowy'); };
+  requestAnimationFrame(odblokuj); setTimeout(odblokuj, 300);
+})();
+</script>
+
 <!-- Smuga portretów za kursorem w sekcji zespołu -->
 <script>
 /* Karty wysypują się wzdłuż drogi kursora: co SPAWN px przebytej trasy wpada
@@ -1461,12 +1645,16 @@
   var U_MIX=gl.getUniformLocation(prog,'uMix'), U_SIZE=gl.getUniformLocation(prog,'uSize');
   var U_COLOR=gl.getUniformLocation(prog,'uColor'), U_OPACITY=gl.getUniformLocation(prog,'uOpacity');
   /* kolor z tokenu, nie z liczby wklepanej w shader — inaczej chmura zostałaby
-     ciemnozielona na ciemnym tle i zniknęłaby razem z nim */
-  (function(){
+     ciemnozielona na ciemnym tle i zniknęłaby razem z nim. Odczyt powtarza się
+     przy każdej zmianie motywu: token jest inny, a uniform trzyma starą wartość
+     do czasu, aż mu się ją poda. */
+  function kolorZTokenu(){
     var c=getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim().split(',');
     if(c.length===3) gl.uniform3f(U_COLOR,+c[0]/255,+c[1]/255,+c[2]/255);
     else gl.uniform3f(U_COLOR,0x5b/255,0x79/255,0x5a/255);
-  })();
+  }
+  kolorZTokenu();
+  document.addEventListener('motyw',function(){ kolorZTokenu(); wake(); });
   gl.disable(gl.DEPTH_TEST);
   /* kontekst jest premultiplied (domyślnie), więc mieszanie musi być takie samo
      jak NormalBlending w three: źródło wchodzi całe, tło gaśnie o alfę źródła */
