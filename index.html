@@ -495,18 +495,6 @@
   .team-full.out,.price-full.out{opacity:0;transform:translateY(10px);
     transition-timing-function:var(--ease-in);transition-duration:.26s}
   /* teaser zespołu */
-  /* Smuga portretów za kursorem. Karty leżą pod treścią sekcji (.inner ma
-     z-index 1), więc wychodzą zza nagłówka i omijają biały kafel zespołu. */
-  .team-trail{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-  .team-trail img{
-    position:absolute;top:0;left:0;
-    width:190px;height:238px;
-    object-fit:cover;object-position:top center;
-    border-radius:var(--r-lg);
-    box-shadow:var(--shadow);
-    will-change:transform,opacity;
-  }
-  @media(max-width:900px){ .team-trail{display:none} }
 
   .team-teaser{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:30px;padding:24px 28px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
   .tt-avatars{display:flex;flex:none}
@@ -617,10 +605,19 @@
      a strona przewija się dalej.
      Kolory idą wyłącznie z tokenów, więc łuk działa w obu motywach bez
      ani jednej wartości wpisanej na sztywno. */
-  .team-teaser.-stage{display:block;padding:0;border:0;background:none;box-shadow:none;margin-top:22px}
-  #teamStage{position:relative;height:clamp(330px,46vh,480px);overflow:hidden;border-radius:var(--r-lg);
-    background:radial-gradient(125% 95% at 50% 6%,var(--bg-top) 0%,var(--bg-bottom) 100%);
-    border:1px solid var(--line);
+  /* Galeria wychodzi poza kolumnę tekstu na pełną szerokość okna: ujemne
+     marginesy dokładnie znoszą 4.5vw paddingu sekcji i wyśrodkowanie .inner.
+     Sekcja ma overflow:hidden, więc 100vw nie robi poziomego paska. */
+  .team-teaser.-stage{display:block;padding:0;border:0;background:none;box-shadow:none;margin-top:16px}
+  /* Bez ramki: scena nie ma własnego tła ani obrysu, leży wprost na sekcji.
+     Krawędzie ścina maska, a nie kolor - dzięki temu karty rozpuszczają się
+     w tle strony, jakiekolwiek by ono nie było w danym motywie. */
+  #teamStage{position:relative;height:clamp(258px,38vh,410px);overflow:hidden;
+    /* na pełną szerokość okna idzie SAMA scena - dok, podpowiedź i przycisk
+       zostają w kolumnie treści, inaczej licznik ucieka na brzeg ekranu */
+    margin-inline:calc(50% - 50vw);width:100vw;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
     perspective:1200px;perspective-origin:50% 50%;display:grid;place-items:center;
     cursor:grab;user-select:none;outline:none;
     /* pan-y, nie none: na telefonie palec w pionie ma dalej przewijać stronę,
@@ -629,12 +626,6 @@
   #teamStage.-drag{cursor:grabbing}
   #teamFloor{position:absolute;left:50%;top:70%;width:62%;height:24%;z-index:0;transform:translate(-50%,-50%);
     background:radial-gradient(60% 60% at 50% 50%,var(--vignette),transparent 70%);filter:blur(6px);pointer-events:none}
-  /* Krawędzie: karty mają się rozpuszczać, a nie być ucięte nożem. W pierwowzorze
-     scena zajmowała cały ekran, więc cięcie wypadało poza kadrem; tutaj scena ma
-     ramkę, więc twarde cięcie byłoby widoczne przy każdym obrocie. */
-  #teamStage::before,#teamStage::after{content:"";position:absolute;top:0;bottom:0;width:11%;z-index:2;pointer-events:none}
-  #teamStage::before{left:0;background:linear-gradient(90deg,var(--bg-bottom),transparent)}
-  #teamStage::after{right:0;background:linear-gradient(270deg,var(--bg-bottom),transparent)}
   #teamRing{position:relative;width:0;height:0;transform-style:preserve-3d;z-index:1;
     transform:translateZ(var(--push,0px)) rotateY(var(--rot,0deg))}
   .tcard{position:absolute;width:var(--cw,200px);height:var(--ch,272px);
@@ -655,9 +646,15 @@
   .tcard__in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 16%;display:block}
   .tcard__scrim{position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(to top,rgba(12,9,5,.86) 0%,rgba(12,9,5,.3) 32%,rgba(12,9,5,0) 58%)}
-  .tcard__no{position:absolute;top:11px;left:12px;z-index:2;font-size:var(--t-micro);font-weight:600;
-    letter-spacing:var(--tr-label);color:rgba(255,255,255,.92);font-variant-numeric:tabular-nums;
-    text-shadow:0 1px 8px rgba(0,0,0,.4)}
+  /* Plakietka kategorii w prawym górnym rogu. Te same tokeny co plakietki na
+     kartach w siatce zespołu, więc czyta się jako ten sam element systemu,
+     a nie jako nowy wynalazek. Nieprzezroczyste tło, bo leży na zdjęciu -
+     przezroczystość zależałaby od tego, co akurat jest pod spodem. */
+  .tcard__tag{position:absolute;top:8px;right:8px;z-index:2;
+    background:var(--chip-solid);color:var(--accent-2);
+    font-size:var(--t-meta);font-weight:600;letter-spacing:.05em;
+    text-transform:uppercase;padding:3px 8px;border-radius:var(--r-xs);
+    box-shadow:0 1px 6px rgba(0,0,0,.18)}
   .tcard__foot{position:absolute;left:13px;right:13px;bottom:11px;z-index:2}
   .tcard__name{margin:0;font-family:var(--display);font-weight:500;font-size:var(--t-h5);
     line-height:var(--lh-tight);letter-spacing:var(--tr-tight);color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
@@ -669,18 +666,19 @@
     text-transform:uppercase;color:rgba(255,255,255,.78);text-shadow:0 1px 8px rgba(0,0,0,.4);
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   /* ===== dok: podpis karty na wprost + sterowanie ===== */
-  #teamDock{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:24px;margin-top:20px}
+  #teamDock{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:24px;margin-top:15px}
   .tdock__count{font-variant-numeric:tabular-nums;letter-spacing:.04em;font-size:var(--t-meta);color:var(--muted)}
   .tdock__count b{font-size:var(--t-h3);font-weight:500;color:var(--ink);font-family:var(--display);letter-spacing:0}
-  .tdock__c{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+  /* min-width:0 jest tu obowiązkowe: element gridu domyślnie nie zwęża się
+     poniżej swojej treści, więc przewijany pasek filtrów rozpychałby kolumnę
+     i wypychał całą sekcję poza ekran zamiast się przewijać */
+  .tdock__c{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
   .tdock__name{margin:0;font-family:var(--display);font-weight:500;font-size:var(--t-h4);
     line-height:var(--lh-tight);letter-spacing:var(--tr-tight);color:var(--ink)}
   .tdock__sub{display:flex;align-items:center;gap:12px;font-size:var(--t-meta);color:var(--soft);font-weight:500}
-  .tdock__pip{width:3px;height:3px;border-radius:50%;background:var(--line);flex:none}
-  .tdock__price{color:var(--accent);font-weight:700;white-space:nowrap}
   /* 27 kropek to smuga, nie nawigacja - skoki idą po grupach, czyli po tym,
      czego człowiek naprawdę szuka: „psychiatra", „dla dzieci" */
-  #teamJumps{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
+  #teamJumps{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;min-width:0;max-width:100%}
   #teamJumps button{padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--card);
     color:var(--muted);font:inherit;font-size:var(--t-micro);font-weight:600;letter-spacing:var(--tr-label);
     text-transform:uppercase;cursor:pointer;transition:color .25s,border-color .25s,background .25s}
@@ -692,9 +690,9 @@
     transition:background .2s ease,color .2s ease,border-color .2s ease,transform .15s ease}
   .tnav:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .tnav:active{transform:scale(.94)}
-  .thint{margin-top:12px;text-align:center;font-size:var(--t-micro);letter-spacing:var(--tr-wide);
+  .thint{margin-top:9px;text-align:center;font-size:var(--t-micro);letter-spacing:var(--tr-wide);
     text-transform:uppercase;font-weight:600;color:var(--muted)}
-  .team-teaser.-stage .collapse-cta{display:flex;margin:18px auto 0}
+  .team-teaser.-stage .collapse-cta{display:flex;margin:14px auto 0}
   @media(max-width:760px){
     #teamStage{height:clamp(250px,34vh,320px)}
     #teamDock{grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
@@ -702,13 +700,17 @@
     .tdock__name{font-size:var(--t-h5)}
     /* na wąskim ekranie karta pokazuje samo nazwisko - rola i tak stoi w doku */
     .tcard__role{display:none}
-    #teamJumps{display:none}
+    /* Filtry ZOSTAJĄ na telefonie - to jedyna droga do zawężenia galerii.
+       Nie zawijają się na dwa wiersze (za drogo w pionie), tylko jadą poziomo. */
+    #teamJumps{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;
+      scrollbar-width:none;-ms-overflow-style:none;max-width:100%;padding-bottom:2px}
+    #teamJumps::-webkit-scrollbar{display:none}
+    #teamJumps button{flex:none}
     .thint{display:none}
     .tnav{width:44px;height:44px}
   }
   @media(max-width:460px){
     .tdock__sub{flex-direction:column;gap:3px}
-    .tdock__pip{display:none}
   }
   @media(prefers-reduced-motion:reduce){ .tcard__in{transition:none} #teamJumps button{transition:none} }
 
@@ -1062,7 +1064,6 @@
   </section>
 
   <section class="scene" id="zespol">
-    <div class="team-trail" id="teamTrail" aria-hidden="true"></div>
     <div class="inner">
       <h2 class="reveal">27 specjalistów. <span class="accentword">Każdy z imienia i&nbsp;nazwiska.</span></h2>
       <p class="lede reveal" id="teamLede">Rozwiń, by zobaczyć profile - z ceną i&nbsp;orientacyjnym terminem.</p>
@@ -1274,47 +1275,116 @@
     var stage=document.getElementById('teamStage'), ring=document.getElementById('teamRing');
     if(!stage||!ring||!HAS_DATA) return;
 
-    var N=SPECIALISTS.length;
-    /* promień musi rosnąć z liczbą kart, inaczej sąsiedzi zachodzą na siebie:
-       cięciwa między slotami = 2*r*sin(180/N) i ma być nie mniejsza niż szerokość karty */
-    /* mnożnik 0.94 = sąsiednie karty zachodzą na siebie o ~6%: przy 27 osobach
-       promień policzony na styk rozciąga łuk w prawie prostą linię i cała
-       wklęsłość znika. Lekkie zachodzenie wraca do wrażenia talii kart. */
-    var CFG={ ratio:1.36, radiusK:Math.max(2.6, 1/(2*Math.sin(Math.PI/N))*0.94), arc:.74, drag:.16, damp:.94 };
-    var step=360/N;
+    /* Filtr przebudowuje pierścień, więc wszystko, co zależy od liczby kart
+       (kąt między slotami, promień), musi być przeliczane przy każdej zmianie,
+       a nie policzone raz na starcie. */
+    var GRUPY=[['all','Wszyscy'],['psychiatra','Psychiatrzy'],['neurolog','Neurolog'],
+               ['psycholog','Psycholodzy'],['dzieci','Dla dzieci'],['walter','Walter']];
+    /* plakietka na karcie mówi o JEDNEJ osobie, więc w liczbie pojedynczej -
+       filtr nad nią mówi o zbiorze, więc w mnogiej */
+    var TAGI={psychiatra:'Psychiatra', neurolog:'Neurolog', psycholog:'Psycholog',
+              dzieci:'Dzieci', walter:'Pies terapeuta'};
+    /* Karta otwierająca pełny widok. Sąsiedzi na łuku to po prostu sąsiedzi
+       w danych, więc kolejność w data.js decyduje o tym, kto stoi obok. */
+    var START_ID='kosowski';
+    function indeksStartu(){
+      for(var i=0;i<LISTA.length;i++) if(LISTA[i].id===START_ID) return i;
+      return 0;
+    }
+    var CFG={ ratio:1.36, arc:.74, drag:.16, damp:.94, velMax:3, luz:1.16 };
+    /* luz 1.16 = między sąsiednimi kartami zostaje 16% szerokości karty odstępu.
+       Promień liczy się z cięciwy: 2*r*sin(180/N) = luz * szerokość karty. */
     var REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    /* Krok kątowy i promień liczone RAZ, z pełnego składu: to one decydują
+       o wyglądzie łuku, więc nie mają prawa zależeć od aktywnego filtra. */
+    var KROK=360/SPECIALISTS.length;
+    var PROMIEN=Math.max(2.8, CFG.luz/(2*Math.sin(Math.PI*KROK/360)));
+    var PELNY_OBROT=Math.round(360/KROK);          /* ile slotów domyka okrąg */
+    var LISTA=SPECIALISTS.slice(), N=LISTA.length, slotow=N, step=KROK, radiusK=PROMIEN;
+    var zawija=true, zapetlone=true;
     var rot=0, vel=0, dragging=false, lastX=0, downX=0, downY=0, moved=false, axis=0;
-    var target=0, settled=true, lastRot=NaN, lastFront=-1;
+    var target=0, settled=true, lastRot=NaN, lastFront=-1, cards=[];
 
-    /* --- karty --- */
-    ring.innerHTML=SPECIALISTS.map(function(s,i){
-      return '<article class="tcard" data-i="'+i+'" style="--a:'+(i*step)+'deg">'
-        +'<div class="tcard__in">'
-        +'<img src="'+s.photo+'" alt="'+s.name+'" draggable="false" loading="lazy">'
-        +'<div class="tcard__scrim"></div>'
-        +'<span class="tcard__no">'+pad2(i+1)+'</span>'
-        +'<div class="tcard__foot"><h4 class="tcard__name">'+s.name+'</h4>'
-        +'<div class="tcard__role">'+s.role+'</div></div>'
-        +'</div></article>';
+    var elName=document.getElementById('td-name'), elRole=document.getElementById('td-role'),
+        elCur=document.getElementById('td-cur'), elTotal=document.getElementById('td-total');
+    var filtry=document.getElementById('teamJumps');
+
+    filtry.innerHTML=GRUPY.map(function(g,i){
+      return '<button role="tab" data-k="'+g[0]+'"'+(i===0?' class="-on"':'')+'>'+g[1]+'</button>';
     }).join('');
-    var cards=ring.querySelectorAll('.tcard');
+    filtry.querySelectorAll('button').forEach(function(b){
+      b.onclick=function(){
+        filtry.querySelectorAll('button').forEach(function(x){ x.classList.remove('-on'); });
+        b.classList.add('-on');
+        przebuduj(b.dataset.k);
+      };
+    });
 
-    /* --- skoki po grupach: 27 kropek to smuga, grupa to nawigacja --- */
-    var GRUPY=[['psychiatra','Psychiatrzy'],['neurolog','Neurolog'],['psycholog','Psycholodzy'],['dzieci','Dla dzieci'],['walter','Walter']];
-    var skoki=GRUPY.map(function(g){
-      var idx=-1; for(var i=0;i<N;i++){ if(SPECIALISTS[i].group===g[0]){ idx=i; break; } }
-      return idx<0?null:{i:idx,label:g[1],key:g[0]};
-    }).filter(Boolean);
-    var jumps=document.getElementById('teamJumps');
-    jumps.innerHTML=skoki.map(function(s){ return '<button role="tab" data-i="'+s.i+'" data-k="'+s.key+'">'+s.label+'</button>'; }).join('');
-    jumps.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ focusCard(+b.dataset.i); }; });
+    function przebuduj(klucz){
+      LISTA = (klucz==='all'||!klucz) ? SPECIALISTS.slice()
+            : SPECIALISTS.filter(function(s){ return s.group===klucz; });
+      if(!LISTA.length) LISTA=SPECIALISTS.slice();
+      N=LISTA.length;
+      /* Zapętlenie zależy od tego, czy grupa wypełnia kadr Z NADMIAREM.
+         Warunek jest jeden: osób musi być więcej, niż mieści się kart na
+         ekranie - inaczej ta sama twarz wróciłaby w tym samym kadrze i
+         zapętlenie czytałoby się jak usterka, a nie jak nieskończoność.
+         Przy zapętleniu pierścień domyka pełne 360°, a sloty biorą osoby
+         cyklicznie; okres powtórzenia (N) jest wtedy z definicji większy
+         od tego, co widać naraz. */
+      /* Zapętla się WYŁĄCZNIE pełny skład - i to jest decyzja, nie brak.
+         Zapętlenie bez powtórzeń wymaga, żeby każda osoba stała na okręgu
+         dokładnie raz, więc kąt między kartami wychodzi 360/N: 13° przy
+         dwudziestu siedmiu osobach, ale już 24° przy piętnastu. Filtr
+         zmieniałby wtedy rozmieszczenie całej galerii, a ono ma zostać
+         identyczne w każdym widoku.
+         Powielanie grupy na pełny okrąg odpada - sprawdzone pomiarem: 27
+         slotów na 15 osób dało do czterech tych samych twarzy w kadrze,
+         30 slotów (kopie co 180°, czyli dokładnie tyle, ile widać) dało pięć.
+         Okrąg ma 360°, w kadrze mieści się jego połowa, więc druga kopia
+         zawsze gdzieś wjedzie.
+         Mniejsza grupa jest więc odcinkiem: ten sam kąt, ta sama wielkość
+         kart, po prostu mniej ludzi i wyraźny początek oraz koniec. */
+      zapetlone = (N===PELNY_OBROT);
+      slotow = N;
+      /* Kąt i promień są STAŁE dla każdego widoku - liczone raz, z pełnego
+         składu. Gdyby zależały od długości bieżącej listy, filtr zmieniałby
+         nie tylko zestaw osób, ale i wygląd galerii: przy piętnastu osobach
+         promień spadał do 2,8 szerokości karty (zamiast 5,0), więc karty rosły,
+         a łuk zwijał się mocniej niż w widoku „wszyscy". Teraz filtr zmienia
+         wyłącznie to, ile kart stoi na łuku - reszta zostaje na miejscu. */
+      step = KROK;                    /* ten sam kąt w każdym widoku */
+      zawija=zapetlone;
+      var pola=[]; for(var k=0;k<slotow;k++) pola.push(LISTA[k%N]);
+      ring.innerHTML=pola.map(function(s,i){
+        return '<article class="tcard" data-i="'+i+'" style="--a:'+(i*step)+'deg">'
+          +'<div class="tcard__in">'
+          +'<img src="'+s.photo+'" alt="'+s.name+'" draggable="false" loading="lazy">'
+          +'<div class="tcard__scrim"></div>'
+          +'<span class="tcard__tag">'+(TAGI[s.group]||'Specjalista')+'</span>'
+          +'<div class="tcard__foot"><h4 class="tcard__name">'+s.name+'</h4>'
+          +'<div class="tcard__role">'+s.role+'</div></div>'
+          +'</div></article>';
+      }).join('');
+      cards=ring.querySelectorAll('.tcard');
+      elTotal.textContent=pad2(N);
+      /* Skąd startuje łuk:
+         - pełny skład otwiera się na wskazanej osobie (START_ID), żeby w
+           pierwszym kadrze stali wokół niej psychiatrzy, a na skraju była już
+           widoczna pierwsza osoba z kolejnej grupy - kadr od razu pokazuje,
+           że zespół jest szerszy niż jedna specjalizacja;
+         - odcinek zaczyna się od ŚRODKA, bo start na pierwszej karcie zostawia
+           pustą połowę kadru: przed nią nie ma nikogo. */
+      target = zawija ? indeksStartu() : Math.floor((N-1)/2);
+      rot=-target*step; vel=0; settled=true; lastRot=NaN; lastFront=-1;
+      layout(); applyRot(); render();
+    }
 
-    /* --- geometria --- */
     function layout(){
       var vw=window.innerWidth;
-      var cw=Math.min(216, Math.max(132, vw*0.152));
-      var r=cw*CFG.radiusK;
+      var cw=Math.min(344, Math.max(211, vw*0.242));   /* +33%, potem jeszcze +20% wobec 216/132/0.152 */
+      var r=cw*radiusK;
       stage.style.setProperty('--cw', cw+'px');
       stage.style.setProperty('--ch', (cw*CFG.ratio)+'px');
       stage.style.setProperty('--r',  r+'px');
@@ -1323,42 +1393,44 @@
     }
 
     function applyRot(){ if(rot!==lastRot){ ring.style.setProperty('--rot', rot+'deg'); lastRot=rot; } }
-    function frontSlot(){ return ((Math.round(-rot/step)%N)+N)%N; }
 
-    var elName=document.getElementById('td-name'), elRole=document.getElementById('td-role'),
-        elPrice=document.getElementById('td-price'), elCur=document.getElementById('td-cur');
+    function frontSlot(){
+      var i=Math.round(-rot/step);
+      /* przy zapętleniu liczymy modulo liczbę SLOTÓW (pełny okrąg), nie liczbę
+         osób - sloty krążą po liście i jedna osoba może mieć ich kilka */
+      return zawija ? ((i%slotow)+slotow)%slotow : Math.max(0, Math.min(N-1, i));
+    }
 
     function render(){
       var f=frontSlot();
       if(f===lastFront) return;
       if(lastFront>=0 && cards[lastFront]) cards[lastFront].classList.remove('-front');
+      if(!cards[f]) return;
       cards[f].classList.add('-front');
       lastFront=f;
-      var s=SPECIALISTS[f];
+      var s=LISTA[f%N];                     /* slot -> osoba: przy zapętleniu sloty krążą po liście */
       elName.textContent=s.name;
       elRole.textContent=s.role;
-      elPrice.textContent=s.priceFrom?('od '+s.priceFrom+' zł'):(s.priceLabel||'');
-      elCur.textContent=pad2(f+1);
-      jumps.querySelectorAll('button').forEach(function(b){ b.classList.toggle('-on', b.dataset.k===s.group); });
+      elCur.textContent=pad2(f%N+1);
     }
 
-    /* --- celowanie: zawsze najkrótszą drogą, pierścień jest nieskończony --- */
     function nearest(){ return Math.round(-rot/step); }
     /* baza to poprzedni CEL, nie bieżące położenie: inaczej dwa szybkie
-       kliknięcia „dalej" liczą się od tej samej, jeszcze nieprzesuniętej
-       karty i drugie z nich przepada */
-    function go(d){ target=(settled?target:nearest())+d; settled=true; vel=0; }
+       kliknięcia „dalej" liczą się od tej samej, jeszcze nieprzesuniętej karty */
+    function ogranicz(t){ return zawija ? t : Math.max(0, Math.min(N-1, t)); }
+    function go(d){ target=ogranicz((settled?target:nearest())+d); settled=true; vel=0; }
     function focusCard(i){
-      var c=nearest(), d=((i-(c%N))%N+N)%N;
-      if(d>N/2) d-=N;
+      if(!zawija){ target=i; settled=true; vel=0; return; }
+      var c=nearest(), d=((i-(c%slotow))%slotow+slotow)%slotow;
+      if(d>slotow/2) d-=slotow;
       target=c+d; settled=true; vel=0;
     }
 
-    /* --- chwyt: blokada osi, żeby pionowy gest dalej przewijał stronę --- */
+    /* chwyt z blokadą osi: pionowy gest ma dalej przewijać stronę */
     stage.addEventListener('pointerdown', function(e){
       dragging=true; lastX=downX=e.clientX; downY=e.clientY; moved=false; axis=0; vel=0; settled=false;
       stage.classList.add('-drag');
-      try{ stage.setPointerCapture(e.pointerId); }catch(err){}   // brak realnego wskaźnika (test, syntetyk) nie ma prawa wywrócić chwytu
+      try{ stage.setPointerCapture(e.pointerId); }catch(err){}
     });
     stage.addEventListener('pointermove', function(e){
       if(!dragging) return;
@@ -1366,21 +1438,26 @@
       if(!axis){
         var tx=Math.abs(e.clientX-downX), ty=Math.abs(e.clientY-downY);
         if(tx<4 && ty<4) return;
-        axis = tx>ty ? 1 : -1;                 // -1 = gest pionowy, oddajemy go stronie
+        axis = tx>ty ? 1 : -1;
         if(axis<0){ dragging=false; stage.classList.remove('-drag'); return; }
       }
       lastX=e.clientX;
       if(Math.abs(e.clientX-downX)>6) moved=true;
-      var d=-dx*CFG.drag; rot+=d; vel=d;
+      var d=-dx*CFG.drag;
+      rot+=d;
+      /* Prędkość NIE może być surową różnicą z ostatniego zdarzenia: wybieg to
+         vel/(1-damp), czyli ~17x ta różnica, a jedno szybkie machnięcie potrafi
+         nieść 90 px. Uśrednienie i sufit trzymają wybieg w kilku osobach. */
+      vel=Math.max(-CFG.velMax, Math.min(CFG.velMax, vel*0.6 + d*0.4));
       e.preventDefault();
     });
     function endDrag(e){
       if(!dragging){ stage.classList.remove('-drag'); return; }
       dragging=false; settled=false; stage.classList.remove('-drag');
-      if(!moved && e){                          /* to było kliknięcie, nie ciągnięcie */
+      if(!moved && e){
         var el=document.elementFromPoint(e.clientX,e.clientY);
         var c=el&&el.closest?el.closest('.tcard'):null;
-        if(c){ var i=+c.dataset.i; if(i===frontSlot()) openSpec(SPECIALISTS[i].id); else focusCard(i); }
+        if(c){ var i=+c.dataset.i; if(i===frontSlot()) openSpec(LISTA[i%N].id); else focusCard(i); }
       }
     }
     stage.addEventListener('pointerup', endDrag);
@@ -1389,20 +1466,19 @@
     stage.addEventListener('keydown', function(e){
       if(e.key==='ArrowRight'){ go(1); e.preventDefault(); }
       else if(e.key==='ArrowLeft'){ go(-1); e.preventDefault(); }
-      else if(e.key==='Enter'||e.key===' '){ openSpec(SPECIALISTS[frontSlot()].id); e.preventDefault(); }
+      else if(e.key==='Enter'||e.key===' '){ openSpec(LISTA[frontSlot()%N].id); e.preventDefault(); }
     });
     document.getElementById('td-next').onclick=function(){ go(1); };
     document.getElementById('td-prev').onclick=function(){ go(-1); };
 
-    /* --- pętla: bezwładność, potem dosunięcie karty na wprost --- */
     var raf=0;
     function tick(){
       if(!dragging){
         rot+=vel; vel*=CFG.damp;
         if(Math.abs(vel)<0.05){
-          if(!settled){ target=nearest(); settled=true; }
+          if(!settled){ target=ogranicz(nearest()); settled=true; }
           var diff=-target*step-rot;
-          if(Math.abs(diff)<0.01) rot=-target*step;      /* ląduje dokładnie: --rot przestaje się zmieniać */
+          if(Math.abs(diff)<0.01) rot=-target*step;
           else rot+=diff*(REDUCE?1:0.14);
         } else settled=false;
       }
@@ -1410,10 +1486,9 @@
       raf=requestAnimationFrame(tick);
     }
 
-    layout(); applyRot(); render();
+    przebuduj('all');
     window.addEventListener('resize', layout, {passive:true});
-    /* pętla chodzi tylko wtedy, gdy sekcja jest w kadrze - nie ma po co
-       przemalowywać łuku, którego nikt nie widzi */
+    /* pętla chodzi tylko, gdy sekcja jest w kadrze */
     var io=new IntersectionObserver(function(en){
       if(en[0].isIntersecting){ if(!raf) raf=requestAnimationFrame(tick); }
       else { cancelAnimationFrame(raf); raf=0; }
@@ -1434,7 +1509,7 @@
       +'<div class="tdock__count"><b id="td-cur">01</b> <i>/ <span id="td-total">'+pad2(SPECIALISTS.length)+'</span></i></div>'
       +'<div class="tdock__c" aria-live="polite">'
         +'<h3 class="tdock__name" id="td-name"></h3>'
-        +'<div class="tdock__sub"><span id="td-role"></span><span class="tdock__pip" aria-hidden="true"></span><span class="tdock__price" id="td-price"></span></div>'
+        +'<div class="tdock__sub"><span id="td-role"></span></div>'
         +'<div id="teamJumps" role="tablist" aria-label="Skocz do grupy"></div>'
       +'</div>'
       +'<div class="tdock__r"><button class="tnav" id="td-prev" aria-label="Poprzednia osoba">‹</button>'
@@ -1792,135 +1867,6 @@
 })();
 </script>
 
-<!-- Smuga portretów za kursorem w sekcji zespołu -->
-<script>
-/* Karty wysypują się wzdłuż drogi kursora: co SPAWN px przebytej trasy wpada
-   jedna, żywych jest najwyżej TRAIL, a wypchnięcie najstarszej odgrywa jej
-   wyjście. Stąd ogon się rozpuszcza, a nie tylko blednie.
-
-   Sprężyny liczone ręcznie, bo prototyp nie ma żadnej biblioteki animacji:
-   a = tension*(cel - x) - friction*v, masa 1. Te same współczynniki, których
-   używa wersja reactowa. */
-(function(){
-  var layer = document.getElementById('teamTrail');
-  var zone  = document.getElementById('zespol');
-  if(!layer || !zone) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(!window.matchMedia('(pointer: fine)').matches) return;
-
-  /* Zdjęcia bierzemy z bazy specjalistów, nie z osobnej listy — dopisanie
-     osoby w data.js dokłada ją do smugi samo. */
-  var pool = (typeof SPECIALISTS !== 'undefined') ? SPECIALISTS : [];
-  var SRC = pool.map(function(x){ return x.photo; }).filter(Boolean);
-  if(!SRC.length) return;
-
-  var SPAWN = 90;      // px trasy kursora między kartami
-  var TRAIL = 5;       // ile żyje naraz
-  var TILT  = 12;      // maksymalne przechylenie w stopniach
-
-  /* Sprężyny liczone jako tłumienie ζ i czas odpowiedzi, nie jako para
-     przypadkowych liczb: t = ω₀², f = 2ζω₀, ω₀ = 2π/response.
-       ENTER ζ=1,00 response 0,35 s — krytycznie tłumione wejście
-       LEAVE ζ=1,00 response 0,40 s — wypchnięcie jest zdarzeniem systemowym,
-                                      nie rzutem użytkownika, więc bez odbicia
-       FADE  ζ=1,00 response 0,25 s — krycie nie ma po co przestrzeliwać
-     Poprzednie wartości robiły dokładnie odwrotnie niż trzeba: wejście
-     przetłumione i powolne (ζ=1,23 / 0,55 s), a wyrzut sprężysty (ζ=0,69). */
-  var ENTER = {t:322, f:36};
-  var LEAVE = {t:247, f:31};
-  var FADE  = {t:632, f:50};
-
-  /* Odbicie bierze się teraz z ręki, nie z konfiguracji: przy krytycznym
-     tłumieniu karta przestrzeliwuje dokładnie na tyle, na ile szybko
-     prowadzisz kursor. Wolny ruch — spokojne dojście, szarpnięcie — wyskok. */
-  /* Dobrane pomiarem na realnym kroku 1/60 s, nie z równania — jawny Euler
-     przy tym kroku zjada drobne przestrzelenia, więc wartość z analizy
-     ciągłej byłaby tu za mała, żeby cokolwiek było widać.
-       200 px/s  → dojście w 367 ms, bez przestrzelenia
-       1400 px/s → dojście w 217 ms, bez przestrzelenia
-       2000 px/s → wyskok o 3% i natychmiastowe osiadanie
-     Czyli: odbicie pojawia się dopiero przy prawdziwym szarpnięciu. */
-  var VMAX = 2000;     // px/s, powyżej tego nie przyspieszamy już wejścia
-  var VGAIN = 45;      // jednostki skali na sekundę przy VMAX
-
-  var cards = [], dying = [], seq = 0, last = null, move = null, speed = 0, raf = 0, prevTime = 0;
-
-  function spawn(x, y){
-    var img = new Image();
-    img.src = SRC[seq % SRC.length];
-    img.alt = '';
-    img.decoding = 'async';
-    layer.appendChild(img);
-    cards.push({
-      el: img, x: x, y: y,
-      tilt: (Math.random() - 0.5) * 2 * TILT,
-      scale: 0.4, vs: Math.min(speed, VMAX) / VMAX * VGAIN, op: 0, vo: 0,
-      cfg: ENTER, target: {scale: 1, op: 1}, dying: false
-    });
-    seq++;
-    while(cards.length > TRAIL) kill(cards[0]);
-    if(!raf){ prevTime = performance.now(); raf = requestAnimationFrame(step); }
-  }
-
-  function kill(c){
-    if(c.dying) return;
-    c.dying = true;
-    c.cfg = LEAVE;
-    c.target = {scale: 0.4, op: 0};
-    cards.splice(cards.indexOf(c), 1);
-    dying.push(c);
-  }
-
-  function integrate(c, dt){
-    var as = c.cfg.t * (c.target.scale - c.scale) - c.cfg.f * c.vs;
-    c.vs += as * dt; c.scale += c.vs * dt;
-    var ao = FADE.t * (c.target.op - c.op) - FADE.f * c.vo;
-    c.vo += ao * dt; c.op += c.vo * dt;
-    c.el.style.opacity = c.op;
-    /* Pozycja jest przybita w miejscu narodzin — animuje się wyłącznie skala,
-       więc karta rośnie tam, gdzie była, zamiast dojeżdżać do kursora. */
-    c.el.style.transform =
-      'translate3d(' + c.x + 'px,' + c.y + 'px,0) translate(-50%,-50%) rotate(' +
-      c.tilt + 'deg) scale(' + c.scale + ')';
-  }
-
-  function step(now){
-    var dt = Math.min((now - prevTime) / 1000, 0.064);  // strażnik przełączenia karty
-    prevTime = now;
-    for(var i = 0; i < cards.length; i++) integrate(cards[i], dt);
-    for(var j = dying.length - 1; j >= 0; j--){
-      var c = dying[j];
-      integrate(c, dt);
-      if(c.op < 0.01 && Math.abs(c.vs) < 0.01){
-        if(c.el.parentNode) c.el.parentNode.removeChild(c.el);
-        dying.splice(j, 1);
-      }
-    }
-    raf = (cards.length || dying.length) ? requestAnimationFrame(step) : 0;
-  }
-
-  zone.addEventListener('pointermove', function(e){
-    if(e.pointerType !== 'mouse') return;   // dotyk nie zostawia trasy, sypałby na każde tapnięcie
-    var b = layer.getBoundingClientRect();
-    var x = e.clientX - b.left, y = e.clientY - b.top, now = e.timeStamp;
-    /* Prędkość mierzymy na każdym ruchu, nie tylko na tych, które rodzą kartę —
-       inaczej próbka jest zawsze o 90 px stara i nie mówi nic o tempie ręki. */
-    if(move){
-      var dt = (now - move.t) / 1000;
-      if(dt > 0.001 && dt < 0.2) speed = Math.hypot(x - move.x, y - move.y) / dt;
-    }
-    move = {x: x, y: y, t: now};
-    if(last && Math.hypot(x - last.x, y - last.y) < SPAWN) return;
-    last = {x: x, y: y};
-    spawn(x, y);
-  }, {passive: true});
-
-  zone.addEventListener('pointerleave', function(){
-    last = null; move = null; speed = 0;
-    while(cards.length) kill(cards[0]);
-  });
-})();
-</script>
 
 <!-- Chmura punktów w tle hero — własny WebGL, bez bibliotek.
      Scena to jedna chmura bez świateł, tekstur, cieni i materiałów, więc
