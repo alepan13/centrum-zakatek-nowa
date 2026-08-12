@@ -48,9 +48,9 @@ const FLOW = [
     id: 'age', q: 'Ile lat ma dziecko?', type: 'single',
     show: a => a.who === 'children',
     options: [
-      { k: 'small', l: '0–6 lat', icon: 'ti-baby-carriage' },
-      { k: 'mid', l: '7–12 lat', icon: 'ti-mood-smile' },
-      { k: 'teen', l: '13–18 lat', icon: 'ti-mood-boy' },
+      { k: 'small', l: '0-6 lat', icon: 'ti-baby-carriage' },
+      { k: 'mid', l: '7-12 lat', icon: 'ti-mood-smile' },
+      { k: 'teen', l: '13-18 lat', icon: 'ti-mood-boy' },
     ]
   },
   {
@@ -84,7 +84,7 @@ const FLOW = [
     show: a => a.who !== 'children',
     options: [
       { k: 'yes', l: 'Rozważam leki, chcę ocenę lekarza', icon: 'ti-pill', weightPsychiatry: 3 },
-      { k: 'open', l: 'Jestem otwarty/a, niech specjalista doradzi', icon: 'ti-scale', weightPsychiatry: 1 },
+      { k: 'open', l: 'Nie mam zdecydowanego zdania, niech oceni specjalista', icon: 'ti-scale', weightPsychiatry: 1 },
       { k: 'talk', l: 'Wolę zacząć od rozmowy / terapii', icon: 'ti-messages', weightTalk: 3 },
     ]
   },
@@ -93,7 +93,7 @@ const FLOW = [
     options: [
       { k: 'assess', l: 'Oceny i ustalenia, co dalej', icon: 'ti-clipboard-check', tags: [] },
       { k: 'therapy', l: 'Regularnej psychoterapii', icon: 'ti-armchair', tags: ['psychotherapy'] },
-      { k: 'diag', l: 'Diagnozy (np. ADHD/ASD, osobowość)', icon: 'ti-report-search', tags: ['diagnosis'] },
+      { k: 'diag', l: 'Diagnozy (np. ADHD, spektrum autyzmu)', icon: 'ti-report-search', tags: ['diagnosis'] },
       { k: 'support', l: 'Doraźnego wsparcia w kryzysie', icon: 'ti-lifebuoy', tags: ['crisis'] },
     ]
   },
@@ -226,7 +226,10 @@ function recommend(answers) {
     }
   }
 
-  return { top, note, urgency };
+  // ile różnych obszarów użytkownik faktycznie wskazał — mianownik dla „pasuje do X z Y"
+  const askedCount = new Set([...selectedTags, ...goalTags]).size;
+
+  return { top, note, urgency, askedCount };
 }
 
 /* ---------- Generowanie uzasadnienia ---------- */
@@ -234,13 +237,13 @@ function reasonFor(rank, entry, answers) {
   const s = entry.s;
   const labels = entry.matched.map(t => TAG_LABELS[t]).filter(Boolean);
   let lead;
-  if (rank === 0) lead = 'Polecamy na teraz';
+  if (rank === 0) lead = 'Najlepsze dopasowanie';
   else if (rank === 1) lead = 'Mocna alternatywa';
   else lead = 'Warto rozważyć';
 
   let why;
   if (labels.length) {
-    why = 'Dopasowanie do: ' + labels.slice(0, 4).join(', ') + '. ' + s.blurb;
+    why = 'Obszary: ' + labels.slice(0, 4).join(', ') + '. ' + s.blurb;
   } else {
     why = s.blurb;
   }

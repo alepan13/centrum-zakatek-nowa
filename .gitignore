@@ -1,0 +1,6 @@
+# stan lokalny narzędzi, nie treść projektu
+.impeccable/hook.cache.json
+.impeccable/config.local.json
+
+# macOS
+.DS_Store

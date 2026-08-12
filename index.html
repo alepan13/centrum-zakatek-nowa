@@ -4,25 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Centrum Zakątek - psychiatria, psychoterapia i neurologia w Toruniu</title>
-<meta name="description" content="Centrum Zakątek w Toruniu: psychiatria, psychoterapia, psychologia, neurologia i seksuologia dla dorosłych, dzieci i rodzin. Doświadczony zespół, dyskrecja, krótkie terminy.">
+<meta name="description" content="Centrum Zakątek w Toruniu: psychiatria, psychoterapia, psychologia, neurologia i seksuologia dla dorosłych, dzieci i rodzin. Doświadczony zespół i pełna dyskrecja.">
 <link rel="canonical" href="https://centrumzakatek.pl/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="Centrum Zakątek">
 <meta property="og:title" content="Centrum Zakątek - zdrowie psychiczne w Toruniu">
-<meta property="og:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu. Doświadczony zespół, dyskrecja i krótkie terminy.">
+<meta property="og:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu. Doświadczony zespół i pełna dyskrecja.">
 <meta property="og:url" content="https://centrumzakatek.pl/">
-<meta property="og:image" content="https://centrumzakatek.pl/assets/brand/logo-square.jpg">
+<meta property="og:image" content="https://centrumzakatek.pl/assets/brand/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Centrum Zakątek - centrum zdrowia psychicznego w Toruniu">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Centrum Zakątek - zdrowie psychiczne w Toruniu">
 <meta name="twitter:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu.">
-<meta name="twitter:image" content="https://centrumzakatek.pl/assets/brand/logo-square.jpg">
+<meta name="twitter:image" content="https://centrumzakatek.pl/assets/brand/og-image.jpg">
+<meta name="theme-color" content="#fbfcfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131711" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 <link rel="alternate icon" href="assets/brand/favicon-src.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/montserrat-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"MedicalClinic","name":"Centrum Zakątek",
@@ -34,14 +39,40 @@
 }
 </script>
 <style>
+  /* ===== Montserrat 400-700 (variable), hostowany lokalnie =====
+     Powód nie jest wydajnościowy, tylko wprost zapisany na tej stronie:
+     obiecujemy „przeglądasz anonimowo" i ochronę danych, więc IP odwiedzającego
+     nie ma prawa trafić do Google przy samym otwarciu strony. Podzbiory latin
+     + latin-ext - polskie znaki diakrytyczne siedzą w latin-ext. */
+  @font-face{font-family:'Montserrat';font-style:normal;font-weight:400 700;font-display:swap;
+    src:url(assets/fonts/montserrat-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Montserrat';font-style:normal;font-weight:400 700;font-display:swap;
+    src:url(assets/fonts/montserrat-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Montserrat';font-style:italic;font-weight:400 700;font-display:swap;
+    src:url(assets/fonts/montserrat-italic-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Montserrat';font-style:italic;font-weight:400 700;font-display:swap;
+    src:url(assets/fonts/montserrat-italic-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
   :root{
     /* --- kolory --- */
     /* paleta marki Zakątek: biel + szałwiowa zieleń + czerń */
     --accent:#5b795a; --accent-rgb:91,121,90; --accent-2:#4c6749; --accent-ink:#ffffff;
     --sage:#85997e; --sage-2:#adbea6;
-    --cream:#1c211d; --soft:#5b635c; --muted:#8a918a;
-    --line:rgba(28,38,30,.14); --glow:rgba(var(--accent-rgb),.22);
-    --clay:#a0795a; --card:#ffffff;
+    /* --muted i --clay przyciemnione do progu WCAG AA (4,5:1) na --bg;
+       --clay niesie linię kryzysową w stopce, więc kontrast nie jest tu opcjonalny */
+    --ink:#1c211d; --soft:#5b635c; --muted:#6b736b;
+    --line:rgba(28,38,30,.14); --halo-ring:rgba(var(--accent-rgb),.16);
+    --clay:#7a5539; --card:#ffffff; --photo:#eef2ec;
+    /* ===== stan alarmowy =====
+       Ekran kryzysowy ma wyglądać inaczej niż cała reszta strony i to jest
+       jego zadanie, nie niedopatrzenie. Wartości siedzą w osobnej grupie,
+       żeby następna zmiana motywu przemalowała stronę, a nie alarm. */
+    --alert-bg:#f7e9e6; --alert-line:#e3bcb2; --alert-ink:#7a2e1e;
+    --alert-body:#6b3326; --alert-surface:#ffffff; --alert-text:#3a2520; --alert-hint:#c9a59c;
     --shadow:0 2px 5px rgba(40,55,42,.05),0 20px 46px -28px rgba(40,55,42,.20); --shadow-sm:0 1px 3px rgba(40,55,42,.05),0 13px 28px -18px rgba(40,55,42,.14);
     /* --- tła --- */
     --bg:#fbfcfa; --bg-top:#ffffff; --bg-bottom:#eef2eb; --surface:#ffffff;
@@ -49,72 +80,98 @@
     --r-xs:6px; --r-sm:10px; --r-md:13px; --r-lg:18px;
     /* --- spacing --- */
     --space-1:8px; --space-2:14px; --space-3:18px; --space-4:26px; --space-5:44px; --space-6:64px;
-    /* --- typografia --- */
-    --display:'Montserrat',system-ui,sans-serif; --body:'Montserrat',system-ui,sans-serif; --mono:'Montserrat',system-ui,sans-serif;
-    --text-2xs:10px; --text-xs:11px; --text-sm:13px; --text-md:15px;
+    /* --- typografia ---
+       Wszystkie trzy role to Montserrat: marka ma jeden krój i to jest decyzja,
+       nie niedopatrzenie. Role zostają, bo niosą intencję (nagłówek / proza /
+       etykieta), ale nazwy mówią prawdę - żadnego „mono", którego tu nie ma. */
+    --display:'Montserrat',system-ui,sans-serif; --body:'Montserrat',system-ui,sans-serif; --label:'Montserrat',system-ui,sans-serif;
+    /* w rem, nie w px: przy domyślnych 16 px wartości są identyczne (11/12/13/15),
+       ale teraz rosną razem z ustawieniem rozmiaru czcionki w przeglądarce */
+    --text-2xs:.6875rem; --text-xs:.75rem; --text-sm:.8125rem; --text-md:.9375rem;
     /* --- ruch --- */
-    --ease:cubic-bezier(.33,1,.68,1); --dur:.7s;
-    --halo:none;
+    /* --ease to easeOutCubic; --ease-in jest jej lustrem (easeInCubic).
+       Przejścia odwracalne mają jechać tam i z powrotem tą samą krzywą. */
+    --ease:cubic-bezier(.33,1,.68,1); --ease-in:cubic-bezier(.32,0,.67,0); --dur:.7s;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  /* przewijanie sekcja-po-sekcji (natywne); snap-stop:always = nie przeskakuje wielu sekcji przy mocnym scrollu */
+  /* przewijanie sekcja-po-sekcji (natywne); proximity = nie walczy z użytkownikiem na długich sekcjach */
   @media(min-width:761px){
     html{scroll-snap-type:y proximity}
     main>.scene{scroll-snap-align:start}
   }
-  /* ukryty pasek przewijania (strona zapętla się w nieskończoność) */
-  html{scrollbar-width:none;-ms-overflow-style:none}
-  html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
-  /* efekt „przekroczenia granicy" przy zapętleniu */
-  .edgefx{position:fixed;inset:0;z-index:45;pointer-events:none}
-  .edgefx::before,.edgefx::after{content:"";position:absolute;left:0;right:0;height:160px;opacity:0}
-  .edgefx::before{top:0;background:linear-gradient(180deg,rgba(var(--accent-rgb),.28),transparent)}
-  .edgefx::after{bottom:0;background:linear-gradient(0deg,rgba(var(--accent-rgb),.28),transparent)}
-  .edgefx.flash-top::before{animation:edgepulse .65s var(--ease)}
-  .edgefx.flash-bottom::after{animation:edgepulse .65s var(--ease)}
-  @keyframes edgepulse{0%{opacity:0}28%{opacity:1}100%{opacity:0}}
-  main{transition:opacity .16s ease}
-  body.wrapping main{opacity:.12}   /* przygaśnięcie maskujące skok przy zapętleniu */
   html{background:var(--bg)}
-  body{font-family:var(--body);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100%;
-    background-color:var(--bg);
-    background-image:
-      radial-gradient(120% 90% at 88% 0%, rgba(var(--accent-rgb),.06), transparent 55%),
-      radial-gradient(110% 90% at 0% 100%, rgba(var(--accent-rgb),.05), transparent 58%),
-      linear-gradient(180deg,var(--bg-top),var(--bg) 55%,var(--bg-bottom));
-    background-attachment:fixed,fixed,fixed;}
+  body{font-family:var(--body);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100%;background-color:var(--bg)}
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(var(--accent-rgb),.16);color:var(--accent)}
   :focus{outline:none}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+  /* ===== Odpowiedź na wciśnięcie =====
+     Sprzężenie zwrotne należy do momentu naciśnięcia, nie do puszczenia.
+     Wcześniej na dotyku nie działo się nic między tapnięciem a wynikiem -
+     :hover ratował tylko myszkę. Wygaszamy też własną poświatę przeglądarki,
+     bo mamy swoją, i zdejmujemy opóźnienie podwójnego tapnięcia. */
+  .btn,.tc,.qtile,.filt,.collapse-cta,.dp-launch,.navsoc a,.navtoggle,
+  .modal-x,.link-btn,.topnav a,.mobilemenu a,.skip{
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .btn:active,.collapse-cta:active,.dp-launch:active,.qtile:active,.filt:active,
+  .navsoc a:active,.navtoggle:active,.modal-x:active,.link-btn:active,
+  .topnav a:active,.mobilemenu a:active{
+    transform:scale(.97);transition-duration:.1s;transition-timing-function:ease-out}
+  /* karty zespołu są duże - przy dużej powierzchni ten sam procent czyta się
+     jako zbyt gwałtowny, więc skala jest łagodniejsza */
+  .tc:active{transform:scale(.985);transition-duration:.1s;transition-timing-function:ease-out}
+  .btn-primary:active{background:var(--accent-2)}
+  .btn-ghost:active,.qtile:active,.filt:active{border-color:var(--accent)}
+  /* treść wyłącznie dla czytnika ekranu — nie clip:rect, bo ten psuje
+     odczyt w części czytników; standardowy bezpieczny zestaw */
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+    clip-path:inset(50%);white-space:nowrap;border:0}
+  /* Skok do treści - pierwszy przystanek klawiatury, niewidoczny do momentu fokusu */
+  .skip{position:fixed;top:-100px;left:16px;z-index:70;padding:13px 20px;border-radius:var(--r-sm);
+    background:var(--accent);color:var(--accent-ink);font-family:var(--label);font-size:var(--text-sm);
+    letter-spacing:.07em;text-transform:uppercase;font-weight:600;transition:top .2s var(--ease)}
+  .skip:focus{top:16px}
   img{display:block;max-width:100%}
 
   #brain{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;opacity:.82}
-  .grade{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(92% 84% at 50% 42%,transparent 66%,rgba(var(--accent-rgb),.05) 100%)}
-  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
+  /* na wąskim ekranie scena 3D się nie ładuje; to zabezpieczenie na zmianę
+     rozmiaru okna już po starcie - chmura punktów nie ma prawa wejść pod tekst */
+  @media(max-width:760px){ #brain{display:none} }
+  /* Cała atmosfera tła mieszka tutaj, na jednej warstwie fixed pod sceną 3D.
+     Wcześniej siedziała na <body> przez background-attachment:fixed - to samo
+     wygląda, ale kosztuje przemalowanie tła przy każdym pikselu przewijania
+     (a iOS i tak tego nie honoruje). Osobny fixed div kompozytor rysuje raz. */
+  .grade{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(92% 84% at 50% 42%,transparent 66%,rgba(var(--accent-rgb),.05) 100%),
+      radial-gradient(120% 90% at 88% 0%, rgba(var(--accent-rgb),.06), transparent 55%),
+      radial-gradient(110% 90% at 0% 100%, rgba(var(--accent-rgb),.05), transparent 58%),
+      linear-gradient(180deg,var(--bg-top),var(--bg) 55%,var(--bg-bottom))}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
   .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,#ffffff 0%,rgba(255,255,255,.92) 26%,rgba(255,255,255,.5) 60%,transparent 100%)}
 
   .brandmark{position:fixed;top:16px;left:34px;z-index:8;display:flex;align-items:center;cursor:pointer}
-  .brandmark img{height:94px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(35,45,38,.08))}
-  .brandmark .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 11px var(--glow);animation:breathe 4s ease-in-out infinite}
-  @media(max-width:600px){ .brandmark{top:10px;left:14px} .brandmark img{height:62px} }
-  @keyframes breathe{0%,100%{opacity:.5;transform:scale(.85)}50%{opacity:1;transform:scale(1.12)}}
-  .loopnote{position:fixed;bottom:26px;left:40px;z-index:8;font-family:var(--mono);font-size:var(--text-2xs);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:9px;text-shadow:var(--halo)}
-  .loopnote .sp{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--glow);animation:breathe 3s ease-in-out infinite}
+  /* logo skaluje się z wysokością okna: 94 px na niskim ekranie zjadałoby
+     ósmą część widoku i wchodziło na nagłówek hero */
+  .brandmark img{height:clamp(62px,9vh,94px);width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(35,45,38,.08))}
+  @media(max-width:600px){ .brandmark{top:10px;left:14px} }
+  /* 2,2 s = 0,45 Hz: poza pasmem, które męczy, i z mniejszym skokiem skali */
+  @keyframes breathe{0%,100%{opacity:.65;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
 
-  .topnav{position:fixed;top:22px;right:28px;z-index:8;display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.82rem;letter-spacing:.13em;text-transform:uppercase}
-  .topnav a{display:inline-flex;align-items:center;height:42px;padding:0 16px;border-radius:var(--r-md);color:var(--soft);cursor:pointer;transition:color .25s,background .25s}
+  .topnav{position:fixed;top:22px;right:28px;z-index:8;display:flex;align-items:center;gap:4px;font-family:var(--label);font-size:.82rem;letter-spacing:.13em;text-transform:uppercase}
+  .topnav a{display:inline-flex;align-items:center;height:44px;padding:0 16px;border-radius:var(--r-md);color:var(--soft);cursor:pointer;transition:color .25s,background .25s}
   .topnav a:hover{color:var(--accent);background:rgba(var(--accent-rgb),.06)}
   .topnav>a{position:relative}
   .topnav>a::after{content:"";position:absolute;left:15px;right:15px;bottom:7px;height:1.5px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
   .topnav>a:hover::after{transform:scaleX(1)}
   .navsoc{display:flex;align-items:center;gap:7px;margin-left:12px}
-  .navsoc a{width:40px;height:40px;padding:0;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--cream);background:var(--card);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:color .25s,border-color .25s,background .25s,transform .25s}
+  .navsoc a{width:44px;height:44px;padding:0;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);background:var(--card);transition:color .25s,border-color .25s,background .25s,transform .25s}
   .navsoc a:hover{color:var(--accent);border-color:var(--accent);background:rgba(var(--accent-rgb),.06);transform:translateY(-1px)}
   .navsoc svg{width:18px;height:18px}
   @media(max-width:980px){ .topnav{top:16px;right:12px} .topnav>a{display:none} }
-  .navtoggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);cursor:pointer;margin-left:8px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .navtoggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);cursor:pointer;margin-left:8px}
   .navtoggle span,.navtoggle span::before,.navtoggle span::after{display:block;width:18px;height:2px;background:var(--accent);border-radius:2px;transition:transform .25s,opacity .2s}
   .navtoggle span{position:relative}
   .navtoggle span::before{content:"";position:absolute;top:-6px}
@@ -124,69 +181,83 @@
   .navtoggle.open span::after{top:0;transform:rotate(-45deg)}
   .mobilemenu{display:none;position:fixed;top:70px;left:12px;right:12px;z-index:9;flex-direction:column;gap:2px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 24px 60px -24px rgba(20,30,24,.35)}
   .mobilemenu.open{display:flex}
-  .mobilemenu a{font-family:var(--mono);font-size:var(--text-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--cream);padding:14px;border-radius:var(--r-sm)}
+  .mobilemenu a{font-family:var(--label);font-size:var(--text-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);padding:14px;border-radius:var(--r-sm)}
   .mobilemenu a:hover,.mobilemenu a:focus-visible{background:rgba(var(--accent-rgb),.06);color:var(--accent)}
   @media(max-width:980px){ .navtoggle{display:inline-flex} }
   @media(min-width:981px){ .mobilemenu{display:none!important} }
 
   .scene{position:relative;z-index:2;padding:11vh 4.5vw;overflow:hidden}
-  .scene.hero{min-height:90vh;display:flex;align-items:center}
+  /* safe center: gdy treść jest wyższa od pola, wyrównuje do góry zamiast
+     wychodzić nad padding - inaczej nagłówek wjeżdża pod logo i nawigację */
+  .scene.hero{min-height:90vh;display:flex;align-items:safe center;padding-top:max(11vh,104px)}
+  /* Na niskim oknie (1280x720 to nadal najpospolitszy laptop) hero ma do
+     rozdania mniej niż potrzebuje. Zaciskamy rytm wewnątrz sekcji, zamiast
+     spychać przycisk „Umów wizytę" pod krawędź ekranu. */
+  @media(max-height:800px){
+    .scene.hero .eyebrow{margin-bottom:16px}
+    .scene.hero .lede{margin-top:16px}
+    .scene.hero .cta{margin-top:24px}
+  }
   .inner{position:relative;z-index:1;width:100%;max-width:1320px;margin:0 auto}
   .col{width:100%;max-width:620px;position:relative;z-index:1}
   .sidx{position:absolute;top:-2vh;right:0;font-family:var(--display);font-weight:500;font-size:clamp(4.5rem,11vw,10rem);line-height:1;color:rgba(var(--accent-rgb),.055);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
   @media(max-width:760px){ .sidx{font-size:clamp(2.8rem,15vw,4.5rem);top:-1vh} }
 
-  .eyebrow{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:12px;margin-bottom:24px;text-shadow:var(--halo)}
+  .eyebrow{font-family:var(--label);font-size:var(--text-xs);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
   .eyebrow::before{content:"";width:28px;height:1px;background:var(--accent);opacity:.55}
-  h1,h2,h3,h4{font-family:var(--display);font-weight:700;letter-spacing:-.022em;text-shadow:none}
-  h1{font-size:clamp(1.95rem,4.1vw,3.5rem);line-height:1.12;text-wrap:balance;max-width:24ch}
-  h2{font-size:clamp(2rem,3.9vw,3.3rem);line-height:1.08;text-wrap:balance;max-width:18ch}
+  /* Tracking jest funkcją stopnia, nie stałą: duży tekst rozjeżdża się
+     optycznie i trzeba go ścisnąć, mały traci czytelność, jeśli go ścisnąć.
+     Wcześniej -.022em szło od 56 px aż po 19,5 px — na dole zły kierunek. */
+  h1,h2,h3,h4{font-family:var(--display);font-weight:700;text-shadow:none}
+  h1{font-size:clamp(1.95rem,4.1vw,3.5rem);line-height:1.12;letter-spacing:-.03em;text-wrap:balance;max-width:24ch}
+  /* drugie zdanie hero to osobny takt, nie osobny akapit: <br> wstawiał tu
+     całą pustą linię, teraz odstęp jest wartością, którą da się wyregulować */
+  /* pretty, nie balance: twarda spacja przed półpauzą skleja „razem –" w jeden
+     token i balance wypycha go w krótki wiersz na środku - pretty łamie ten
+     takt naturalnie, z krótkim wierszem na końcu */
+  .h1-beat{display:block;margin-top:.28em;text-wrap:pretty}
+  h2{font-size:clamp(2rem,3.9vw,3.3rem);line-height:1.08;letter-spacing:-.026em;text-wrap:balance;max-width:18ch}
   /* zasady pisowni (z wzorca Ai Agent): nagłówki/eksponowane wyrównane, proza bez sierot */
+  h3{letter-spacing:-.008em}h4{letter-spacing:0}
   h3,h4{text-wrap:balance}
-  p,li,.lede,.rc-why,.modal-desc{text-wrap:pretty}
+  /* wdowy i bękarty w ostatnim wierszu to zadanie łamacza, nie twardej spacji */
+  p,li,.lede,.rc-why,.dp-bubble,.foot,.tt-text,.assure-list li,.dlg-hint,.spec-desc,.pt-side p{text-wrap:pretty}
   .accentword{color:var(--accent);font-style:italic;position:relative}
   .accentword::after{content:"";position:absolute;left:.02em;right:.04em;bottom:-.04em;height:2px;border-radius:2px;background:var(--accent);opacity:.45;transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease) .4s}
-  .scene.show .accentword::after{animation:uline 1s var(--ease) .4s forwards}
-  .lede{font-size:clamp(1.08rem,1.35vw,1.26rem);color:var(--soft);margin-top:24px;max-width:46ch;line-height:1.62;text-shadow:var(--halo)}
+  .scene.show .accentword::after{transform:scaleX(1)}
+  .lede{font-size:clamp(1.08rem,1.35vw,1.26rem);color:var(--soft);margin-top:24px;max-width:46ch;line-height:1.62}
 
-  .btn{font-family:var(--mono);font-size:var(--text-sm);letter-spacing:.07em;text-transform:uppercase;padding:15px 26px;border-radius:var(--r-md);display:inline-flex;align-items:center;gap:9px;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s;cursor:pointer;border:1px solid transparent}
+  .btn{font-family:var(--label);font-size:var(--text-sm);letter-spacing:.07em;text-transform:uppercase;padding:15px 26px;border-radius:var(--r-md);display:inline-flex;align-items:center;gap:9px;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s;cursor:pointer;border:1px solid transparent}
   .btn-primary{background:var(--accent);color:var(--accent-ink);font-weight:600}
   .btn-primary:hover{background:var(--accent-2);transform:translateY(-2px)}
-  .btn-ghost{border-color:var(--line);color:var(--cream);background:rgba(236,231,222,.03);backdrop-filter:blur(4px)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:var(--surface)}
   .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
   .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:38px}
 
-  @keyframes rin{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-  @keyframes fadein{from{opacity:0}to{opacity:1}}
-  @keyframes sin{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
-  @keyframes growy{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-  @keyframes uline{to{transform:scaleX(1)}}
-  .reveal{opacity:0}
-  .scene.show .reveal{animation:rin .85s var(--ease) both}
-  .scene.show .reveal:nth-child(2){animation-delay:.07s}
-  .scene.show .reveal:nth-child(3){animation-delay:.14s}
-  .scene.show .reveal:nth-child(4){animation-delay:.21s}
-  .scene.show .reveal:nth-child(5){animation-delay:.28s}
+  /* ===== Wejścia sekcji =====
+     Transitions, nie @keyframes. Animacja o stałym czasie zawsze rusza od
+     swojego „from" i nie da się jej złapać w locie; transition interpoluje od
+     wartości, która jest w tej chwili na ekranie — więc scena złapana w pół
+     drogi (szybki scroll, snap, powrót) kontynuuje, zamiast przeskakiwać. */
+  .reveal{opacity:0;transform:translateY(24px);
+    transition:opacity .85s var(--ease),transform .85s var(--ease)}
+  .scene.show .reveal{opacity:1;transform:none}
+  .scene.show .reveal:nth-child(2){transition-delay:.07s}
+  .scene.show .reveal:nth-child(3){transition-delay:.14s}
+  .scene.show .reveal:nth-child(4){transition-delay:.21s}
+  .scene.show .reveal:nth-child(5){transition-delay:.28s}
   /* hero: miększe, płynniejsze wejście napisów po załadowaniu */
-  @keyframes heroin{from{opacity:0;transform:translateY(20px) scale(.985);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
-  .scene.hero.show .reveal{animation:heroin 1.15s cubic-bezier(.16,1,.3,1) both}
-  .scene.hero.show .reveal:nth-child(1){animation-delay:.05s}
-  .scene.hero.show .reveal:nth-child(2){animation-delay:.18s}
-  .scene.hero.show .reveal:nth-child(3){animation-delay:.32s}
-  .scene.hero.show .reveal:nth-child(4){animation-delay:.46s}
-  /* cytat w hero - pojawia się pod mózgiem i „odjeżdża" na swoje miejsce (jak mózg) */
-  .hero-quote{position:absolute;z-index:3;right:4.5vw;bottom:8vh;max-width:34ch;text-align:right;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(1.05rem,1.5vw,1.5rem);line-height:1.45;color:var(--accent);opacity:0;text-shadow:0 1px 10px rgba(241,232,218,.7)}
-  .hero-quote em{color:var(--cream);font-style:italic}
-  .scene.hero.show .hero-quote{animation:qdrive 1.5s cubic-bezier(.16,1,.3,1) .35s both}
-  @keyframes qdrive{from{opacity:0;transform:translate(-150px,28px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
-  @media(max-width:900px){ .hero-quote{right:auto;left:26px;bottom:5vh;text-align:left;max-width:30ch;font-size:1.05rem} }
-  @media(max-width:620px){ .hero-quote{display:none} }
+  /* rozmycie na wejściu zostaje: przy szybkim ruchu niesie prędkość lepiej
+     niż ostra krawędź (i tak samo działa cytat niżej) */
+  .scene.hero .reveal{transform:translateY(20px) scale(.985);filter:blur(7px);
+    transition:opacity 1.15s cubic-bezier(.16,1,.3,1),transform 1.15s cubic-bezier(.16,1,.3,1),filter 1.15s cubic-bezier(.16,1,.3,1)}
+  .scene.hero.show .reveal{opacity:1;transform:none;filter:none}
+  .scene.hero.show .reveal:nth-child(1){transition-delay:.05s}
+  .scene.hero.show .reveal:nth-child(2){transition-delay:.18s}
+  .scene.hero.show .reveal:nth-child(3){transition-delay:.32s}
+  .scene.hero.show .reveal:nth-child(4){transition-delay:.46s}
 
-  .hero .live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--glow);animation:breathe 3.4s ease-in-out infinite}
-  .hero-meta{display:flex;gap:34px;flex-wrap:wrap;margin-top:46px}
-  .hero-meta div{display:flex;flex-direction:column;gap:4px}
-  .hero-meta .num{font-family:var(--display);font-size:2rem;line-height:1;color:var(--cream)}
-  .hero-meta .lbl{font-family:var(--body);font-weight:600;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .hero .live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--halo-ring);animation:breathe 2.2s ease-in-out infinite}
 
   /* divider */
   .seam{position:relative;z-index:2;height:1px;max-width:1180px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--line),transparent)}
@@ -194,77 +265,97 @@
   /* SPECJALIZACJE (svc) */
   .svc-head{max-width:680px}
   .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
-  .svc{position:relative;padding:var(--space-4);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    opacity:0;transition:transform .35s var(--ease),border-color .35s}
-  .scene.show .svc{animation:fadein .8s ease both}
-  .scene.show .svc:nth-child(2){animation-delay:.08s}.scene.show .svc:nth-child(3){animation-delay:.16s}.scene.show .svc:nth-child(4){animation-delay:.24s}.scene.show .svc:nth-child(5){animation-delay:.32s}.scene.show .svc:nth-child(6){animation-delay:.4s}
+  .svc{position:relative;padding:var(--space-4);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);
+    opacity:0;transition-property:opacity,transform,border-color;
+    transition-duration:.8s,.35s,.35s;transition-timing-function:ease,var(--ease),ease}
+  .scene.show .svc{opacity:1}
+  /* opóźnienie dotyczy wyłącznie krycia — gdyby objęło transform, hover kart
+     zacząłby reagować z 400 ms zwłoki */
+  .scene.show .svc:nth-child(2){transition-delay:.08s,0s,0s}.scene.show .svc:nth-child(3){transition-delay:.16s,0s,0s}.scene.show .svc:nth-child(4){transition-delay:.24s,0s,0s}.scene.show .svc:nth-child(5){transition-delay:.32s,0s,0s}.scene.show .svc:nth-child(6){transition-delay:.4s,0s,0s}
   .svc:hover{border-color:rgba(var(--accent-rgb),.3);transform:translateY(-3px)}
-  .svc-art{display:grid;place-items:center;width:52px;height:52px;border-radius:var(--r-md);background:rgba(var(--accent-rgb),.08);color:var(--accent);margin-bottom:18px}
-  .svc-art svg{width:30px;height:30px;overflow:visible}
+  .svc-art{display:grid;place-items:center;width:52px;height:52px;border-radius:var(--r-md);
+    background:rgba(var(--accent-rgb),.10);box-shadow:inset 0 0 0 1px rgba(var(--accent-rgb),.14);
+    color:var(--accent-2);margin-bottom:18px}
+  .svc-art svg{width:30px;height:30px;overflow:visible;stroke-width:1.9}
   .svc-art .dl{stroke-dasharray:100}
   .svc-art .node{opacity:.6;transform-box:fill-box;transform-origin:center}
   .scene.show .svc .dl{stroke-dashoffset:100;animation:svgdraw 1s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards}
-  .svc h3{font-family:var(--display);font-weight:500;font-size:1.4rem;color:var(--cream);margin-bottom:9px}
+  .svc h3{font-family:var(--display);font-weight:500;font-size:1.4rem;color:var(--ink);margin-bottom:9px}
   .svc p{font-size:.94rem;color:var(--soft);line-height:1.55}
-  .svc-note{margin-top:24px;display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:rgba(var(--accent-rgb),.05);border-radius:var(--r-lg);padding:18px 20px;font-size:.94rem;line-height:1.6;color:var(--soft);max-width:none}
-  .svc-note b{color:var(--cream)}
+  .svc-note{margin-top:24px;display:block;border:1px solid var(--line);background:rgba(var(--accent-rgb),.05);border-radius:var(--r-lg);padding:18px 20px;font-size:.94rem;line-height:1.6;color:var(--soft);max-width:none}
+  .svc-note b{color:var(--ink)}
   .sway{transform-box:fill-box;transform-origin:50% 100%}.bloom{transform-box:fill-box;transform-origin:50% 92%}.rings{transform-box:fill-box;transform-origin:center}
   @keyframes svgdraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
-  @keyframes svgsway{0%,100%{transform:rotate(-2.6deg)}50%{transform:rotate(2.6deg)}}
+  @keyframes svgsway{0%,100%{transform:none}25%{transform:rotate(2.6deg)}75%{transform:rotate(-2.6deg)}}
   @keyframes svgbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
   @keyframes svghb{0%,100%{opacity:1}48%{opacity:.32}}
-  @keyframes svgnode{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
+  @keyframes svgnode{0%,100%{opacity:.6;transform:none}50%{opacity:1;transform:scale(1.18)}}
+  /* Ikony żyją przez chwilę po wejściu, a potem siadają. Wcześniej sześć
+     kafli kołysało się i oddychało bez końca w paśmie 0,18-0,20 Hz - dokładnie
+     tam, gdzie powolna oscylacja zaczyna męczyć. Dwa cykle niosą to samo
+     „to jest żywe", nie zostawiając ruchu na stałe w tle czytania. */
   @media(prefers-reduced-motion:no-preference){
-    .scene.show .svc .pulse{animation:svgdraw 1s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards,svghb 3s ease-in-out 1.5s infinite}
-    .scene.show .svc .sway{animation:svgsway 5.5s ease-in-out 1.4s infinite}
-    .scene.show .svc .bloom{animation:svgbreathe 5s ease-in-out 1.5s infinite}
-    .scene.show .svc .rings{animation:svgbreathe 5.5s ease-in-out 1.5s infinite}
-    .scene.show .svc .node{animation:svgnode 2.6s ease-in-out 1.5s infinite}
+    .scene.show .svc .pulse{animation:svgdraw 1s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards,svghb 3s ease-in-out 1.5s 2}
+    .scene.show .svc .sway{animation:svgsway 5.5s ease-in-out 1.4s 2}
+    .scene.show .svc .bloom{animation:svgbreathe 5s ease-in-out 1.5s 2}
+    .scene.show .svc .rings{animation:svgbreathe 5.5s ease-in-out 1.5s 2}
+    .scene.show .svc .node{animation:svgnode 2.6s ease-in-out 1.5s 3}
   }
 
   /* ZESPÓŁ */
   .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:32px}
-  .filt{display:inline-flex;align-items:center;min-height:40px;font-family:var(--body);font-size:.86rem;font-weight:600;letter-spacing:0;color:var(--soft);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 15px;cursor:pointer;transition:.25s}
+  .filt{display:inline-flex;align-items:center;min-height:44px;font-family:var(--body);font-size:.86rem;font-weight:600;letter-spacing:0;color:var(--soft);background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:9px 15px;cursor:pointer;transition:.25s}
   .filt:hover{border-color:var(--accent);color:var(--accent)}
   .filt.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
   .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:14px;margin-top:26px}
   .tc{display:flex;flex-direction:column;text-align:left;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--card);cursor:pointer;transition:transform .3s var(--ease),border-color .3s}
   .tc:hover{transform:translateY(-3px);border-color:rgba(var(--accent-rgb),.3)}
-  .tc-ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:#eef2ec}
+  .tc-ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--photo)}
   .tc-ph img{width:100%;height:100%;object-fit:cover;object-position:center 16%;transition:transform .4s ease;filter:saturate(.95)}
   .tc:hover .tc-ph img{transform:scale(1.05)}
   .tc-fl{position:absolute;left:8px;bottom:8px;display:flex;gap:5px;flex-wrap:wrap}
-  .tc-fl span{background:rgba(246,239,221,.92);color:var(--accent);font-family:var(--mono);font-size:var(--text-2xs);letter-spacing:.04em;padding:3px 7px;border-radius:var(--r-xs);backdrop-filter:blur(3px);font-weight:600}
+  /* plakietka była ostatnim beżem po palecie „ciepły papier" - i jedynym
+     tekstem na stronie poniżej 4,5:1. Biel + ciemniejsza zieleń: 6,3:1 */
+  .tc-fl span{background:rgba(255,255,255,.94);color:var(--accent-2);font-family:var(--label);font-size:var(--text-2xs);letter-spacing:.04em;padding:3px 7px;border-radius:var(--r-xs);font-weight:600}
   .tc-b{padding:13px 14px 15px;display:flex;flex-direction:column;gap:4px}
-  .tc-n{font-family:var(--display);font-weight:500;font-size:1.02rem;color:var(--cream);line-height:1.12}
+  .tc-n{font-family:var(--display);font-weight:500;font-size:1.02rem;color:var(--ink);line-height:1.12}
   .tc-r{font-family:var(--body);font-size:.8rem;font-weight:600;letter-spacing:0;color:var(--accent);line-height:1.3}
   .tc-m{font-size:.84rem;color:var(--soft);margin-top:5px;font-weight:500}
 
   /* CENNIK */
-  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
-  .pc{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:var(--space-4);opacity:0}
-  .scene.show .pc{animation:fadein .8s ease both}
-  .scene.show .pc:nth-child(2){animation-delay:.08s}.scene.show .pc:nth-child(3){animation-delay:.16s}.scene.show .pc:nth-child(4){animation-delay:.24s}.scene.show .pc:nth-child(5){animation-delay:.32s}.scene.show .pc:nth-child(6){animation-delay:.4s}
-  .pc h3{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:1.25rem;color:var(--cream);padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--line)}
-  .pc h3 i{color:var(--clay);font-size:20px}
-  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid rgba(228,235,231,.06);font-size:.94rem;color:var(--soft)}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px;align-items:start}
+  .pc{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:var(--space-4);opacity:0;transition:opacity .8s ease}
+  .scene.show .pc{opacity:1}
+  .scene.show .pc:nth-child(2){transition-delay:.08s}.scene.show .pc:nth-child(3){transition-delay:.16s}.scene.show .pc:nth-child(4){transition-delay:.24s}.scene.show .pc:nth-child(5){transition-delay:.32s}.scene.show .pc:nth-child(6){transition-delay:.4s}
+  .pc h3{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:1.25rem;color:var(--ink);padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid rgba(28,38,30,.09);font-size:.94rem;color:var(--soft)}
   .pr:last-child{border-bottom:0;padding-bottom:0}
   .pp{white-space:nowrap;font-family:var(--display);font-weight:500;font-size:1.05rem;color:var(--accent)}
-  .price-foot{font-family:var(--mono);font-size:var(--text-xs);color:var(--muted);margin-top:24px;letter-spacing:.03em}
+  .price-foot{font-family:var(--label);font-size:var(--text-xs);color:var(--muted);margin-top:24px;letter-spacing:.03em}
 
   /* ROZWIJANE SEKCJE: teaser + przyciski */
-  .collapse-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;font-weight:500;color:var(--accent-ink);background:var(--accent);border:1px solid transparent;border-radius:var(--r-md);padding:14px 24px;cursor:pointer;transition:transform .25s var(--ease),background .25s,border-color .25s}
+  .collapse-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--label);font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;font-weight:500;color:var(--accent-ink);background:var(--accent);border:1px solid transparent;border-radius:var(--r-md);padding:14px 24px;cursor:pointer;transition:transform .25s var(--ease),background .25s,border-color .25s}
   .collapse-cta:hover{background:var(--accent-2);transform:translateY(-2px)}
   .collapse-cta span{transition:transform .25s var(--ease)}
   .collapse-cta:hover span{transform:translateY(2px)}
   .collapse-cta.ghost{background:transparent;color:var(--accent);border-color:var(--line);margin-top:30px}
-  .collapse-cta.sm{margin-top:0;padding:9px 16px;font-size:.72rem;color:var(--soft)}
+  .collapse-cta.sm{margin-top:0;min-height:44px;padding:9px 16px;font-size:.75rem;color:var(--soft)}
   .collapse-cta.sm:hover{color:var(--accent)}
-  .full-top{display:flex;justify-content:flex-end;margin-bottom:10px}
+  .full-top{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding-bottom:12px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+  .full-top b{font-family:var(--display);font-weight:500;font-size:1.05rem;color:var(--ink)}
   #teamGrid{margin-top:40px}
   .collapse-cta.ghost:hover{background:rgba(var(--accent-rgb),.06);border-color:var(--accent)}
   .collapse-cta.ghost:hover span{transform:translateY(-2px)}
-  .team-full,.price-full{animation:fadein .5s ease both}
+  /* Wejście i wyjście tą samą drogą — treść unosi się z miejsca przycisku
+     i tam wraca. Wysokości nie animujemy z rozmysłem: rozwinięcie zespołu to
+     kilka tysięcy pikseli, a animowanie wysokości przeliczałoby układ całej
+     siatki w każdej klatce. Ruch niesie transform i krycie. */
+  .team-full,.price-full{opacity:0;transform:translateY(10px);
+    transition:opacity .45s var(--ease),transform .45s var(--ease)}
+  .team-full.in,.price-full.in{opacity:1;transform:none}
+  .team-full.out,.price-full.out{opacity:0;transform:translateY(10px);
+    transition-timing-function:var(--ease-in);transition-duration:.26s}
   /* teaser zespołu */
   /* Smuga portretów za kursorem. Karty leżą pod treścią sekcji (.inner ma
      z-index 1), więc wychodzą zza nagłówka i omijają biały kafel zespołu. */
@@ -284,7 +375,7 @@
   .tt-avatars img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:center 16%;border:2px solid var(--surface);margin-left:-16px;box-shadow:0 2px 7px rgba(35,45,38,.18)}
   .tt-avatars img:first-child{margin-left:0}
   .tt-text{flex:1;min-width:260px;color:var(--soft);font-size:1rem;line-height:1.55}
-  .tt-text b{color:var(--cream);font-family:var(--display);font-weight:500;font-size:1.18rem;display:block;margin-bottom:4px}
+  .tt-text b{color:var(--ink);font-family:var(--display);font-weight:500;font-size:1.18rem;display:block;margin-bottom:4px}
   /* teaser cennika */
   .price-teaser{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;margin-top:36px;padding:28px 30px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
   .pt-rows{display:flex;flex-direction:column}
@@ -298,19 +389,19 @@
   /* PROCES - poziomy timeline na desktop */
   .proc .inner{max-width:1320px}
   .steps{position:relative;margin-top:46px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
-  .steps::before{content:"";position:absolute;left:40px;right:40px;top:20px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),rgba(var(--accent-rgb),.14));transform:scaleX(0);transform-origin:left}
-  .scene.show .steps::before{animation:growx 1.5s var(--ease) .15s forwards}
-  @keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  .step{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:0;opacity:0}
-  .scene.show .step{animation:rin .7s var(--ease) both}
-  .scene.show .step:nth-child(2){animation-delay:.16s}.scene.show .step:nth-child(3){animation-delay:.32s}.scene.show .step:nth-child(4){animation-delay:.48s}
-  .step .num{position:relative;z-index:1;width:40px;height:40px;margin-bottom:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:var(--text-sm);color:var(--accent);background:var(--surface);border:1px solid rgba(var(--accent-rgb),.32);box-shadow:0 0 0 7px var(--bg)}
-  .step h4{font-family:var(--display);font-weight:500;font-size:1.22rem;margin-bottom:8px}
+  .steps::before{content:"";position:absolute;left:40px;right:40px;top:20px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),rgba(var(--accent-rgb),.14));transform:scaleX(0);transform-origin:left;transition:transform 1.5s var(--ease) .15s}
+  .scene.show .steps::before{transform:scaleX(1)}
+  .step{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:0;opacity:0;transform:translateY(24px);
+    transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .scene.show .step{opacity:1;transform:none}
+  .scene.show .step:nth-child(2){transition-delay:.16s}.scene.show .step:nth-child(3){transition-delay:.32s}.scene.show .step:nth-child(4){transition-delay:.48s}
+  .step .num{position:relative;z-index:1;width:40px;height:40px;margin-bottom:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--label);font-size:var(--text-sm);color:var(--accent);background:var(--surface);border:1px solid rgba(var(--accent-rgb),.32);box-shadow:0 0 0 7px var(--bg)}
+  .step h3{font-family:var(--display);font-weight:500;font-size:1.22rem;margin-bottom:8px}
   .step p{color:var(--soft);font-size:.92rem;max-width:30ch;line-height:1.55}
   @media(max-width:760px){
     .steps{grid-template-columns:1fr;gap:0;max-width:760px}
-    .steps::before{left:19px;right:auto;top:16px;bottom:20px;width:2px;height:auto;background:linear-gradient(var(--accent),rgba(var(--accent-rgb),.12));transform:scaleY(0);transform-origin:top}
-    .scene.show .steps::before{animation:growy 1.4s var(--ease) .15s forwards}
+    .steps::before{left:19px;right:auto;top:16px;bottom:20px;width:2px;height:auto;background:linear-gradient(var(--accent),rgba(var(--accent-rgb),.12));transform:scaleY(0);transform-origin:top;transition:transform 1.4s var(--ease) .15s}
+    .scene.show .steps::before{transform:scaleY(1)}
     .step{display:grid;grid-template-columns:56px 1fr;gap:22px;padding:18px 0;align-items:start}
     .step .num{margin-bottom:0}
     .step p{max-width:48ch}
@@ -320,10 +411,10 @@
   /* prywatność + komfort: kompaktowy pasek pod procesem (high level) */
   .assure{margin-top:48px;padding-top:30px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:26px 44px;align-items:center}
   .assure-head{max-width:30ch}
-  .assure-eyebrow{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:9px}
+  .assure-eyebrow{font-family:var(--label);font-size:var(--text-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:9px}
   .assure-head p{color:var(--soft);font-size:.95rem;line-height:1.5}
   .assure-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 26px;flex:1;min-width:300px}
-  .assure-list li{display:flex;align-items:center;gap:12px;color:var(--cream);font-size:.93rem;line-height:1.3}
+  .assure-list li{display:flex;align-items:center;gap:12px;color:var(--ink);font-size:.93rem;line-height:1.3}
   .assure-ic{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:var(--r-md);background:rgba(var(--accent-rgb),.08);color:var(--accent)}
   @media(max-width:620px){ .assure{gap:22px} .assure-list{grid-template-columns:1fr} }
 
@@ -331,43 +422,56 @@
   .contact .inner{max-width:1320px}
   .contact p{max-width:52ch}
   /* głębia kart */
-  .svc,.pc,.priv,.tc{box-shadow:var(--shadow-sm)}
-  .svc:hover,.tc:hover,.pc:hover,.priv:hover{box-shadow:var(--shadow)}
+  .svc,.pc,.tc{box-shadow:var(--shadow-sm)}
+  .svc:hover,.tc:hover,.pc:hover{box-shadow:var(--shadow)}
   /* Dlaczego - 2 kolumny */
-  .why-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
-  .why-grid .col{max-width:none}
   .why-points{list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--line)}
   .why-points li{position:relative;padding:18px 0 18px 26px;border-bottom:1px solid var(--line);font-size:1.02rem;color:var(--soft);line-height:1.5}
-  .why-points li b{color:var(--cream);font-weight:600}
+  .why-points li b{color:var(--ink);font-weight:600}
   .why-points li::before{content:"";position:absolute;left:0;top:27px;width:12px;height:1.5px;background:var(--accent)}
   /* pull-quote */
-  .quote-scene{padding-top:9vh;padding-bottom:9vh}
-  .bigquote{position:relative;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(1.9rem,4vw,3.2rem);line-height:1.24;color:var(--cream);max-width:42ch;text-wrap:balance}
-  .bigquote em{color:var(--accent)}
-  .qmark{position:absolute;left:-.06em;top:-.55em;font-size:2.4em;color:rgba(var(--accent-rgb),.16);font-style:normal;line-height:1}
-  .qattr{display:inline-flex;align-items:center;gap:12px;margin-top:28px;font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .qline{width:34px;height:1.5px;background:var(--accent)}
-  @media(max-width:760px){ .why-grid{grid-template-columns:1fr;gap:32px} }
   .contact h2{font-size:clamp(2.4rem,5.5vw,4.2rem);max-width:15ch;line-height:1.03}
   .contact p{color:var(--soft);font-size:clamp(1.06rem,1.4vw,1.22rem);margin-top:22px;max-width:48ch;line-height:1.6}
   .mailrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:36px}
-  .foot{font-family:var(--mono);font-size:var(--text-xs);color:var(--muted);letter-spacing:.03em;margin-top:50px;line-height:2;border-top:1px solid var(--line);padding-top:26px}
+  .pagefoot{position:relative;z-index:2;padding:0 4.5vw 9vh}
+  @media(max-width:980px){ .pagefoot{padding:0 26px 8vh} }
+  .foot{font-family:var(--label);font-size:var(--text-xs);color:var(--muted);letter-spacing:.03em;line-height:2;border-top:1px solid var(--line);padding-top:26px}
   .foot a{color:var(--soft)}.foot a:hover{color:var(--accent)}
   .foot .fsoc{display:inline-flex;gap:10px;margin-left:8px}
-  .crisis{color:var(--clay)}
+  /* linia kryzysowa: najważniejszy tekst w stopce, więc własny stopień w skali - nie 11px stopki */
+  .crisis{display:inline-block;margin:6px 0;color:var(--clay);font-family:var(--body);font-size:var(--text-md);font-weight:600;letter-spacing:0;line-height:1.5;text-transform:none}
+  .crisis b{font-weight:700}
 
   @media(max-width:980px){
     .scene{padding:10vh 26px}
     .svc-grid,.price-grid{grid-template-columns:repeat(2,1fr)}
-    .brandmark{left:20px}.loopnote{left:20px}
+    .brandmark{left:20px}
   }
   @media(max-width:620px){
     .svc-grid,.price-grid{grid-template-columns:1fr}
-    .hero-meta{gap:24px}
   }
-  @media(prefers-reduced-motion:reduce){*{animation:none!important}.reveal,.svc,.pc,.priv,.step,.tc{opacity:1!important;transform:none!important;transition:none!important}.steps::before{transform:scaleY(1)!important}.svc-art .dl{stroke-dashoffset:0!important}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}.reveal,.svc,.pc,.step,.tc{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}.steps::before{transform:scaleY(1)!important}.svc-art .dl{stroke-dashoffset:0!important}
+    /* nie „bez reakcji", tylko łagodniejsza: zostaje przenikanie, znika skala */
+    .modal-card,.modal.out .modal-card{transform:none!important;transition:opacity .2s ease!important}
+    .team-full,.price-full,.team-full.out,.price-full.out{transform:none!important;transition:opacity .2s ease!important}
+    .modal-bg{transition:opacity .2s ease!important}
+    .btn:active,.tc:active,.qtile:active,.filt:active,.collapse-cta:active,.dp-launch:active,
+    .navsoc a:active,.navtoggle:active,.modal-x:active,.link-btn:active,.topnav a:active,.mobilemenu a:active{transform:none!important}
+  }
+  /* ===== Pozostałe preferencje systemowe ===== */
+  @media(prefers-reduced-transparency:reduce){
+    .modal-bg{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(20,28,22,.74)}
+    .grain{display:none}
+    .tc-fl span{background:#fff}
+  }
+  @media(prefers-contrast:more){
+    :root{--line:rgba(28,38,30,.34);--muted:#4f564f;--soft:#454c46}
+    .svc,.pc,.tc,.rescard,.qtile,.filt,.dlg-note,.svc-note,.team-teaser,.price-teaser,.dobor-panel{border-color:rgba(28,38,30,.42)}
+    :focus-visible{outline-width:3px}
+    .btn-ghost{border-color:var(--accent)}
+  }
   /* awaryjne wymuszenie widoczności, gdy animacje CSS nie ruszają (np. kontekst headless) */
-  body.forced .reveal,body.forced .svc,body.forced .pc,body.forced .priv,body.forced .step{opacity:1!important;transform:none!important;animation:none!important}
+  body.forced .reveal,body.forced .svc,body.forced .pc,body.forced .step{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
   body.forced .steps::before{transform:scaleY(1)!important;animation:none!important}
   body.forced .accentword::after{transform:scaleX(1)!important;animation:none!important}
   body.forced .svc-art .dl{stroke-dashoffset:0!important;animation:none!important}
@@ -375,7 +479,7 @@
   /* ===== Zespół: grupy + większe karty ===== */
   .team-group{margin-bottom:46px}
   .group-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:24px}
-  .group-head h3{font-family:var(--display);font-weight:500;font-size:1.5rem;color:var(--cream);line-height:1.1}
+  .group-head h3{font-family:var(--display);font-weight:500;font-size:1.5rem;color:var(--ink);line-height:1.1}
   .group-count{font-size:.85rem;color:var(--muted);font-weight:600}
   /* galeria zespołu: równa siatka portretów (jednolite proporcje, wyrównane rzędy) */
   .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:18px;margin-top:24px;align-items:start}
@@ -391,20 +495,15 @@
 
   /* === DOBÓR: ciepły, spójny — asystent inline w jednym panelu === */
   .dobor-scene .inner{max-width:1320px}
-  .dobor-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,58px);align-items:center}
+  .dobor-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,58px);align-items:start}
   .dobor-right{display:flex;flex-direction:column}
-  .dobor-or{display:flex;align-items:center;gap:16px;margin:20px 2px 16px;font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .dobor-or{display:flex;align-items:center;gap:16px;margin:20px 2px 16px;font-family:var(--label);font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--soft)}
   .dobor-or::before,.dobor-or::after{content:"";flex:1;height:1px;background:var(--line)}
   .dobor-alt{display:flex;gap:12px}
   .dobor-alt .btn{flex:1;justify-content:center;min-width:0;padding:15px 18px}
   .dobor-text .eyebrow{margin-bottom:18px}
   .dobor-text h2{font-size:clamp(1.9rem,3.2vw,2.7rem);max-width:18ch;line-height:1.1}
   .dobor-lede{margin-top:18px;max-width:48ch;color:var(--soft);font-size:clamp(1.04rem,1.3vw,1.18rem);line-height:1.6}
-  .dobor-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:30px}
-  .btn-lg{padding:17px 30px;font-size:.84rem}
-  .btn-arrow{transition:transform .3s var(--ease)}
-  .btn-primary:hover .btn-arrow{transform:translateX(5px)}
-  .dobor-meta{font-size:.82rem;color:var(--muted);font-family:var(--mono);letter-spacing:.03em}
   /* panel asystenta (jeden, inline — bez popupu) */
   .dobor-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:clamp(22px,2.4vw,30px);min-height:348px;display:flex;flex-direction:column;justify-content:flex-start}
   .dp-intro{margin:auto 0;display:flex;flex-direction:column;gap:16px}
@@ -413,13 +512,11 @@
   .dp-avatar svg{width:22px;height:22px;color:var(--accent)}
   .dp-pulse{position:absolute;inset:-1px;border-radius:50%;border:1.5px solid rgba(var(--accent-rgb),.45);animation:dpring 2.8s cubic-bezier(.2,.6,.3,1) infinite}
   @keyframes dpring{0%{transform:scale(.85);opacity:.7}100%{transform:scale(1.55);opacity:0}}
-  .dp-id b{font-family:var(--display);font-weight:500;font-size:1.08rem;color:var(--cream);display:block;line-height:1.15}
-  .dp-status{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:var(--text-2xs);letter-spacing:.09em;text-transform:uppercase;color:var(--soft);margin-top:3px}
-  .dp-online{width:7px;height:7px;border-radius:50%;background:#5b795a;box-shadow:0 0 8px rgba(91,121,90,.6);animation:breathe 3s ease-in-out infinite}
-  .dp-bubble{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;border-top-left-radius:5px;padding:15px 18px;color:var(--cream);font-size:1.02rem;line-height:1.5;box-shadow:var(--shadow-sm)}
-  .dp-chips{display:flex;flex-wrap:wrap;gap:8px}
-  .dp-chip{font-family:var(--mono);font-size:var(--text-2xs);letter-spacing:.04em;color:var(--accent);background:rgba(var(--accent-rgb),.07);border:1px solid rgba(var(--accent-rgb),.16);padding:6px 12px;border-radius:100px}
-  .dp-launch{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--bg);border:1.5px solid rgba(var(--accent-rgb),.3);border-radius:100px;padding:7px 7px 7px 22px;font-family:var(--body);font-size:1rem;font-weight:500;color:var(--cream);transition:border-color .25s,box-shadow .25s}
+  .dp-id b{font-family:var(--display);font-weight:500;font-size:1.08rem;color:var(--ink);display:block;line-height:1.15}
+  .dp-status{display:flex;align-items:center;gap:7px;font-family:var(--label);font-size:var(--text-2xs);letter-spacing:.09em;text-transform:uppercase;color:var(--soft);margin-top:3px}
+  .dp-online{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--halo-ring);animation:breathe 2.2s ease-in-out infinite}
+  .dp-bubble{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;border-top-left-radius:5px;padding:15px 18px;color:var(--ink);font-size:1.02rem;line-height:1.5;box-shadow:var(--shadow-sm)}
+  .dp-launch{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--bg);border:1.5px solid rgba(var(--accent-rgb),.3);border-radius:100px;padding:7px 7px 7px 22px;font-family:var(--body);font-size:1rem;font-weight:500;color:var(--ink);transition:border-color .25s,box-shadow .25s}
   .dp-launch:hover{border-color:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),.09)}
   .dp-caret{display:inline-block;width:2px;height:1.05em;background:var(--accent);margin-left:2px;vertical-align:-2px;animation:dpcaret 1.1s step-end infinite}
   @keyframes dpcaret{0%,100%{opacity:1}50%{opacity:0}}
@@ -427,38 +524,53 @@
   .dp-launch:hover .dp-launch-ic{transform:translateX(3px)}
   .dobor-panel .dlg-actions{margin-top:18px}
   /* ===== Modal ===== */
+  /* ===== Modal: wchodzi i wychodzi tą samą drogą =====
+     Wcześniej wjeżdżał animacją, a znikał przez display:none - bez drogi
+     powrotnej i bez związku z kartą, którą kliknięto. Teraz skaluje się
+     z miejsca kliknięcia (transform-origin ustawia JS), a wyjście jest
+     lustrem wejścia: ta sama ścieżka, odwrócona krzywa. Transitions, nie
+     keyframes, bo transition startuje od wartości bieżącej - modal złapany
+     w połowie zamykania wraca płynnie, zamiast przeskakiwać. */
   .modal{position:fixed;inset:0;z-index:60;display:none}
   .modal.open{display:block}
-  .modal-bg{position:absolute;inset:0;background:rgba(20,28,22,.42);backdrop-filter:blur(5px)}
-  .modal-card{position:relative;width:min(680px,calc(100% - 28px));max-height:90vh;margin:5vh auto;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 40px 100px -40px rgba(20,30,24,.5);overflow:hidden;animation:rin .4s var(--ease) both}
-  .modal-x{position:absolute;right:14px;top:14px;z-index:2;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--cream);cursor:pointer}
+  .modal-bg{position:absolute;inset:0;background:rgba(20,28,22,.42);backdrop-filter:blur(5px);
+    opacity:0;transition:opacity .3s var(--ease)}
+  .modal.in .modal-bg{opacity:1}
+  .modal.out .modal-bg{opacity:0;transition-timing-function:var(--ease-in)}
+  .modal-card{position:relative;width:min(680px,calc(100% - 28px));max-height:90vh;margin:5vh auto;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 40px 100px -40px rgba(20,30,24,.5);overflow:hidden;
+    opacity:0;transform:scale(.92);transition:opacity .34s var(--ease),transform .34s var(--ease)}
+  .modal.in .modal-card{opacity:1;transform:none}
+  .modal.out .modal-card{opacity:0;transform:scale(.92);transition-timing-function:var(--ease-in);transition-duration:.26s}
+  .modal-x{position:absolute;right:14px;top:14px;z-index:2;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--ink);cursor:pointer}
   .modal-x:hover{color:var(--accent);border-color:var(--accent)}
   .modal-scroll{overflow-y:auto;padding:30px}
   .dlg-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
-  .dlg-kick{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .dlg-kick{font-family:var(--label);font-size:var(--text-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
   .dlg-prog{display:flex;gap:5px;flex:1;max-width:200px}
   .dlg-prog span{height:5px;flex:1;border-radius:3px;background:var(--line)}
   .dlg-prog span.on{background:var(--accent)}
-  .dlg-q{font-family:var(--display);font-size:1.5rem;line-height:1.2;color:var(--cream);margin-bottom:6px;padding-right:30px}
+  /* pytanie jest nagłówkiem (h3) dla czytnika, ale wagę trzyma tam, gdzie miało - lekką */
+  .dlg-q{font-family:var(--display);font-weight:400;font-size:1.5rem;letter-spacing:-.012em;line-height:1.2;color:var(--ink);margin-bottom:6px;padding-right:30px}
+  .dlg-q:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
   .dlg-hint{font-size:.92rem;color:var(--soft);margin-bottom:18px}
   .qtiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-  .qtile{text-align:left;padding:15px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--cream);font:inherit;font-size:.96rem;font-weight:500;cursor:pointer;transition:transform .2s var(--ease),border-color .2s,background .2s}
+  .qtile{text-align:left;padding:15px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--ink);font:inherit;font-size:.96rem;font-weight:500;cursor:pointer;transition:transform .2s var(--ease),border-color .2s,background .2s}
   .qtile:hover{border-color:var(--accent);transform:translateY(-1px)}
   .qtile.sel{border-color:var(--accent);background:rgba(var(--accent-rgb),.07);box-shadow:inset 0 0 0 1px var(--accent)}
-  .qtile.crisis{border-color:#c9a59c}
+  .qtile.crisis{border-color:var(--alert-hint)}
   .dlg-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
   .dlg-actr{display:flex;gap:10px}
-  .link-btn{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;font-size:.9rem;cursor:pointer}
+  .link-btn{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;background:none;color:var(--muted);font:inherit;font-weight:600;font-size:.9rem;cursor:pointer}
   .link-btn:hover{color:var(--accent)}
-  .btn-sm{padding:10px 16px;font-size:.8rem}
+  .btn-sm{min-height:44px;padding:10px 16px;font-size:.8rem}
   .dlg-note{display:flex;gap:9px;margin-top:14px;border:1px solid var(--line);background:var(--card);border-radius:var(--r-md);padding:13px 15px;font-size:.86rem;color:var(--soft);line-height:1.5}
-  .dlg-note b{color:var(--cream)}
+  .dlg-note b{color:var(--ink)}
   .rescard{border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
   .rescard.top{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow-sm)}
   .rc-h{display:flex;align-items:center;gap:13px}
   .rc-h img{width:54px;height:54px;border-radius:var(--r-sm);object-fit:cover;object-position:center 16%;flex:none}
   .rc-id{flex:1;min-width:0}
-  .rc-n{font-family:var(--display);font-size:1.1rem;color:var(--cream);line-height:1.1}
+  .rc-n{font-family:var(--display);font-size:1.1rem;color:var(--ink);line-height:1.1}
   .rc-r{font-size:.82rem;color:var(--accent);font-weight:600;margin-top:3px}
   .rc-lead{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);background:rgba(var(--accent-rgb),.08);padding:5px 9px;border-radius:var(--r-sm);white-space:nowrap}
   .rc-why{font-size:.9rem;color:var(--soft);line-height:1.55;margin:11px 0 12px}
@@ -466,33 +578,60 @@
   .rc-match{color:var(--muted);font-weight:600}
   .rc-price{color:var(--accent);font-weight:700;white-space:nowrap}
   .rc-cta{display:flex;gap:9px;margin-top:13px;flex-wrap:wrap}
-  .crisisbox{background:#f7e9e6;border:1px solid #e3bcb2;border-radius:var(--r-md);padding:18px}
-  .crisisbox h3{font-family:var(--display);font-size:1.3rem;color:#7a2e1e;margin-bottom:8px}
-  .crisisbox p{color:#6b3326;font-size:.92rem;margin-bottom:12px}
-  .crline{background:#fff;border-radius:var(--r-sm);padding:10px 12px;margin-bottom:7px;font-size:.92rem;color:#3a2520}
-  .crline b{color:#7a2e1e}
+  .crisisbox{background:var(--alert-bg);border:1px solid var(--alert-line);border-radius:var(--r-md);padding:18px}
+  .crisisbox h3{font-family:var(--display);font-size:1.3rem;color:var(--alert-ink);margin-bottom:8px}
+  .crisisbox p{color:var(--alert-body);font-size:.92rem;margin-bottom:12px}
+  .crline{background:var(--alert-surface);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:7px;font-size:.92rem;color:var(--alert-text)}
+  .crline b{color:var(--alert-ink)}
   .spec-top{display:flex;align-items:center;gap:16px;padding-right:40px}
   .spec-top img{width:100px;height:100px;border-radius:var(--r-md);object-fit:cover;object-position:center 14%;flex:none}
-  .spec-n{font-family:var(--display);font-size:1.7rem;color:var(--cream);line-height:1.05}
+  .spec-n{font-family:var(--display);font-size:1.7rem;letter-spacing:-.016em;color:var(--ink);line-height:1.05}
   .spec-r{font-size:.9rem;color:var(--accent);font-weight:600;margin-top:5px}
   .spec-fl{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
   .spec-fl span{font-size:.72rem;font-weight:600;color:var(--accent);background:rgba(var(--accent-rgb),.08);padding:3px 8px;border-radius:var(--r-xs)}
-  .spec-motto{margin:18px 0 0;padding-left:14px;border-left:3px solid var(--accent);font-family:var(--display);font-style:italic;font-size:1.1rem;color:var(--accent);line-height:1.4}
+  /* bez paska z boku - motto jest cytatem, więc prowadzi je wcięcie i kursywa */
+  .spec-motto{position:relative;margin:20px 0 0;padding-left:24px;font-family:var(--display);font-style:italic;font-size:1.15rem;color:var(--accent);line-height:1.45}
+  .spec-motto::before{content:"„";position:absolute;left:0;top:-.12em;font-size:2em;line-height:1;font-style:normal;color:rgba(var(--accent-rgb),.32)}
   .spec-desc{font-size:.96rem;line-height:1.7;color:var(--soft);margin-top:16px}
   .spec-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
   .spec-price{font-size:.86rem;color:var(--accent);font-weight:700}
   .spec-cta{display:flex;gap:9px;flex-wrap:wrap}
   @media(max-width:760px){ .dobor-grid{grid-template-columns:1fr;gap:30px} .dobor-alt{flex-direction:column} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
+  /* ===== TRYB CIEMNY =====
+     Cała zmiana idzie przez tokeny — ani jeden selektor komponentu nie jest
+     tu dublowany. Akcent musi się rozjaśnić: szałwia #5b795a na ciemnym tle
+     daje 2,9:1, więc na ciemnym pracuje jaśniejszy wariant. Paleta alarmowa
+     ma własny wariant, a nie odziedziczony: ekran kryzysowy ma zostać ciepły
+     i odrębny również w nocy. */
+  @media(prefers-color-scheme:dark){
+    :root{
+      --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
+      --sage:#7d9077; --sage-2:#5d6d59;
+      --ink:#e8eee6; --soft:#aab3a7; --muted:#8b948a;
+      --line:rgba(226,238,222,.15); --halo-ring:rgba(var(--accent-rgb),.20);
+      --clay:#d9a780; --card:#1b201a; --photo:#232a22;
+      --bg:#131711; --bg-top:#181d16; --bg-bottom:#0e120d; --surface:#1b201a;
+      --shadow:0 2px 5px rgba(0,0,0,.34),0 20px 46px -28px rgba(0,0,0,.7);
+      --shadow-sm:0 1px 3px rgba(0,0,0,.3),0 13px 28px -18px rgba(0,0,0,.5);
+      --alert-bg:#2e1c17; --alert-line:#573229; --alert-ink:#f0b9a5;
+      --alert-body:#dcb1a3; --alert-surface:#1d1310; --alert-text:#e9d5cd; --alert-hint:#8a5346;
+    }
+    .modal-bg{background:rgba(6,9,6,.62)}
+    .topscrim{background:linear-gradient(180deg,var(--bg-top) 0%,rgba(24,29,22,.92) 26%,rgba(24,29,22,.5) 60%,transparent 100%)}
+    .tc-fl span{background:rgba(27,32,26,.94);color:var(--accent-2)}
+    .grain{opacity:.03}
+    .brandmark img{filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+  }
 </style>
 </head>
 <body>
 
+<a class="skip" href="#hero">Przejdź do treści</a>
+<div class="grade" aria-hidden="true"></div>
 <canvas id="brain" aria-hidden="true"></canvas>
-<div class="grade"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="topscrim"></div>
-<div class="edgefx" id="edgefx" aria-hidden="true"></div>
-<a class="brandmark" data-goto="hero" href="#hero" aria-label="Centrum Zakątek - strona główna"><img src="assets/brand/logo-mark.png" alt="Centrum Zakątek"></a>
+<a class="brandmark" data-goto="hero" href="#hero" aria-label="Centrum Zakątek - strona główna"><picture><source srcset="assets/brand/logo-mark-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/brand/logo-mark.webp" alt="Centrum Zakątek" width="133" height="94"></picture></a>
 <nav class="topnav">
   <a data-goto="zakres">Zakres</a>
   <a data-goto="zespol">Zespół</a>
@@ -511,21 +650,18 @@
   <a data-goto="prywatnosc">Prywatność</a>
   <a data-goto="umow">Kontakt</a>
 </div>
-<div class="loopnote"><span class="sp"></span>Toruń · ul. Bydgoska 32</div>
-
 <main>
 
   <section class="scene hero" id="hero">
     <div class="inner"><div class="col">
       <div class="eyebrow reveal"><span class="live"></span>Centrum zdrowia psychicznego · Toruń</div>
-      <h1 class="reveal">Największą odwagą jest <span class="accentword">poprosić o&nbsp;pomoc.</span><br>Resztę przejdziemy razem - w&nbsp;Twoim tempie.</h1>
-      <p class="lede reveal">Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w jednym miejscu. Doświadczony zespół, dyskrecja i terminy bez długiego oczekiwania - dla dorosłych, dzieci i rodzin.</p>
+      <h1 class="reveal">Największą odwagą jest <span class="accentword">poprosić o&nbsp;pomoc.</span><span class="h1-beat">Resztę przejdziemy razem - w&nbsp;Twoim tempie.</span></h1>
+      <p class="lede reveal">Pomoc psychiatryczna, psychologiczna i neurologiczna - dla dorosłych, dzieci i rodzin.</p>
       <div class="cta reveal">
         <a class="btn btn-primary" href="tel:575805505">Umów wizytę · 575 805 505</a>
         <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
       </div>
     </div></div>
-    <blockquote class="hero-quote">Opieka, która zaczyna się<br>od <em>rozmowy.</em></blockquote>
   </section>
 
   <div class="seam"></div>
@@ -537,22 +673,22 @@
         <div class="dobor-text">
           <div class="eyebrow reveal">Dlaczego Zakątek</div>
           <h2 class="reveal">Nie musisz wiedzieć, do kogo się umówić. <span class="accentword">My pomożemy.</span></h2>
-          <p class="dobor-lede reveal">Skorzystaj z naszego anonimowego asystenta AI - w kilku pytaniach dobierze specjalistę dopasowanego do Twojej sytuacji, z ceną i&nbsp;najbliższym wolnym terminem. Wolisz porozmawiać? Po prostu zadzwoń.</p>
+          <p class="dobor-lede reveal">Asystent działa anonimowo, bez zakładania konta. Wolisz porozmawiać - zadzwoń.</p>
           <ul class="why-points reveal">
             <li><b>Bez skierowania</b> - umawiasz się bezpośrednio</li>
             <li><b>Stacjonarnie w Toruniu lub online</b></li>
-            <li><b>Pełna dyskrecja</b> i ochrona danych (RODO)</li>
+            <li><b>Pełna dyskrecja</b> i ochrona danych osobowych (RODO)</li>
           </ul>
         </div>
         <div class="dobor-right reveal">
+          <p class="sr-only" id="astLive" role="status" aria-live="polite"></p>
           <div class="dobor-panel" id="doborPanel">
             <div class="dp-intro">
               <div class="dp-bar">
                 <span class="dp-avatar"><span class="dp-pulse"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 21a7 7 0 0 1 14 0"/><circle cx="12" cy="7.5" r=".4" fill="currentColor"/></svg></span>
-                <div class="dp-id"><b>Asystent doboru</b><span class="dp-status"><span class="dp-online"></span>gotowy do pomocy · anonimowo</span></div>
+                <div class="dp-id"><b>Asystent doboru</b><span class="dp-status"><span class="dp-online"></span>bez rejestracji · anonimowo</span></div>
               </div>
-              <div class="dp-bubble">Cześć. Zadam Ci kilka prostych pytań i wskażę osoby z zespołu dopasowane do Twojej sytuacji - z ceną i&nbsp;wolnym terminem.</div>
-              <div class="dp-chips"><span class="dp-chip">Kilka pytań</span><span class="dp-chip">Dopasowanie</span><span class="dp-chip">Trzy propozycje</span></div>
+              <div class="dp-bubble">Dzień dobry. Zadam kilka pytań i wskażę osoby z zespołu, które pasują do Twojej sytuacji.</div>
               <button class="dp-launch" data-dobor-start aria-label="Rozpocznij dobór specjalisty">
                 <span>Rozpocznij dobór<span class="dp-caret"></span></span>
                 <span class="dp-launch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -574,7 +710,7 @@
       <span class="sidx" aria-hidden="true">02</span>
       <div class="svc-head">
         <div class="eyebrow reveal">Zakres pomocy</div>
-        <h2 class="reveal">Pełna opieka zdrowia psychicznego w&nbsp;jednym miejscu.</h2>
+        <h2 class="reveal">Pełna opieka nad zdrowiem psychicznym w&nbsp;jednym miejscu.</h2>
       </div>
       <div class="svc-grid">
         <article class="svc">
@@ -583,15 +719,15 @@
         </article>
         <article class="svc">
           <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M22 37V17"/><path class="dl" style="--d:.1s" pathLength="100" d="M15 37h14"/><g class="sway"><path class="dl" style="--d:.25s" pathLength="100" d="M22 27c-6.5 1-10.2-3.2-9.5-9.5 6.5-.7 10.2 3.2 9.5 9.5Z"/><path class="dl" style="--d:.4s" pathLength="100" d="M22 23c6.5 1 10.2-3.2 9.5-9.5-6.5-.7-10.2 3.2-9.5 9.5Z"/></g></svg></span>
-          <h3>Dzieci i&nbsp;młodzież</h3><p>Psychiatria i wsparcie najmłodszych oraz nastolatków i ich rodzin, z należną delikatnością.</p>
+          <h3>Dzieci i&nbsp;młodzież</h3><p>Psychiatria i wsparcie dzieci, nastolatków oraz ich rodzin.</p>
         </article>
         <article class="svc">
           <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M9 13h13a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-6l-4.5 4v-4H9a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Z"/><path class="dl" style="--d:.3s" pathLength="100" d="M27 9h8a3 3 0 0 1 3 3v4.5a3 3 0 0 1-3 3h-1l-3.5 3.2V19.5a3 3 0 0 1-3-3V12a3 3 0 0 1 3-3Z"/></svg></span>
-          <h3>Psychoterapia</h3><p>Terapia indywidualna i par w różnych nurtach. Regularna praca nad zmianą.</p>
+          <h3>Psychoterapia</h3><p>Terapia indywidualna oraz terapia par, w różnych nurtach. Regularna praca nad zmianą.</p>
         </article>
         <article class="svc">
           <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="bloom"><path class="dl" pathLength="100" d="M22 26c-3.2-4-3.2-8.5 0-14 3.2 5.5 3.2 10 0 14Z"/><path class="dl" style="--d:.12s" pathLength="100" transform="rotate(38 22 26)" d="M22 26c-3.2-4-3.2-8.5 0-14 3.2 5.5 3.2 10 0 14Z"/><path class="dl" style="--d:.24s" pathLength="100" transform="rotate(-38 22 26)" d="M22 26c-3.2-4-3.2-8.5 0-14 3.2 5.5 3.2 10 0 14Z"/><path class="dl" style="--d:.36s" pathLength="100" transform="rotate(74 22 26)" d="M22 26c-2.6-3.4-2.8-7 0-11.5 2.8 4.5 2.6 8.1 0 11.5Z"/><path class="dl" style="--d:.48s" pathLength="100" transform="rotate(-74 22 26)" d="M22 26c-2.6-3.4-2.8-7 0-11.5 2.8 4.5 2.6 8.1 0 11.5Z"/></g><path class="dl" style="--d:.6s" pathLength="100" d="M13 27c2.4 2.3 15.6 2.3 18 0"/></svg></span>
-          <h3>Psychologia i&nbsp;diagnoza</h3><p>Konsultacje i diagnoza, m.in. ADHD, spektrum autyzmu, osobowość, trudne emocje.</p>
+          <h3>Psychologia i&nbsp;diagnoza</h3><p>Konsultacje i diagnoza, m.in. nadpobudliwości z deficytem uwagi (ADHD), spektrum autyzmu, osobowości i trudnych emocji.</p>
         </article>
         <article class="svc">
           <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M6 24c5 0 5-9.5 11-9.5S23 33 29 33s5-9 9-9"/><circle class="node" cx="17" cy="14.5" r="2.4" fill="currentColor" stroke="none"/><circle class="node" cx="29" cy="33" r="2.4" fill="currentColor" stroke="none"/></svg></span>
@@ -599,7 +735,7 @@
         </article>
         <article class="svc">
           <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="rings"><circle class="dl" pathLength="100" cx="17.5" cy="22" r="8.5"/><circle class="dl" style="--d:.3s" pathLength="100" cx="26.5" cy="22" r="8.5"/></g></svg></span>
-          <h3>Seksuologia</h3><p>Dyskretne wsparcie w intymnych trudnościach - dla osób i&nbsp;par.</p>
+          <h3>Seksuologia</h3><p>Dyskretne wsparcie w intymnych trudnościach - indywidualnie i&nbsp;w parach.</p>
         </article>
       </div>
       <p class="svc-note reveal"><b>Psychiatra czy psycholog?</b> Psychiatra jest lekarzem i może włączyć leczenie farmakologiczne; psycholog i psychoterapeuta pracują rozmową. Często obie formy się uzupełniają - a jeśli masz wątpliwości, pomożemy wybrać.</p>
@@ -611,11 +747,11 @@
     <div class="inner">
       <span class="sidx" aria-hidden="true">03</span>
       <div class="eyebrow reveal">Zespół</div>
-      <h2 class="reveal">27 specjalistów. <span class="accentword">Realnych ludzi.</span></h2>
-      <p class="lede reveal">Doświadczeni specjaliści w pięciu obszarach. Rozwiń, by zobaczyć profile - z ceną i&nbsp;najbliższym wolnym terminem.</p>
+      <h2 class="reveal">27 specjalistów. <span class="accentword">Każdy z imienia i&nbsp;nazwiska.</span></h2>
+      <p class="lede reveal" id="teamLede">Rozwiń, by zobaczyć profile - z ceną i&nbsp;orientacyjnym terminem.</p>
       <div class="team-teaser reveal" id="teamTeaser"></div>
       <div class="team-full" id="teamFull" hidden>
-        <div class="full-top"><button class="collapse-cta ghost sm" data-team-collapse>Zwiń <span>↑</span></button></div>
+        <div class="full-top"><b>Wszyscy specjaliści</b><button class="collapse-cta ghost sm" data-team-collapse>Zwiń <span>↑</span></button></div>
         <div class="filters" id="teamFilters"></div>
         <div id="teamGrid"></div>
         <button class="collapse-cta ghost" data-team-collapse>Zwiń zespół <span>↑</span></button>
@@ -630,7 +766,7 @@
       <h2 class="reveal">Ceny widoczne <span class="accentword">przed decyzją.</span></h2>
       <div class="price-teaser reveal" id="priceTeaser"></div>
       <div class="price-full" id="priceFull" hidden>
-        <div class="full-top"><button class="collapse-cta ghost sm" data-price-collapse>Zwiń <span>↑</span></button></div>
+        <div class="full-top"><b>Pełny cennik</b><button class="collapse-cta ghost sm" data-price-collapse>Zwiń <span>↑</span></button></div>
         <div class="price-grid" id="priceGrid"></div>
         <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
         <button class="collapse-cta ghost" data-price-collapse>Zwiń cennik <span>↑</span></button>
@@ -643,10 +779,10 @@
       <div class="eyebrow reveal">Jak to wygląda</div>
       <h2 class="reveal">Od pierwszego telefonu<br>do spokojnej opieki.</h2>
       <div class="steps">
-        <div class="step"><span class="num">01</span><div><h4>Kontakt</h4><p>Dzwonisz lub piszesz. Rejestracja wysłucha i pomoże nazwać potrzebę - bez oceniania i bez pośpiechu.</p></div></div>
-        <div class="step"><span class="num">02</span><div><h4>Dobór specjalisty</h4><p>Dopasowujemy właściwą osobę z zespołu i formę pomocy: konsultacja, terapia, diagnoza lub leczenie.</p></div></div>
-        <div class="step"><span class="num">03</span><div><h4>Wizyta</h4><p>Stacjonarnie w Toruniu lub online. Pierwsza wizyta porządkuje sytuację i ustala dalsze kroki.</p></div></div>
-        <div class="step"><span class="num">04</span><div><h4>Opieka</h4><p>Prowadzimy dalej w Twoim tempie - z jasnym planem i stałym kontaktem do specjalisty.</p></div></div>
+        <div class="step"><span class="num">01</span><div><h3>Kontakt</h3><p>Dzwonisz lub piszesz. Rejestracja wysłucha i pomoże nazwać potrzebę - bez oceniania i bez pośpiechu.</p></div></div>
+        <div class="step"><span class="num">02</span><div><h3>Dobór specjalisty</h3><p>Dopasowujemy właściwą osobę z zespołu i formę pomocy: konsultacja, terapia, diagnoza lub leczenie.</p></div></div>
+        <div class="step"><span class="num">03</span><div><h3>Wizyta</h3><p>Stacjonarnie w Toruniu lub online. Pierwsza wizyta porządkuje sytuację i ustala dalsze kroki.</p></div></div>
+        <div class="step"><span class="num">04</span><div><h3>Opieka</h3><p>Prowadzimy dalej w Twoim tempie - z jasnym planem i stałym kontaktem do specjalisty.</p></div></div>
       </div>
       <div class="assure reveal" id="prywatnosc">
         <div class="assure-head">
@@ -656,7 +792,7 @@
         <ul class="assure-list">
           <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 11-7.4"/><path d="M17 21l5-5"/><path d="M22 21l-5-5"/></svg></span>Bez kont i logowania - przeglądasz anonimowo</li>
           <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>Dane pod ochroną (RODO i tajemnica zawodowa)</li>
-          <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9c0 6-8 11-8 11S4 15 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1z"/></svg></span>Bez presji i zobowiązań - decydujesz sam</li>
+          <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9c0 6-8 11-8 11S4 15 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1z"/></svg></span>Bez zobowiązań - decyzja należy do Ciebie</li>
           <li><span class="assure-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C13 5 17 7 17 7s-1 7-6 13z"/><path d="M11 20c0-4 1-7 4-10"/></svg></span>Spokojny gabinet w centrum Torunia, ul. Bydgoska 32</li>
         </ul>
       </div>
@@ -666,44 +802,99 @@
   <section class="scene contact" id="umow">
     <div class="inner">
       <div class="eyebrow reveal">Rejestracja</div>
-      <h2 class="reveal">Zrób pierwszy krok <span class="accentword">bez presji.</span></h2>
+      <h2 class="reveal">Zrób <span class="accentword">pierwszy krok.</span></h2>
       <p class="reveal">Zadzwoń lub napisz. Pomożemy dobrać specjalistę, termin i formę wizyty - stacjonarnie w Toruniu lub online.</p>
       <div class="mailrow reveal">
         <a class="btn btn-primary" href="tel:575805505">575 805 505</a>
         <a class="btn btn-ghost" href="mailto:rejestracja@centrumzakatek.pl">rejestracja@centrumzakatek.pl</a>
-      </div>
-      <div class="foot reveal">
-        Centrum Zakątek · ul. Bydgoska 32, Toruń
-        <span class="fsoc"><a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener">Facebook</a> · <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener">Instagram</a></span><br>
-        <span class="crisis">Pomoc w kryzysie: 112 · 116 123 (telefon zaufania) · 116 111 (dzieci i młodzież)</span><br>
-        © 2026 Centrum Zakątek · makieta koncepcyjna
       </div>
     </div>
   </section>
 
 </main>
 
+<!-- poza <main>, żeby był prawdziwym punktem orientacyjnym „contentinfo" -->
+<footer class="pagefoot">
+  <div class="inner">
+    <div class="foot">
+      Centrum Zakątek · ul. Bydgoska 32, Toruń
+      <span class="fsoc"><a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener">Facebook</a> · <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener">Instagram</a></span><br>
+      <span class="crisis">Pomoc w kryzysie: <b>112</b> · <b>116 123</b> (telefon zaufania) · <b>116 111</b> (dzieci i młodzież)</span><br>
+      © 2026 Centrum Zakątek · makieta koncepcyjna
+    </div>
+  </div>
+</footer>
+
 <!-- Modal: profil specjalisty / dobór -->
 <div class="modal" id="modal" aria-hidden="true">
   <div class="modal-bg" data-mclose></div>
-  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Centrum Zakątek">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Profil specjalisty" tabindex="-1">
     <button class="modal-x" data-mclose aria-label="Zamknij"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="modal-scroll"><div id="modalBody"></div></div>
   </div>
 </div>
 
-<script src="data.js?v=7"></script>
-<script src="assistant.js?v=7"></script>
+<script src="data.js?v=13"></script>
+<script src="assistant.js?v=13"></script>
 <script>
 (function(){
-  /* ---------- polska typografia (port pl() z car-rfq/ktomaauto) ---------- */
+  /* ---------- polska typografia (port 1:1 z vehi.market, src/lib/typo.ts) ----------
+     Źródła zasad: PWN (Poradnia Językowa), eKorekta24, Wikipedia (twarda spacja).
+
+     1. Długie myślniki (em/en) -> zwykły dywiz "-".
+     2. Myślnik klauzulowy (ze spacjami) wiążemy z POPRZEDNIM słowem, żeby ZOSTAŁ
+        na końcu wiersza i nigdy nie zaczynał nowego. Poradnia PWN za Wolańskim
+        („Edycja tekstów", s. 536): myślnik otwierający wiersz udaje wcięcie
+        akapitowe albo pauzę dialogową i myli czytelnika.
+     3. Pierwsze słowo nowego zdania wiążemy z kolejnym - nie zostaje samo na końcu.
+     4. Sieroty: jednoliterowe a/i/o/u/w/z wiążemy z następnym słowem.
+     5. Liczba + jednostka lub waluta ("380 zł", "40 min") - nie rozdzielamy.
+     6. Separator tysięcy i numery telefonów ("575 805 505") - nie łamiemy w środku.
+     7. Skróty ("np.", "ok.", "m.in.", "ul.") - wiążemy z następnym słowem.
+
+     Wdowy i bękarty (pojedyncze słowo w ostatnim wierszu) obsługuje CSS:
+     `text-wrap: pretty` na prozie i `text-wrap: balance` na nagłówkach. Tego NIE
+     da się zrobić twardą spacją - to zadanie łamacza wierszy.
+
+     Funkcja jest IDEMPOTENTNA: wszystkie wzorce wymagają zwykłej spacji,
+     a wstawiają twardą. */
   var NBSP=String.fromCharCode(160);
+  var LONG_DASH=/[—–]/g;
+  var CLAUSE_DASH=/([^\s-])[ \t]+-(?=\s)/g;
+  /* Wariant dla tekstu przeciętego znacznikiem: „<b>Bez skierowania</b> - dalej"
+     trafia do pl() jako dwa osobne węzły, więc słowa PRZED myślnikiem po prostu
+     nie ma w tym samym łańcuchu. Twarda spacja na początku węzła wiąże myślnik
+     z ostatnim znakiem poprzedniego elementu tak samo skutecznie. */
+  var LEADING_DASH=/^[ \t]+-(?=\s)/;
+  var SENTENCE_START=/([.!?]\s+\p{Lu}\S*)[ \t]+(?=\S)/gu;
+  var ORPHAN=/(?<![\p{L}\p{N}])([aiouwzAIOUWZ]) +/gu;
+  /* Sieroty. vehi wiąże wyłącznie jednoliterowce - to minimum, które podaje PWN.
+     Pomiar na tej stronie pokazał jednak, że wiersze kończą przede wszystkim
+     dwu- i trzyliterowe przyimki i spójniki („dla", „bez", „lub", „od", „po").
+     eKorekta24, którą vehi cytuje jako drugie źródło, obejmuje regułą także je,
+     więc lista jest tu szersza - zamknięta i ograniczona do wyrazów funkcyjnych,
+     bo wiązanie wszystkiego krótkiego psuje chorągiewkę zamiast ją poprawiać. */
+  var SHORT_FN='do|na|za|ze|we|od|po|ku|bo|że|iż|aż|by|czy|lub|ani|dla|bez|nad|pod|przez|oraz|ale|niż';
+  var ORPHAN2=new RegExp('(?<![\\p{L}\\p{N}])((?:'+SHORT_FN+'))([ \\t]+)(?=[\\p{L}\\p{N}])','giu');
+  /* „się" jest odwrotnie: nie odrywamy go od czasownika, który stoi PRZED nim. */
+  var SIE=/([\p{L}])[ \t]+(si[eę])(?![\p{L}])/giu;
+  var UNITS='zl|zł|gr|EUR|USD|PLN|tys\\.|mln|mld|proc\\.|szt\\.|godz\\.|min|sek|km|cm|mm|kg|%|dni|dnia|lat|lata|roku';
+  var NUMBER_UNIT=new RegExp('(\\d) +(?=(?:'+UNITS+')(?![\\p{L}\\d]))','gu');
+  var THOUSANDS=/(\d) +(?=\d{3}(?![\d]))/g;
+  var ABBREV=/(?<![\p{L}])((?:m\.in|np|tj|tzn|tzw|ok|itd|itp|ul|al|nr|str|godz|dr|prof|mgr|inż|hab)\.) +/gu;
+
   function pl(t){ if(!t) return t; try{ return t
-    .replace(/[—–]/g,'-')
-    .replace(/ +- +(?=\S)/g,' -'+NBSP)
-    .replace(/([.!?] +\p{Lu}\S*) +(?=\S)/gu,function(_m,h){return h+NBSP;})
-    .replace(/(?<![\p{L}\p{N}])([aiouwzAIOUWZ]) +/gu,function(_m,w){return w+NBSP;});
-  }catch(e){ return t.replace(/[—–]/g,'-'); } }
+    .replace(LONG_DASH,'-')
+    .replace(CLAUSE_DASH,function(_m,w){return w+NBSP+'-';})
+    .replace(LEADING_DASH,NBSP+'-')
+    .replace(ABBREV,function(_m,a){return a+NBSP;})
+    .replace(SENTENCE_START,function(_m,h){return h+NBSP;})
+    .replace(ORPHAN,function(_m,w){return w+NBSP;})
+    .replace(ORPHAN2,function(_m,w){return w+NBSP;})
+    .replace(SIE,function(_m,c,w){return c+NBSP+w;})
+    .replace(NUMBER_UNIT,function(_m,d){return d+NBSP;})
+    .replace(THOUSANDS,function(_m,d){return d+NBSP;});
+  }catch(e){ return t.replace(LONG_DASH,'-'); } }
   function typoPass(root){
     var SKIP={SCRIPT:1,STYLE:1,NOSCRIPT:1,INPUT:1,TEXTAREA:1};
     var w=document.createTreeWalker(root||document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
@@ -714,12 +905,13 @@
     nodes.forEach(function(n){var v=pl(n.nodeValue); if(v!==n.nodeValue)n.nodeValue=v;});
   }
 
-  function slot(days){ var d=new Date(); d.setDate(d.getDate()+days);
-    var rel= days<=0?'dziś':days===1?'jutro':'za '+days+' dni'; return rel; }
+  /* Dostępność pochodzi ze statycznej mapy AVAILABILITY, nie z kalendarza -
+     więc mówimy „za ok.", a nie „najbliższy wolny termin". */
+  function slot(days){ return days<=0?'dziś':days===1?'jutro':'za ok. '+days+' dni'; }
 
   /* ---------- zespół ---------- */
   var FILTERS=[['all','Wszyscy'],['psychiatra','Psychiatrzy'],['neurolog','Neurolog'],['psycholog','Psycholodzy i terapeuci'],['dzieci','Dla dzieci']];
-  function flags(s){ var f=[]; if(s.treats&&s.treats.indexOf('children')>=0)f.push('dzieci'); if(s.english)f.push('EN'); if(s.dog)f.push('pies'); return f; }
+  function flags(s){ var f=[]; if(s.treats&&s.treats.indexOf('children')>=0)f.push('dzieci'); if(s.english)f.push('EN'); if(s.dog)f.push('z psem'); return f; }
   function card(s){ var price=s.priceFrom?('od '+s.priceFrom+' zł'):s.priceLabel; var fl=flags(s);
     return '<button class="tc" data-id="'+s.id+'"><span class="tc-ph"><img src="'+s.photo+'" alt="'+s.name+'" loading="lazy">'
       +(fl.length?'<span class="tc-fl">'+fl.map(function(x){return '<span>'+x+'</span>';}).join('')+'</span>':'')
@@ -761,11 +953,29 @@
     if(!teaser||!full||!HAS_DATA) return;
     var sample=SPECIALISTS.slice(0,9);
     teaser.innerHTML='<div class="tt-avatars">'+sample.map(function(s){return '<img src="'+s.photo+'" alt="" loading="lazy">';}).join('')+'</div>'
-      +'<div class="tt-text"><b>'+SPECIALISTS.length+' specjalistów</b>Psychiatrzy, neurolog, psycholodzy i terapeuci oraz specjaliści dla dzieci. Rozwiń, by zobaczyć profile - z ceną i najbliższym wolnym terminem.</div>'
+      +'<div class="tt-text"><b>'+SPECIALISTS.length+' specjalistów</b>Psychiatrzy, neurolog, psycholodzy i terapeuci oraz specjaliści dla dzieci. Rozwiń, by zobaczyć profile - z ceną i orientacyjnym terminem.</div>'
       +'<button class="collapse-cta" data-team-expand>Zobacz cały zespół <span>↓</span></button>';
-    function setTeam(open){ teaser.style.display=open?'none':''; full.hidden=!open; if(window.__loopRebuild) window.__loopRebuild(); }
+    var lede=document.getElementById('teamLede'), ledeShut=lede?lede.innerHTML:'';
+    var ledeOpen='Kliknij osobę, by zobaczyć pełny profil - z ceną i&nbsp;orientacyjnym terminem.';
+    /* instrukcja „rozwiń” po rozwinięciu odsyła do stanu, którego już nie ma */
+    var teamTimer=0;
+    function setTeam(open){
+      clearTimeout(teamTimer);
+      if(open){
+        teaser.style.display='none';
+        full.hidden=false; full.classList.remove('out');
+        void full.offsetWidth;                  // klatka startowa dla transition
+        full.classList.add('in');
+      } else {
+        full.classList.remove('in'); full.classList.add('out');
+        teamTimer=setTimeout(function(){
+          full.hidden=true; full.classList.remove('out'); teaser.style.display='';
+        }, 260);
+      }
+      if(lede){ lede.innerHTML = open?ledeOpen:ledeShut; typoPass(lede); }
+    }
     teaser.querySelector('[data-team-expand]').onclick=function(){ setTeam(true); };
-    full.querySelectorAll('[data-team-collapse]').forEach(function(b){ b.onclick=function(){ setTeam(false); var z=document.getElementById('zespol'); if(z) z.scrollIntoView({behavior:'smooth'}); }; });
+    full.querySelectorAll('[data-team-collapse]').forEach(function(b){ b.onclick=function(){ setTeam(false); var z=document.getElementById('zespol'); if(z) z.scrollIntoView(window.SCROLL||{behavior:'smooth'}); }; });
     typoPass(teaser);
   })();
 
@@ -779,10 +989,24 @@
     var teaser=document.getElementById('priceTeaser'), full=document.getElementById('priceFull');
     if(!teaser||!full||typeof PRICING==='undefined') return;
     teaser.innerHTML='<div class="pt-rows">'+PRICING.slice(0,4).map(function(g){return '<div class="pt-row"><span>'+g.group+'</span><b>'+g.items[0][1]+'</b></div>';}).join('')+'</div>'
-      +'<div class="pt-side"><p>Pełny cennik wszystkich wizyt - psychiatria, psychoterapia, diagnozy oraz wsparcie dla dzieci. Bez ukrytych kosztów, ceny widoczne przed decyzją.</p><button class="collapse-cta" data-price-expand>Pokaż pełny cennik <span>↓</span></button></div>';
-    function setPrice(open){ teaser.style.display=open?'none':''; full.hidden=!open; if(window.__loopRebuild) window.__loopRebuild(); }
+      +'<div class="pt-side"><p>Cennik wszystkich wizyt - psychiatria, psychoterapia, diagnozy oraz wsparcie dla dzieci. Bez ukrytych kosztów i dopłat po wizycie.</p><button class="collapse-cta" data-price-expand>Pokaż pełny cennik <span>↓</span></button></div>';
+    var priceTimer=0;
+    function setPrice(open){
+      clearTimeout(priceTimer);
+      if(open){
+        teaser.style.display='none';
+        full.hidden=false; full.classList.remove('out');
+        void full.offsetWidth;
+        full.classList.add('in');
+      } else {
+        full.classList.remove('in'); full.classList.add('out');
+        priceTimer=setTimeout(function(){
+          full.hidden=true; full.classList.remove('out'); teaser.style.display='';
+        }, 260);
+      }
+    }
     teaser.querySelector('[data-price-expand]').onclick=function(){ setPrice(true); };
-    full.querySelectorAll('[data-price-collapse]').forEach(function(b){ b.onclick=function(){ setPrice(false); var c=document.getElementById('cennik'); if(c) c.scrollIntoView({behavior:'smooth'}); }; });
+    full.querySelectorAll('[data-price-collapse]').forEach(function(b){ b.onclick=function(){ setPrice(false); var c=document.getElementById('cennik'); if(c) c.scrollIntoView(window.SCROLL||{behavior:'smooth'}); }; });
     typoPass(teaser);
   })();
 
@@ -812,7 +1036,8 @@
   }, 4200);
 
   /* ---------- nawigacja ---------- */
-  document.querySelectorAll('[data-goto]').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); var t=document.getElementById(a.getAttribute('data-goto')); if(t)t.scrollIntoView({behavior:'smooth'}); }); });
+  window.SCROLL={behavior: reduceM?'auto':'smooth'};   // płynne przewijanie to też ruch
+  document.querySelectorAll('[data-goto]').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); var t=document.getElementById(a.getAttribute('data-goto')); if(t)t.scrollIntoView(window.SCROLL); }); });
 
   /* ---------- menu mobilne ---------- */
   var nt=document.getElementById('navtoggle'), mm=document.getElementById('mobilemenu');
@@ -822,6 +1047,10 @@
     mm.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ setMenu(false); }); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') setMenu(false); });
   }
+
+  /* iOS odpala :active tylko wtedy, gdy dokument ma jakikolwiek nasłuch dotyku.
+     Pusty listener kosztuje nic i sprawia, że wciśnięcie widać też na iPhonie. */
+  document.addEventListener('touchstart',function(){},{passive:true});
 
   typoPass(document.body);
 
@@ -833,9 +1062,72 @@
 
   /* ---------- modal (profil specjalisty / dobór) ---------- */
   var modal=document.getElementById('modal'), modalBody=document.getElementById('modalBody');
-  function openModal(){ if(!modal)return; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; var sc=modal.querySelector('.modal-scroll'); if(sc)sc.scrollTop=0; }
-  function closeModal(){ if(!modal)return; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-  if(modal){ modal.querySelectorAll('[data-mclose]').forEach(function(el){el.onclick=closeModal;}); document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&modal.classList.contains('open')) closeModal(); }); }
+  var modalCard=modal?modal.querySelector('.modal-card'):null, lastFocus=null;
+  var INERT_OK=('inert' in HTMLElement.prototype);
+  /* Reszta strony musi zniknąć dla klawiatury i czytnika, inaczej Tab wychodzi
+     spod nakładki - `inert` robi obie rzeczy naraz, aria-hidden to fallback. */
+  function sealBackground(on){
+    [].forEach.call(document.body.children,function(el){
+      if(el===modal) return;
+      if(INERT_OK){ el.inert=on; }
+      else if(on){ el.setAttribute('aria-hidden','true'); }
+      else { el.removeAttribute('aria-hidden'); }
+    });
+  }
+  function focusables(root){
+    return [].filter.call(root.querySelectorAll('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])'),
+      function(el){ return el.offsetWidth||el.offsetHeight||el.getClientRects().length; });
+  }
+  /* Karta rośnie z miejsca, w które kliknięto - punkt skalowania liczymy ze
+     środka elementu wyzwalającego względem pudełka modala. Bez tego profil
+     każdego z 27 specjalistów wjeżdżałby identycznie znikąd. */
+  function anchorToTrigger(){
+    if(!modalCard) return;
+    modalCard.style.transformOrigin='';
+    if(!lastFocus||!lastFocus.getBoundingClientRect) return;
+    var t=lastFocus.getBoundingClientRect(); if(!t.width) return;
+    var c=modalCard.getBoundingClientRect(); if(!c.width) return;
+    modalCard.style.transformOrigin=
+      Math.round(t.left+t.width/2-c.left)+'px '+Math.round(t.top+t.height/2-c.top)+'px';
+  }
+  var closeTimer=0;
+  function openModal(){
+    if(!modal)return;
+    clearTimeout(closeTimer);
+    lastFocus=document.activeElement;
+    modal.classList.remove('out');
+    modal.classList.add('open'); modal.removeAttribute('aria-hidden');
+    sealBackground(true);
+    document.body.style.overflow='hidden';
+    var sc=modal.querySelector('.modal-scroll'); if(sc)sc.scrollTop=0;
+    anchorToTrigger();
+    void modal.offsetWidth;                 // klatka startowa, żeby transition miało od czego jechać
+    modal.classList.add('in');
+    if(modalCard) modalCard.focus();
+  }
+  function closeModal(){
+    if(!modal||!modal.classList.contains('open'))return;
+    modal.classList.remove('in'); modal.classList.add('out');
+    modal.setAttribute('aria-hidden','true');
+    sealBackground(false);
+    document.body.style.overflow='';
+    if(lastFocus&&lastFocus.focus) lastFocus.focus();   // wracamy tam, skąd otwarto
+    lastFocus=null;
+    clearTimeout(closeTimer);
+    closeTimer=setTimeout(function(){ modal.classList.remove('open','out'); }, 300);
+  }
+  if(modal){
+    modal.querySelectorAll('[data-mclose]').forEach(function(el){el.onclick=closeModal;});
+    document.addEventListener('keydown',function(e){
+      if(!modal.classList.contains('open')) return;
+      if(e.key==='Escape'){ closeModal(); return; }
+      if(e.key!=='Tab') return;
+      var f=focusables(modalCard); if(!f.length){ e.preventDefault(); modalCard.focus(); return; }
+      var first=f[0], last=f[f.length-1];
+      if(e.shiftKey && (document.activeElement===first||document.activeElement===modalCard)){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    });
+  }
 
   function openSpec(id){
     if(typeof SPECIALISTS==='undefined'||!modalBody) return;
@@ -843,7 +1135,7 @@
     var fl=flags(s);
     modalBody.innerHTML='<div class="spec-top"><img src="'+s.photo+'" alt="'+s.name+'"><div><div class="spec-n">'+s.name+'</div><div class="spec-r">'+s.role+'</div>'
       +(fl.length?'<div class="spec-fl">'+fl.map(function(x){return '<span>'+x+'</span>';}).join('')+'</div>':'')+'</div></div>'
-      +(s.motto?'<blockquote class="spec-motto">„'+s.motto.replace(/[.]$/,'')+'"</blockquote>':'')
+      +(s.motto?'<blockquote class="spec-motto">„'+s.motto+'"</blockquote>':'')
       +'<p class="spec-desc">'+s.desc+'</p>'
       +'<div class="spec-foot"><span class="spec-price">'+(s.priceFrom?('od '+s.priceFrom+' zł · '+s.priceLabel):s.priceLabel)+' · termin '+slot(s.availDays)+'</span>'
       +'<div class="spec-cta"><a class="btn btn-ghost btn-sm" href="'+s.url+'" target="_blank" rel="noopener">Profil na stronie</a><a class="btn btn-primary btn-sm" href="tel:575805505">Umów wizytę</a></div></div>';
@@ -856,16 +1148,27 @@
   var astBody=document.getElementById('doborPanel');
   var doborIntro=astBody?astBody.innerHTML:'';
   function bindStart(root){ (root||document).querySelectorAll('[data-dobor-start]').forEach(function(b){ b.onclick=doborStart; }); }
-  function resetPanel(){ if(!astBody)return; astBody.innerHTML=doborIntro; bindStart(astBody); typoPass(astBody); window.__astBusy=false; }
+  function resetPanel(){ if(!astBody)return; astBody.innerHTML=doborIntro; bindStart(astBody); typoPass(astBody); window.__astBusy=false; say('');
+    var l=astBody.querySelector('[data-dobor-start]'); if(l) l.focus(); }
   function buildFlow(){ AST.flow=FLOW.filter(function(f){return !f.show||f.show(AST.answers);}); }
   function doborStart(){ if(typeof FLOW==='undefined'){ window.location.href='tel:575805505'; return; } if(!astBody)return; window.__astBusy=true; AST.answers={}; AST.idx=0; buildFlow(); renderQ(); }
   function closeAction(){ return '<button class="link-btn" data-close>✕ Zamknij</button>'; }
-  function renderQ(){
+  /* Panel przebudowuje się przez innerHTML, więc aktywny element znika z DOM
+     i fokus spada na <body>. Po każdym renderze trzeba go świadomie postawić:
+     na nagłówku kroku (nowa treść do przeczytania) albo z powrotem na kafelku,
+     który użytkownik właśnie przełączył (wielokrotny wybór). */
+  function focusIn(sel){ var el=astBody.querySelector(sel); if(el){ el.setAttribute('tabindex','-1'); el.focus(); } }
+  var astLive=document.getElementById('astLive');
+  /* Fokus czyta treść kroku; ten region mówi tylko, gdzie w przepływie jesteś.
+     Gdyby powtarzał treść, czytnik przeczytałby wszystko dwa razy. */
+  function say(msg){ if(astLive) astLive.textContent=msg; }
+  function renderQ(keepKey){
     if(AST.idx>=AST.flow.length) return renderResults();
     var step=AST.flow[AST.idx], multi=step.type==='multi', cur=AST.answers[step.id]||(multi?[]:null);
-    var tiles=step.options.map(function(o){ var sel=multi?cur.indexOf(o.k)>=0:cur===o.k; return '<button class="qtile'+(sel?' sel':'')+(o.crisis?' crisis':'')+'" data-k="'+o.k+'">'+o.l+'</button>'; }).join('');
-    astBody.innerHTML='<div class="dlg-head"><span class="dlg-kick">Dobór specjalisty · anonimowo</span><div class="dlg-prog">'+AST.flow.map(function(_x,i){return '<span class="'+(i<=AST.idx?'on':'')+'"></span>';}).join('')+'</div></div>'
-      +'<div class="dlg-q">'+step.q+'</div>'+(multi?'<div class="dlg-hint">Możesz wybrać kilka, potem „Dalej".</div>':'')
+    var tiles=step.options.map(function(o){ var sel=multi?cur.indexOf(o.k)>=0:cur===o.k;
+      return '<button class="qtile'+(sel?' sel':'')+(o.crisis?' crisis':'')+'" data-k="'+o.k+'"'+(multi?' aria-pressed="'+(sel?'true':'false')+'"':'')+'>'+o.l+'</button>'; }).join('');
+    astBody.innerHTML='<div class="dlg-head"><span class="dlg-kick">Dobór specjalisty · anonimowo</span><div class="dlg-prog" role="img" aria-label="Pytanie '+(AST.idx+1)+' z '+AST.flow.length+'">'+AST.flow.map(function(_x,i){return '<span class="'+(i<=AST.idx?'on':'')+'"></span>';}).join('')+'</div></div>'
+      +'<h3 class="dlg-q">'+step.q+'</h3>'+(multi?'<div class="dlg-hint">Możesz wybrać kilka, potem „Dalej".</div>':'')
       +'<div class="qtiles">'+tiles+'</div>'
       +'<div class="dlg-actions">'+(AST.idx>0?'<button class="link-btn" data-back>← Wstecz</button>':closeAction())+'<div class="dlg-actr">'
       +(step.optional?'<button class="btn btn-ghost btn-sm" data-skip>Pomiń</button>':'')+(multi?'<button class="btn btn-primary btn-sm" data-next>Dalej →</button>':'')+'</div></div>';
@@ -875,23 +1178,37 @@
     var n=astBody.querySelector('[data-next]'); if(n)n.onclick=function(){ buildFlow(); AST.idx++; renderQ(); };
     var sk=astBody.querySelector('[data-skip]'); if(sk)sk.onclick=function(){ AST.answers[step.id]=[]; buildFlow(); AST.idx++; renderQ(); };
     typoPass(astBody);
+    if(keepKey){ var t=astBody.querySelector('.qtile[data-k="'+keepKey+'"]'); if(t){ t.focus(); return; } }
+    focusIn('.dlg-q');
+    say('Pytanie '+(AST.idx+1)+' z '+AST.flow.length);
   }
   function pick(step,k){ var o=step.options.filter(function(x){return x.k===k;})[0];
     if(o&&o.crisis){ AST.answers[step.id]=k; return renderCrisis(); }
-    if(step.type==='multi'){ var arr=AST.answers[step.id]||[]; var i=arr.indexOf(k); if(i>=0)arr.splice(i,1);else arr.push(k); AST.answers[step.id]=arr; renderQ(); }
+    if(step.type==='multi'){ var arr=AST.answers[step.id]||[]; var i=arr.indexOf(k); if(i>=0)arr.splice(i,1);else arr.push(k); AST.answers[step.id]=arr; renderQ(k); }
     else { AST.answers[step.id]=k; buildFlow(); AST.idx++; renderQ(); } }
   function renderResults(){
-    var rec=recommend(AST.answers), top=rec.top, match=[94,79,66];
+    var rec=recommend(AST.answers), top=rec.top, asked=rec.askedCount||0;
+    /* Dopasowanie pokazujemy tak, jak je liczymy: ile ze wskazanych obszarów
+       specjalista faktycznie obejmuje. Procent sugerowałby precyzję, której
+       tabela wag nie ma - a to nie jest ekran, na którym wolno zmyślać. */
+    function fit(e){
+      var m=(e.matched||[]).length;
+      if(!asked || !m) return 'Dobrane na podstawie Twoich odpowiedzi';
+      if(m>=asked) return asked===1 ? 'Pasuje do wskazanego obszaru' : 'Pasuje do wszystkich '+asked+' wskazanych obszarów';
+      return 'Pasuje do '+m+' z '+asked+' wskazanych obszarów';
+    }
     var cards=top.map(function(e,i){ var r=reasonFor(i,e,AST.answers), s=e.s;
       return '<div class="rescard'+(i===0?' top':'')+'"><div class="rc-h"><img src="'+s.photo+'" alt="'+s.name+'"><div class="rc-id"><div class="rc-n">'+s.name+'</div><div class="rc-r">'+s.role+'</div></div><span class="rc-lead">'+r.lead+'</span></div>'
-        +'<p class="rc-why">'+r.why+'</p><div class="rc-foot"><span class="rc-match">Dopasowanie '+match[i]+'%</span><span class="rc-price">'+(s.priceFrom?('od '+s.priceFrom+' zł'):s.priceLabel)+' · '+slot(s.availDays)+'</span></div>'
+        +'<p class="rc-why">'+r.why+'</p><div class="rc-foot"><span class="rc-match">'+fit(e)+'</span><span class="rc-price">'+(s.priceFrom?('od '+s.priceFrom+' zł'):s.priceLabel)+' · '+slot(s.availDays)+'</span></div>'
         +'<div class="rc-cta"><a class="btn btn-primary btn-sm" href="tel:575805505">Umów wizytę</a><button class="btn btn-ghost btn-sm" data-spec="'+s.id+'">Poznaj profil</button></div></div>'; }).join('');
-    astBody.innerHTML='<div class="dlg-head"><span class="dlg-kick">Twoja propozycja · TOP 3</span>'+closeAction()+'</div><div class="dlg-hint">Na podstawie Twoich odpowiedzi i dostępności terminów. To sugestia, nie diagnoza.</div>'+cards
+    astBody.innerHTML='<div class="dlg-head"><span class="dlg-kick">Twoje propozycje · trzy osoby</span>'+closeAction()+'</div><div class="dlg-hint">Na podstawie Twoich odpowiedzi. Terminy są orientacyjne. To sugestia, nie diagnoza.</div>'+cards
       +'<div class="dlg-note">Ostateczny dobór i termin potwierdza rejestracja: <b>575&nbsp;805&nbsp;505</b>.</div><div class="dlg-actions"><button class="link-btn" data-restart>↻ Zacznij od nowa</button><span></span></div>';
     astBody.querySelector('[data-restart]').onclick=doborStart;
     var c=astBody.querySelector('[data-close]'); if(c)c.onclick=resetPanel;
     astBody.querySelectorAll('[data-spec]').forEach(function(b){ b.onclick=function(){ renderSpecInline(b.dataset.spec); }; });
     typoPass(astBody);
+    focusIn('.dlg-kick');
+    say('Gotowe. Trzy propozycje dopasowane do Twoich odpowiedzi.');
   }
   function renderSpecInline(id){
     if(typeof SPECIALISTS==='undefined'||!astBody) return;
@@ -903,13 +1220,13 @@
       +'<p class="spec-desc">'+s.desc+'</p>'
       +'<div class="spec-foot"><span class="spec-price">'+(s.priceFrom?('od '+s.priceFrom+' zł · '+s.priceLabel):s.priceLabel)+' · termin '+slot(s.availDays)+'</span>'
       +'<div class="spec-cta"><a class="btn btn-ghost btn-sm" href="'+s.url+'" target="_blank" rel="noopener">Profil na stronie</a><a class="btn btn-primary btn-sm" href="tel:575805505">Umów wizytę</a></div></div>';
-    astBody.querySelector('[data-back-res]').onclick=renderResults; typoPass(astBody);
+    astBody.querySelector('[data-back-res]').onclick=renderResults; typoPass(astBody); focusIn('.spec-n');
   }
   function renderCrisis(){
-    astBody.innerHTML='<div class="crisisbox"><h3>Nie jesteś sam/sama. Pomoc jest teraz dostępna.</h3><p>To, co czujesz, jest ważne. Zanim umówisz wizytę, skontaktuj się natychmiast z bezpłatną, całodobową pomocą:</p>'
+    astBody.innerHTML='<div class="crisisbox"><h3>Nie musisz radzić sobie w pojedynkę. Pomoc jest teraz dostępna.</h3><p>To, co czujesz, jest ważne. Zanim umówisz wizytę, skontaktuj się natychmiast z bezpłatną, całodobową pomocą:</p>'
       +'<div class="crline"><b>112</b> - numer alarmowy</div><div class="crline"><b>116 123</b> - telefon zaufania dla dorosłych (24/7)</div><div class="crline"><b>116 111</b> - dla dzieci i młodzieży</div><div class="crline"><b>800 70 2222</b> - Centrum Wsparcia (24/7)</div></div>'
       +'<div class="dlg-actions"><button class="link-btn" data-restart>← Wróć</button><a class="btn btn-primary btn-sm" href="tel:112">Zadzwoń 112</a></div>';
-    astBody.querySelector('[data-restart]').onclick=doborStart; typoPass(astBody);
+    astBody.querySelector('[data-restart]').onclick=doborStart; typoPass(astBody); focusIn('.crisisbox h3');
   }
   window.dobor=doborStart;
   bindStart(document);
@@ -917,7 +1234,7 @@
 })();
 </script>
 
-<!-- Infinite scroll: zawijanie na krawędziach z efektem „przekroczenia granicy" (bez klonów - niezawodne) -->
+<!-- Start zawsze na hero, bez przywracania pozycji z poprzedniej wizyty -->
 <script>
 (function(){
   try{ history.scrollRestoration='manual'; }catch(e){}   // start na hero (bez przywracania pozycji)
@@ -949,11 +1266,33 @@
   var SPAWN = 90;      // px trasy kursora między kartami
   var TRAIL = 5;       // ile żyje naraz
   var TILT  = 12;      // maksymalne przechylenie w stopniach
-  var ENTER = {t:130, f:28};
-  var LEAVE = {t:300, f:24};
-  var FADE  = {t:900, f:40};   // krycie prawie natychmiastowe — czytelny jest skok skali
 
-  var cards = [], dying = [], seq = 0, last = null, raf = 0, prevTime = 0;
+  /* Sprężyny liczone jako tłumienie ζ i czas odpowiedzi, nie jako para
+     przypadkowych liczb: t = ω₀², f = 2ζω₀, ω₀ = 2π/response.
+       ENTER ζ=1,00 response 0,35 s — krytycznie tłumione wejście
+       LEAVE ζ=1,00 response 0,40 s — wypchnięcie jest zdarzeniem systemowym,
+                                      nie rzutem użytkownika, więc bez odbicia
+       FADE  ζ=1,00 response 0,25 s — krycie nie ma po co przestrzeliwać
+     Poprzednie wartości robiły dokładnie odwrotnie niż trzeba: wejście
+     przetłumione i powolne (ζ=1,23 / 0,55 s), a wyrzut sprężysty (ζ=0,69). */
+  var ENTER = {t:322, f:36};
+  var LEAVE = {t:247, f:31};
+  var FADE  = {t:632, f:50};
+
+  /* Odbicie bierze się teraz z ręki, nie z konfiguracji: przy krytycznym
+     tłumieniu karta przestrzeliwuje dokładnie na tyle, na ile szybko
+     prowadzisz kursor. Wolny ruch — spokojne dojście, szarpnięcie — wyskok. */
+  /* Dobrane pomiarem na realnym kroku 1/60 s, nie z równania — jawny Euler
+     przy tym kroku zjada drobne przestrzelenia, więc wartość z analizy
+     ciągłej byłaby tu za mała, żeby cokolwiek było widać.
+       200 px/s  → dojście w 367 ms, bez przestrzelenia
+       1400 px/s → dojście w 217 ms, bez przestrzelenia
+       2000 px/s → wyskok o 3% i natychmiastowe osiadanie
+     Czyli: odbicie pojawia się dopiero przy prawdziwym szarpnięciu. */
+  var VMAX = 2000;     // px/s, powyżej tego nie przyspieszamy już wejścia
+  var VGAIN = 45;      // jednostki skali na sekundę przy VMAX
+
+  var cards = [], dying = [], seq = 0, last = null, move = null, speed = 0, raf = 0, prevTime = 0;
 
   function spawn(x, y){
     var img = new Image();
@@ -964,7 +1303,7 @@
     cards.push({
       el: img, x: x, y: y,
       tilt: (Math.random() - 0.5) * 2 * TILT,
-      scale: 0.4, vs: 0, op: 0, vo: 0,
+      scale: 0.4, vs: Math.min(speed, VMAX) / VMAX * VGAIN, op: 0, vo: 0,
       cfg: ENTER, target: {scale: 1, op: 1}, dying: false
     });
     seq++;
@@ -1012,113 +1351,210 @@
   zone.addEventListener('pointermove', function(e){
     if(e.pointerType !== 'mouse') return;   // dotyk nie zostawia trasy, sypałby na każde tapnięcie
     var b = layer.getBoundingClientRect();
-    var x = e.clientX - b.left, y = e.clientY - b.top;
+    var x = e.clientX - b.left, y = e.clientY - b.top, now = e.timeStamp;
+    /* Prędkość mierzymy na każdym ruchu, nie tylko na tych, które rodzą kartę —
+       inaczej próbka jest zawsze o 90 px stara i nie mówi nic o tempie ręki. */
+    if(move){
+      var dt = (now - move.t) / 1000;
+      if(dt > 0.001 && dt < 0.2) speed = Math.hypot(x - move.x, y - move.y) / dt;
+    }
+    move = {x: x, y: y, t: now};
     if(last && Math.hypot(x - last.x, y - last.y) < SPAWN) return;
     last = {x: x, y: y};
     spawn(x, y);
   }, {passive: true});
 
   zone.addEventListener('pointerleave', function(){
-    last = null;
+    last = null; move = null; speed = 0;
     while(cards.length) kill(cards[0]);
   });
 })();
 </script>
 
-<!-- Mózg 3D - cieniutki akcent w tle (three.js z CDN) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<!-- Chmura punktów w tle hero — własny WebGL, bez bibliotek.
+     Scena to jedna chmura bez świateł, tekstur, cieni i materiałów, więc
+     three.js (145 kB gzip, wersja z 2021, obcy host) był tu armatą na wróbla.
+     Ten renderer waży ~2 kB, nie wychodzi poza własne origin i nie ma wersji,
+     która mogłaby się zestarzeć.
+
+     Ładowany warunkowo: poniżej 761 px chmura lądowała pod akapitami
+     (nieczytelnie), więc tam jej po prostu nie ma. Hero działa bez niej. -->
 <script>
 (function(){
-  if(!window.THREE || !THREE.GLTFLoader) return;
+  var wide  = window.matchMedia('(min-width:761px)').matches;
+  var saver = navigator.connection && navigator.connection.saveData;
+  if(!wide || saver) return;
+
   var canvas=document.getElementById('brain'); if(!canvas) return;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var renderer;
-  try{ renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true}); }catch(e){ return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-  canvas.style.opacity='0';                               // intro: mózg pojawi się płynnie
-  var scene=new THREE.Scene();
-  var camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 100);
-  camera.position.set(0,0,3.4);
-  function size(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
-  size(); addEventListener('resize',size);
-  var group=null, geom=null, mat=null, basePos=null, targetPos=null, count=0, BASE=0.82;
-  var FINALX=0.86, baseScale=1, introT=0, introStart=0;   // intro: start na środku -> przesuw w prawo (dalej od napisów)
-  new THREE.GLTFLoader().load('assets/brain.glb', function(gltf){
-    var geo=null; gltf.scene.traverse(function(o){ if(o.isMesh && !geo) geo=o.geometry; });
-    if(!geo) return;
-    /* dolna część: zmniejszona (kompresja ku osi) z zachowaniem tej samej gęstości */
-    geo.computeBoundingBox();
-    var bb=geo.boundingBox, minY=bb.min.y, hY=bb.max.y-bb.min.y, cut=minY+hY*0.27;
-    var cx=(bb.min.x+bb.max.x)/2, cz=(bb.min.z+bb.max.z)/2, sB=0.5;
-    var src=geo.attributes.position, out=[];
-    for(var i=0;i<src.count;i++){ var x=src.getX(i), y=src.getY(i), z=src.getZ(i);
-      if(y>=cut){ out.push(x,y,z); }
-      else if(Math.random()<sB*sB){ out.push(cx+(x-cx)*sB, cut-(cut-y)*0.55, cz+(z-cz)*sB); } }
-    count=out.length/3;
-    basePos=new Float32Array(out);
-    /* cel "rozwiania": każdy punkt dryfuje na zewnątrz w rzadkie, spokojne pole kropek */
-    targetPos=new Float32Array(count*3);
-    for(var j=0;j<count;j++){
-      var bx=basePos[j*3], by=basePos[j*3+1], bz=basePos[j*3+2], SP=2.25;
-      targetPos[j*3]   = bx*SP + (Math.random()-0.5)*1.7;
-      targetPos[j*3+1] = by*SP + (Math.random()-0.5)*1.7;
-      targetPos[j*3+2] = bz*SP*0.55 + (Math.random()-0.5)*0.7;
+  var gl;
+  try{ gl=canvas.getContext('webgl',{alpha:true,antialias:true,depth:false}); }catch(e){}
+  if(!gl) return;
+
+  /* Rozwianie liczy shader, nie procesor. Pozycja bazowa i docelowa jadą na
+     GPU raz, a każda klatka zmienia tylko jedną liczbę (uMix). Wcześniej ta
+     sama animacja przepisywała ~120 tys. floatów i wysyłała 480 kB bufora
+     przy KAŻDEJ klatce przewijania. */
+  var VERT=
+    'attribute vec3 aBase;attribute vec3 aTarget;'+
+    'uniform mat4 uProj,uMV;uniform float uMix,uSize;'+
+    'void main(){'+
+      'vec4 mv=uMV*vec4(mix(aBase,aTarget,uMix),1.0);'+
+      'gl_Position=uProj*mv;'+
+      'gl_PointSize=uSize/max(0.001,-mv.z);'+
+    '}';
+  var FRAG=
+    'precision mediump float;uniform vec3 uColor;uniform float uOpacity;'+
+    'void main(){gl_FragColor=vec4(uColor*uOpacity,uOpacity);}';   // premultiplied
+
+  function compile(type,src){
+    var sh=gl.createShader(type); gl.shaderSource(sh,src); gl.compileShader(sh);
+    return gl.getShaderParameter(sh,gl.COMPILE_STATUS)?sh:null;
+  }
+  var vs=compile(gl.VERTEX_SHADER,VERT), fs=compile(gl.FRAGMENT_SHADER,FRAG);
+  if(!vs||!fs) return;
+  var prog=gl.createProgram();
+  gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+
+  var A_BASE=gl.getAttribLocation(prog,'aBase'), A_TARGET=gl.getAttribLocation(prog,'aTarget');
+  var U_PROJ=gl.getUniformLocation(prog,'uProj'), U_MV=gl.getUniformLocation(prog,'uMV');
+  var U_MIX=gl.getUniformLocation(prog,'uMix'), U_SIZE=gl.getUniformLocation(prog,'uSize');
+  var U_COLOR=gl.getUniformLocation(prog,'uColor'), U_OPACITY=gl.getUniformLocation(prog,'uOpacity');
+  /* kolor z tokenu, nie z liczby wklepanej w shader — inaczej chmura zostałaby
+     ciemnozielona na ciemnym tle i zniknęłaby razem z nim */
+  (function(){
+    var c=getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim().split(',');
+    if(c.length===3) gl.uniform3f(U_COLOR,+c[0]/255,+c[1]/255,+c[2]/255);
+    else gl.uniform3f(U_COLOR,0x5b/255,0x79/255,0x5a/255);
+  })();
+  gl.disable(gl.DEPTH_TEST);
+  /* kontekst jest premultiplied (domyślnie), więc mieszanie musi być takie samo
+     jak NormalBlending w three: źródło wchodzi całe, tło gaśnie o alfę źródła */
+  gl.enable(gl.BLEND);
+  gl.blendFuncSeparate(gl.ONE,gl.ONE_MINUS_SRC_ALPHA,gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0,0,0,0);
+
+  /* --- macierze (column-major, jak chce WebGL) --- */
+  var proj=new Float32Array(16), mv=new Float32Array(16);
+  var FOV=42*Math.PI/180, NEAR=0.1, FAR=100, CAM_Z=3.4;
+  function setProj(aspect){
+    var f=1/Math.tan(FOV/2);
+    proj[0]=f/aspect; proj[5]=f; proj[10]=(FAR+NEAR)/(NEAR-FAR); proj[11]=-1;
+    proj[14]=2*FAR*NEAR/(NEAR-FAR); proj[15]=0;
+    proj[1]=proj[2]=proj[3]=proj[4]=proj[6]=proj[7]=proj[8]=proj[9]=proj[12]=proj[13]=0;
+  }
+  /* T(px,py,-CAM_Z) · Rx(rx) · Ry(ry) · S(s) — ten sam porządek, w jakim
+     składał to three (pozycja, obrót XYZ, skala jednorodna) */
+  function setMV(px,py,rx,ry,s){
+    var ca=Math.cos(rx), sa=Math.sin(rx), cb=Math.cos(ry), sb=Math.sin(ry);
+    mv[0]=cb*s;      mv[1]=sa*sb*s;  mv[2]=-ca*sb*s; mv[3]=0;
+    mv[4]=0;         mv[5]=ca*s;     mv[6]=sa*s;     mv[7]=0;
+    mv[8]=sb*s;      mv[9]=-sa*cb*s; mv[10]=ca*cb*s; mv[11]=0;
+    mv[12]=px;       mv[13]=py;      mv[14]=-CAM_Z;  mv[15]=1;
+  }
+
+  var dpr=Math.min(window.devicePixelRatio||1,2), cssH=1;
+  function size(){
+    cssH=innerHeight;
+    canvas.width=Math.round(innerWidth*dpr); canvas.height=Math.round(innerHeight*dpr);
+    gl.viewport(0,0,canvas.width,canvas.height);
+    setProj(innerWidth/innerHeight);
+    gl.uniformMatrix4fv(U_PROJ,false,proj);
+    /* dokładnie ta sama atenuacja, którą liczył PointsMaterial:
+       rozmiar · pixelRatio · (wysokość CSS / 2) / odległość */
+    gl.uniform1f(U_SIZE,0.0115*dpr*cssH*0.5);
+  }
+  size(); addEventListener('resize',function(){ size(); onScroll(); wake(); },{passive:true});
+
+  canvas.style.opacity='0';                               // intro: chmura pojawi się płynnie
+  var count=0, ready=false, BASE=0.82, FINALX=0.86, baseScale=1.05;
+  var posX=0, rotY=0, introT=0, introStart=0, scaleNow=baseScale;
+
+  fetch('assets/brain-points.bin').then(function(res){
+    if(!res.ok) throw new Error('brak pliku');
+    return res.arrayBuffer();
+  }).then(function(buf){
+    var head=new DataView(buf);
+    if(head.getUint32(0,false)!==0x5A4B4250) throw new Error('zły nagłówek');   // 'ZKBP'
+    var n=head.getUint32(6,true), q=head.getFloat32(10,true);
+    var src=new Int16Array(buf,16,n*3);
+    count=n;
+    var base=new Float32Array(n*3);
+    for(var i=0;i<n*3;i++) base[i]=src[i]*q;
+    /* cel „rozwiania": każdy punkt dryfuje na zewnątrz w rzadkie, spokojne pole kropek */
+    var target=new Float32Array(n*3);
+    for(var j=0;j<n;j++){
+      var bx=base[j*3], by=base[j*3+1], bz=base[j*3+2], SP=2.25;
+      target[j*3]   = bx*SP + (Math.random()-0.5)*1.7;
+      target[j*3+1] = by*SP + (Math.random()-0.5)*1.7;
+      target[j*3+2] = bz*SP*0.55 + (Math.random()-0.5)*0.7;
     }
-    var ng=new THREE.BufferGeometry();
-    ng.setAttribute('position', new THREE.Float32BufferAttribute(basePos.slice(),3));
-    ng.computeBoundingSphere();
-    var c=ng.boundingSphere.center, r=ng.boundingSphere.radius||1;
-    mat=new THREE.PointsMaterial({color:0x5b795a, size:0.0115, sizeAttenuation:true, transparent:true, opacity:0.22, depthWrite:false});
-    var pts=new THREE.Points(ng, mat);
-    pts.position.set(-c.x,-c.y,-c.z);
-    group=new THREE.Group(); group.add(pts);
-    baseScale=1.05/r; group.scale.setScalar(baseScale);
-    group.position.set(0, 0.06, 0);      // start: środek ekranu (intro przesunie w prawo do FINALX)
-    group.rotation.x=-0.18;
-    scene.add(group);
-    geom=ng;
-    renderer.render(scene,camera);
-  }, undefined, function(){ /* błąd ładowania - pomijamy mózg */ });
+    function upload(loc,arr){
+      var b=gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);
+    }
+    upload(A_BASE,base); upload(A_TARGET,target);
+    ready=true;
+    draw(0,0.2);
+    wake();                                    // chmura dojechała po tym, jak pętla zdążyła zasnąć
+  }).catch(function(){ /* brak chmury - strona działa bez mózgu */ });
+
+  function draw(mix,opacity){
+    setMV(posX,0.06,-0.18,rotY,scaleNow);
+    gl.uniformMatrix4fv(U_MV,false,mv);
+    gl.uniform1f(U_MIX,mix); gl.uniform1f(U_OPACITY,opacity);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.POINTS,0,count);
+  }
+
   /* scroll w dół: mózg rozwiewa się w delikatne tło kropek; scroll w górę: wraca do mózgu */
   var targetProg=0, curProg=0;
   function onScroll(){
     var y=window.pageYOffset||0, vhd=innerHeight*0.85;
     targetProg=Math.max(0, Math.min(1, y/vhd));
   }
-  addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll, {passive:true}); onScroll();
+  addEventListener('scroll', function(){ onScroll(); wake(); }, {passive:true});
+  onScroll();
+
+  /* Pętla nie kręci się w kółko dla samej zasady: śpi w karcie w tle, a przy
+     prefers-reduced-motion budzi się tylko wtedy, gdy zmieni się przewijanie. */
+  var raf=0;
+  function wake(){ if(!raf && !document.hidden && ready) raf=requestAnimationFrame(tick); }
+  document.addEventListener('visibilitychange', wake);
   function tick(){
-    if(group){                                            // intro: środek -> prawo + fade-in + delikatne „osiadanie"
-      if(reduce){ if(introT<1){ introT=1; group.position.x=FINALX; canvas.style.opacity=BASE; } }
-      else if(introT<1){
-        if(!introStart) introStart=performance.now();
-        var it=(performance.now()-introStart-300)/1200; introT=it<0?0:(it>1?1:it);
-        var ie=introT<.5?4*introT*introT*introT:1-Math.pow(-2*introT+2,3)/2; // easeInOutCubic
-        group.position.x=FINALX*ie;
-        group.scale.setScalar(baseScale*(1+0.10*(1-ie)));
-        canvas.style.opacity=(BASE*Math.min(1,introT*1.7)).toFixed(3);
-      }
+    raf=0;
+    if(document.hidden||!ready) return;
+    var moving=false;
+    if(reduce){ if(introT<1){ introT=1; posX=FINALX; scaleNow=baseScale; canvas.style.opacity=BASE; } }
+    else if(introT<1){                          // intro: środek -> prawo + fade-in + delikatne „osiadanie"
+      if(!introStart) introStart=performance.now();
+      var it=(performance.now()-introStart-300)/1200; introT=it<0?0:(it>1?1:it);
+      var ie=introT<.5?4*introT*introT*introT:1-Math.pow(-2*introT+2,3)/2;   // easeInOutCubic
+      posX=FINALX*ie;
+      scaleNow=baseScale*(1+0.10*(1-ie));
+      canvas.style.opacity=(BASE*Math.min(1,introT*1.7)).toFixed(3);
+      moving=true;
     }
-    var e=curProg*curProg*(3-2*curProg);                  // stan rozwiania (0=mózg,1=rozsypka)
-    if(group) group.rotation.y += reduce?0:0.0011*(1-0.45*e); // kształt mózgu: pełna prędkość; rozwiane: ~wolniej
-    if(geom){
-      var dp=targetProg-curProg;
-      if(Math.abs(dp)>0.0006){
-        curProg += dp*(reduce?1:0.075);
-        e=curProg*curProg*(3-2*curProg);                  // smoothstep
-        var arr=geom.attributes.position.array;
-        for(var k=0;k<count*3;k++){ arr[k]=basePos[k]+(targetPos[k]-basePos[k])*e; }
-        geom.attributes.position.needsUpdate=true;
-        mat.opacity=0.2*(1-e)+0.15*e;                     // kropki zostają delikatne, nie znikają
-        canvas.style.opacity=(BASE*(1-e)+0.4*e).toFixed(3);
-      }
+    var e=curProg*curProg*(3-2*curProg);        // stan rozwiania (0=mózg,1=rozsypka)
+    /* obrót żyje tylko dopóki mózg jest mózgiem; po rozwianiu (czyli poza hero)
+       pełnoekranowe tło staje w miejscu, a pętla może zasnąć */
+    if(!reduce && e<0.85){ rotY += 0.0011*(1-0.45*e); moving=true; }
+    var dp=targetProg-curProg;
+    if(Math.abs(dp)>0.0006){
+      curProg += dp*(reduce?1:0.075);
+      e=curProg*curProg*(3-2*curProg);          // smoothstep
+      canvas.style.opacity=(BASE*(1-e)+0.4*e).toFixed(3);
+      moving=true;
     }
-    renderer.render(scene,camera); requestAnimationFrame(tick);
+    draw(e, 0.2*(1-e)+0.15*e);                  // kropki zostają delikatne, nie znikają
+    if(moving) raf=requestAnimationFrame(tick); // nic się nie rusza -> pętla zasypia
   }
-  tick();
-  /* fallback: gdy rAF jest wstrzymany (karta w tle / podgląd headless) - osadź mózg w stanie końcowym */
+  /* fallback: gdy rAF jest wstrzymany (karta w tle / podgląd headless) - osadź chmurę w stanie końcowym */
   setTimeout(function(){
-    if(group && introT<1){ introT=1; group.position.x=FINALX; group.scale.setScalar(baseScale); canvas.style.opacity=BASE; renderer.render(scene,camera); }
+    if(ready && introT<1){ introT=1; posX=FINALX; scaleNow=baseScale; canvas.style.opacity=BASE; draw(0,0.2); }
   }, 2600);
 })();
 </script>
