@@ -326,6 +326,10 @@
   .hero .col{max-width:44rem}
   /* drugi takt: ten sam nagłówek, ciszej. Rozmiar w em, więc skaluje się
      razem z h1 na każdej szerokości. */
+  /* dokończenie zdania w prawym dolnym rogu: ten sam krój i skala co h1,
+     ale mniejszy stopień - to echo pierwszego bloku, nie drugi nagłówek */
+  .h1-echo{font-size:calc(var(--t-display) * .72);line-height:var(--lh-tight);
+    letter-spacing:var(--tr-display);font-weight:340;margin:0;text-wrap:wrap}
   .h1-beat{display:block;margin-top:.72em;font-size:.72em;text-wrap:wrap}
   /* drugie podkreślenie dociąga po pierwszym - dwa takty czytają się po kolei */
   .h1-beat .accentword{transition-delay:1.15s}
@@ -388,6 +392,111 @@
   .scene.hero.show .reveal:nth-child(4){transition-delay:.46s}
 
   .hero .live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--halo-ring);animation:breathe 2.2s ease-in-out infinite}
+
+  /* ===== HERO: kompozycja narożna =====
+     Nagłówek nie stoi w jednej kolumnie, tylko rozpięty jest na przekątnej:
+     początek zdania w lewym górnym rogu, dokończenie w prawym dolnym. Między
+     nimi zostaje puste pole na mózg - to ono jest treścią, nie tłem.
+     Bez siatki w tle: rytm mają trzymać same bloki i puste pole między nimi,
+     a nie rysunek techniczny pod spodem. Pozycje w procentach zostają, bo to
+     nadal ta sama miara - tylko niewidoczna.
+     Poniżej 1024 px wszystko wraca do zwykłego przepływu. */
+
+  @media(min-width:1024px){
+    .scene.hero{min-height:100vh;padding:0;display:block}
+    /* .inner jest tu układem odniesienia dla wszystkich czterech narożników,
+       więc musi mieć własną, jawną wysokość - inaczej bloki z `bottom:0`
+       lądują pod nagłówkiem zamiast przy dolnej krawędzi kadru */
+    /* width:auto jest tu obowiązkowe: bazowa reguła daje .inner szerokość 100%,
+       a szerokość bije `right` - blok w prawym dolnym rogu wyjeżdżał wtedy
+       o 115 px poza kadr i był ucinany przez overflow sekcji */
+    .hero .inner{position:absolute;left:4.5vw;right:4.5vw;width:auto;
+      top:clamp(124px,15vh,168px);bottom:clamp(40px,6vh,64px);max-width:none;margin:0}
+    /* Szerokości wynikają z POMIARU, nie z gustu: każdy blok ma zajmować
+       dokładnie dwa wiersze, więc musi zmieścić swój najdłuższy twardy wiersz
+       bez zawijania. Zmierzone przy 1440 px: nagłówek 671 px, echo 510 px,
+       lede 814 px w jednym ciągu (czyli ~450 px na dwa wiersze). */
+    /* Blok otwierający schodzi z górnej krawędzi: przyklejony do niej wisiał
+       tuż pod belką, a pod nim zostawało pół kadru pustki. Niżej rozkłada
+       ciężar równiej względem zdania w prawym dolnym rogu. */
+    .hero-tl{position:absolute;top:6%;left:0;max-width:min(44rem,52%)}
+    /* zdanie domykające wróciło pod nagłówek: to jeden oddech, nie dwa
+       osobne bloki - dlatego odstęp nad nim jest mniejszy niż pod nim */
+    .hero-tl .h1-echo{margin:.5em 0 0}
+    .hero-tl .cta{margin-top:34px}
+    /* lede przejmuje prawy dolny róg po zdaniu domykającym. Blok jest zaczepiony
+       do prawej krawędzi, ale tekst w nim wyrównany DO LEWEJ: to proza, a nie
+       hasło - rwana lewa krawędź kazałaby oku szukać początku każdego wiersza. */
+    .hero-br{position:absolute;right:0;bottom:0;text-align:left;max-width:min(34rem,44%);margin:0}
+    .hero h1{margin:0}
+    .hero .cta{margin-top:28px}
+    /* dane przypięte do linii siatki - stoją 10 px w prawo od swojej linii,
+       więc siatka przestaje być dekoracją i zaczyna coś trzymać */
+    /* Dokładnie dwa wiersze: liczba i jedno słowo pod nią. Trzeci wiersz
+       zamieniał daną w akapit i zaczynał konkurować z nagłówkiem. */
+    .hero-fakt{position:absolute;z-index:1;font-family:var(--label);font-size:var(--t-micro);
+      letter-spacing:var(--tr-label);text-transform:uppercase;color:var(--muted);line-height:var(--lh-snug);
+      white-space:nowrap;opacity:0;transform:translateY(10px);
+      transition:opacity .7s var(--ease),transform .7s var(--ease)}
+    .scene.hero.show .hero-fakt{opacity:1;transform:none}
+    .hero-fakt b{display:block;font-family:var(--display);font-size:var(--t-h5);font-weight:500;
+      letter-spacing:0;color:var(--ink);font-variant-numeric:tabular-nums;margin-bottom:2px}
+    /* Trzy dane OTACZAJĄ mózg, każda w innym rogu jego pola, i żadna nie
+       wchodzi na chmurę. Sylwetka odczytana z renderu przy 1440x900: kopuła
+       zaczyna się ok. 950 px od lewej na wysokości 200 px, prawy płat kończy
+       ok. 1300 px, całość gaśnie poniżej 700 px. Wolne są więc trzy pola:
+       lewy flank kopuły, prawy górny róg nad płatem i pas pod móżdżkiem. */
+    /* Toruń siedzi POD nagłówkiem, nie obok: na wysokości 5% jego ramka
+       zachodziła na pierwszy wiersz „Największą odwagą jest", który sięga
+       736 px. Niżej jest wolne pole między przyciskami a lewym flankiem. */
+    /* Wszystkie trzy trzymają teraz ZBLIŻONY dystans od chmury (ok. 20-30 px),
+       więc czytają się jako jeden zestaw opisów tego samego obiektu, a nie
+       przypadkowe etykiety. Zapas nie schodzi niżej, bo mózg obraca się wokół
+       osi Y i jego sylwetka oddycha o kilkanaście pikseli. */
+    /* Toruń idzie tak wysoko, jak pozwala blok tekstu: wyżej korytarz między
+       zdaniem (koniec na 560 px) a kopułą (start ok. 700 px) zwęża się poniżej
+       szerokości samego napisu, a na wysokości przycisków dzieliły je 3 px. */
+    .hero-fakt.-c{left:38%;top:61%}     /* Toruń  - lewy flank kopuły  */
+    .hero-fakt.-a{left:90%;top:4%}      /* 27     - prawy górny róg    */
+    .hero-fakt.-b{left:60%;top:74%}     /* 6      - podbrzusze płata   */
+  }
+  @media(max-width:1023px){
+    .hero-fakt{display:none}
+    .hero-br{margin-top:22px}
+  }
+
+  /* litery wchodzą osobno: z dołu, z rozmycia. Nagłówek nie „pojawia się",
+     tylko składa się w zdanie - i dlatego wolno mu trwać dłużej niż reszcie */
+  .slowo{display:inline-block;white-space:nowrap}
+  .lit{display:inline-block;opacity:0;transform:translateY(.42em);filter:blur(10px);
+    transition:opacity 1.15s var(--ease),transform 1.15s var(--ease),filter 1.15s var(--ease)}
+  .scene.hero.show .lit{opacity:1;transform:none;filter:none}
+  @media(prefers-reduced-motion:reduce){
+    .lit{transition:none;opacity:1;transform:none;filter:none}
+    .hero-fakt{transition:none}
+  }
+
+  /* przycisk główny w ramce z gradientu akcentu + kaskada strzałek */
+  .btn-ramka{position:relative;background:transparent;color:var(--ink);border:0;overflow:hidden;padding-right:56px}
+  .btn-ramka::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+    background:linear-gradient(90deg,var(--accent-2),var(--accent) 45%,var(--sage,var(--accent)) 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    mask-composite:exclude;pointer-events:none}
+  .btn-ramka .wype{position:absolute;inset:0;background:rgba(var(--accent-rgb),.18);
+    transform:scaleX(0);transform-origin:left;transition:transform .42s var(--ease);pointer-events:none}
+  .btn-ramka:hover .wype{transform:scaleX(1)}
+  .btn-ramka .szewrony{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    display:flex;gap:2px;pointer-events:none}
+  .btn-ramka .szewrony i{width:5px;height:10px;background:var(--accent);
+    clip-path:polygon(0 0,100% 50%,0 100%,0 72%,55% 50%,0 28%)}
+  .btn-ramka:hover .szewrony i{animation:szewron .84s var(--ease) infinite alternate}
+  .btn-ramka:hover .szewrony i:nth-child(2){animation-delay:.045s}
+  .btn-ramka:hover .szewrony i:nth-child(3){animation-delay:.09s}
+  .btn-ramka:hover .szewrony i:nth-child(4){animation-delay:.135s}
+  .btn-ramka:hover .szewrony i:nth-child(5){animation-delay:.18s}
+  @keyframes szewron{to{transform:translateX(4px)}}
+  @media(prefers-reduced-motion:reduce){ .btn-ramka:hover .szewrony i{animation:none} }
 
   /* divider */
   .seam{position:relative;z-index:2;height:1px;max-width:1180px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--line),transparent)}
@@ -592,6 +701,7 @@
   }
   /* prefers-contrast mieszka niżej, razem z motywami - patrz komentarz tam */
   /* awaryjne wymuszenie widoczności, gdy animacje CSS nie ruszają (np. kontekst headless) */
+  body.forced .lit,body.forced .hero-fakt,
   body.forced .reveal,body.forced .svc,body.forced .pc,body.forced .step{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
   body.forced .steps::before{transform:scaleY(1)!important;animation:none!important}
   body.forced .accentword{background-size:100% 2px!important;transition:none!important}
@@ -978,15 +1088,22 @@
 <main>
 
   <section class="scene hero" id="hero">
-    <div class="inner"><div class="col">
-      <div class="eyebrow reveal"><span class="live"></span>Centrum zdrowia psychicznego · Toruń</div>
-      <h1 class="reveal">Największą odwagą jest<br><span class="accentword">poprosić o&nbsp;pomoc.</span><span class="h1-beat">Resztę przejdziemy razem,<br><span class="accentword">w&nbsp;Twoim tempie.</span></span></h1>
-      <p class="lede reveal">Pomoc psychiatryczna, psychologiczna i neurologiczna<br>dla dorosłych, dzieci i rodzin.</p>
-      <div class="cta reveal">
-        <a class="btn btn-primary" href="tel:575805505">Umów wizytę · 575 805 505</a>
-        <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
+   <div class="inner">
+      <div class="hero-tl">
+        <div class="eyebrow reveal"><span class="live"></span>Centrum zdrowia psychicznego · Toruń</div>
+        <!-- kompozycja narożna: początek zdania tu, dokończenie w prawym dolnym rogu -->
+        <h1 data-litery>Największą odwagą jest<br><span class="accentword">poprosić o&nbsp;pomoc.</span></h1>
+        <h2 class="h1-echo" data-litery data-opoznienie="800">Resztę przejdziemy razem,<br><span class="accentword">w&nbsp;Twoim tempie.</span></h2>
+        <div class="cta reveal">
+          <a class="btn btn-primary btn-ramka" href="tel:575805505"><span class="wype"></span>Umów wizytę · 575 805 505<span class="szewrony" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
+          <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
+        </div>
       </div>
-    </div></div>
+      <p class="lede reveal hero-br">Pomoc psychiatryczna, psychologiczna i neurologiczna dla dorosłych, dzieci i rodzin.</p>
+      <div class="hero-fakt -a"><b data-skok>27</b>specjalistów</div>
+      <div class="hero-fakt -b"><b data-skok>6</b>specjalizacji</div>
+      <div class="hero-fakt -c"><b>Toruń</b>ul. Bydgoska 32</div>
+    </div>
   </section>
 
   <div class="seam"></div>
@@ -1617,10 +1734,93 @@
 
   typoPass(document.body);
 
+  /* ---------- hero: wejście litera po literze, liczby ----------
+     Nagłówek nie ma prawa „mrugnąć" całością - składa się ze zdania. Każda
+     litera dostaje własne opóźnienie, każdy wiersz startuje 150 ms po
+     poprzednim. Rozbijamy WYŁĄCZNIE węzły tekstowe, więc <br> i span z
+     podkreśleniem zostają na swoim miejscu i nic nie gubi znaczenia.
+     Robimy to po typoPass, żeby litery nie rozjechały twardych spacji. */
+  (function(){
+    var REDUKCJA=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function naLitery(el, opoznienieBazowe){
+      var wiersz=0, wLinii=0;
+      (function chodz(w){
+        var dzieci=[].slice.call(w.childNodes);
+        dzieci.forEach(function(n){
+          if(n.nodeType===3){
+            var frag=document.createDocumentFragment();
+            /* Litery muszą siedzieć w opakowaniu WYRAZU. Same inline-blocki
+               pozwalają przeglądarce złamać wiersz między dowolnymi dwiema
+               literami - „Największą odwa / gą jest". Wyraz jako jeden
+               inline-block przywraca łamanie wyłącznie po spacjach. */
+            n.nodeValue.split(/(\s)/).forEach(function(kawalek){
+              if(kawalek==='') return;
+              if(/^\s$/.test(kawalek)){ frag.appendChild(document.createTextNode(kawalek)); return; }
+              var wyraz=document.createElement('span'); wyraz.className='slowo';
+              kawalek.split('').forEach(function(zn){
+                var s=document.createElement('span');
+                s.className='lit'; s.textContent=zn;
+                s.style.transitionDelay=(opoznienieBazowe + wiersz*150 + wLinii*22)+'ms';
+                wLinii++; wyraz.appendChild(s);
+              });
+              frag.appendChild(wyraz);
+            });
+            w.replaceChild(frag,n);
+          } else if(n.nodeType===1){
+            if(n.tagName==='BR'){ wiersz++; wLinii=0; return; }
+            chodz(n);
+          }
+        });
+      })(el);
+    }
+
+    document.querySelectorAll('[data-litery]').forEach(function(el){
+      if(REDUKCJA) return;                       /* przy ograniczonym ruchu tekst stoi od razu */
+      naLitery(el, +(el.dataset.opoznienie||600));
+    });
+
+    /* dane przy liniach siatki dochodzą na końcu, gdy nagłówek już stoi */
+    document.querySelectorAll('.hero-fakt').forEach(function(f,i){
+      f.style.transitionDelay=(2000+i*90)+'ms';
+    });
+
+    /* Liczba „dosypuje się" z losowych znaków zamiast wjechać gotowa.
+       Prawdziwa wartość siedzi w HTML od początku - skrypt tylko ją miesza
+       i porządkuje z powrotem, więc bez JS (i dla czytnika) stoi tam liczba. */
+    var ZNAKI='0123456789#%+<>/';
+    function skok(el, start){
+      var cel=el.textContent, dl=cel.length, t0=0;
+      function klatka(t){
+        if(!t0) t0=t;
+        var p=Math.min(1,(t-t0)/700), gotowe=Math.floor(p*dl), out='';
+        for(var i=0;i<dl;i++){
+          var zn=cel[i];
+          out += (i<gotowe || zn==='.'||zn===','||zn===' ') ? zn : ZNAKI[(Math.random()*ZNAKI.length)|0];
+        }
+        el.textContent=out;
+        if(p<1) requestAnimationFrame(klatka); else el.textContent=cel;
+      }
+      setTimeout(function(){ requestAnimationFrame(klatka); }, start);
+    }
+    var hero=document.getElementById('hero');
+    if(hero && !REDUKCJA){
+      var odpalone=false;
+      var io=new IntersectionObserver(function(en){
+        if(!en[0].isIntersecting || odpalone) return;
+        odpalone=true; io.disconnect();
+        document.querySelectorAll('.hero-fakt [data-skok]').forEach(function(b,i){ skok(b, 2000+i*90); });
+      },{threshold:.15});
+      io.observe(hero);
+    }
+  })();
+
   /* auto-wykrycie zablokowanych animacji: jeśli po intro hero wciąż niewidoczne, wymuś widoczność */
   setTimeout(function(){
-    var h1=document.querySelector('.hero h1');
-    if(h1 && parseFloat(getComputedStyle(h1).opacity) < 0.5){ document.body.classList.add('forced'); }
+    /* sprawdzamy LITERĘ, nie nagłówek: nagłówek ma krycie 1, to jego litery
+       wchodzą osobno, więc pomiar na nim zawsze wyszedłby „widoczny" */
+    var probka=document.querySelector('.hero h1 .lit')||document.querySelector('.hero h1');
+    if(probka && parseFloat(getComputedStyle(probka).opacity) < 0.5){ document.body.classList.add('forced'); }
   },2300);
 
   /* ---------- modal (profil specjalisty / dobór) ---------- */
