@@ -76,15 +76,24 @@ odtwarzalny i jego diff coś znaczy.
 
 ## Identyfikacja wizualna
 
-Paleta marki: **biel + szałwiowa zieleń + czerń**. Tokeny w `:root`
-(`index.html`): `--accent:#5b795a`, `--sage:#85997e`, `--ink:#1c211d`,
-`--bg:#fbfcfa`. Typografia: **Montserrat** we wszystkich rolach —
+Paleta marki: **ciepły papier + szałwiowa zieleń + czerń**. Tokeny w `:root`
+(`index.html`): `--accent:#557253`, `--ink:#1a1f1b`, `--bg:#f7f5ef`,
+`--card:#fffefb`. Typografia: **Montserrat** we wszystkich rolach —
 `--display`, `--body` i `--label` wskazują na ten sam krój, bo marka ma
 jeden; role zostają, bo niosą intencję.
 
+**Zasada rozmieszczenia koloru:** szałwia pracuje tam, gdzie coś się robi
+albo zaznacza — przycisk, podkreślenie, zaznaczenie tekstu, kafel ikony
+kategorii. Nie niesie tła sekcji, numerów sekcji ani poświat; sekcje
+różnicuje krok jasności (`--panel-step`), atmosferę robi jedna neutralna
+winieta (`--vignette`). Akcent ma być rzadki i przez to mocny — tło jest
+najgorszym miejscem na jego wydanie.
+
 Kolory tekstu drugoplanowego (`--soft`, `--muted`) i linii kryzysowej
-(`--clay`) są dobrane pod próg WCAG AA 4,5:1 na `--bg`. Przy zmianie
-któregokolwiek sprawdź kontrast, zanim trafi na produkcję.
+(`--clay`) są dobrane pod próg WCAG AA 4,5:1 na `--bg`. Ciepły papier jest
+ciemniejszy od dawnej bieli, więc sam akcent też musiał zejść o krok
+(`#5b795a` dawał na nim 4,45:1, a bywa tekstem — ceny, role, motto).
+Przy zmianie któregokolwiek sprawdź kontrast, zanim trafi na produkcję.
 
 ## Ruch — reguły, nie widzimisię
 
@@ -120,9 +129,19 @@ przez tokeny** — ani jeden selektor komponentu nie jest zdublowany. Blok ciemn
 stoi na końcu arkusza, bo media query nie podnosi specyficzności: gdyby stał
 wyżej, nadpisania komponentów przegrywałyby kolejnością.
 
-Akcent na ciemnym musi być jaśniejszy — szałwia `#5b795a` na ciemnym tle daje
-2,9:1, więc tam pracuje `#93b28f`. Logo ma osobny plik (`logo-mark-dark.webp`)
-podawany przez `<picture>`; filtr `invert()` przekręcał barwę na fioletową.
+Akcent na ciemnym musi być jaśniejszy — szałwia `#557253` na ciemnym tle daje
+2,6:1, więc tam pracuje `#93b28f`. Noc jest **ciepłym brązem palonej kawy**
+(`--bg:#1d1711`, karta `#272018`), a nie zielenią-czernią: skoro dzień stoi na
+ciepłym papierze, ta sama kartka wieczorem nie może ostygnąć. Ziemia siedzi
+w powierzchniach, nie w akcencie — szałwia zostaje szałwią w obu motywach.
+Głębiej w brąz da się pójść, ale każdy krok rozjaśnia ekran czytany wieczorem
+i podnosi wymagania wobec `--muted` (od ok. `#251b12` trzeba go rozjaśnić,
+inaczej na karcie spada poniżej 4,5:1).
+
+Logo ma osobny plik (`logo-mark-dark.webp`). Oba warianty są w kodzie i
+przełącza je CSS po `data-theme` — `<picture>` odpadł, bo umie czytać tylko
+media query, więc ignorował ręczny wybór motywu. Filtr `invert()` przekręcał
+barwę na fioletową i nie wchodzi w grę.
 
 > [!warning] Paleta alarmowa nie podlega motywom
 > Tokeny `--alert-*` opisują ekran kryzysowy i mają **własny** wariant ciemny,

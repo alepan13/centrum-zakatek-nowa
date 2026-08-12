@@ -21,8 +21,8 @@
 <meta name="twitter:title" content="Centrum Zakątek - zdrowie psychiczne w Toruniu">
 <meta name="twitter:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu.">
 <meta name="twitter:image" content="https://centrumzakatek.pl/assets/brand/og-image.jpg">
-<meta name="theme-color" content="#fbfcfa" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131711" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1d1711" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <script>
 /* ===== Motyw: rozstrzygnięcie przed pierwszym malowaniem =====
@@ -80,32 +80,44 @@
        Atrybut data-theme niżej nadpisuje tę deklarację na konkretną wartość. */
     color-scheme: light dark;
     /* --- kolory --- */
-    /* paleta marki Zakątek: biel + szałwiowa zieleń + czerń */
-    --accent:#5b795a; --accent-rgb:91,121,90; --accent-2:#4c6749; --accent-ink:#ffffff;
-    --sage:#85997e; --sage-2:#adbea6;
-    /* --muted i --clay przyciemnione do progu WCAG AA (4,5:1) na --bg;
+    /* Paleta marki Zakątek: ciepły papier + szałwiowa zieleń + czerń.
+       Płótnem nie jest już czysta biel, tylko kość - ciepło niesie tło,
+       a szałwia schodzi z dekoracji i pracuje wyłącznie tam, gdzie coś się
+       robi albo zaznacza. Sekcje różnicuje jasność, nie kolor. */
+    /* Szałwia o krok ciemniejsza niż w wersji na bieli: na ciepłym papierze
+       #5b795a daje 4,45:1, a akcent bywa tekstem (ceny, role, motto), więc
+       obowiązuje go próg 4,5. #557253 to ten sam odcień niżej o krok jasności. */
+    --accent:#557253; --accent-rgb:85,114,83; --accent-2:#4c6749; --accent-ink:#ffffff;
+    /* --muted i --clay trzymane przy progu WCAG AA (4,5:1) na --bg;
        --clay niesie linię kryzysową w stopce, więc kontrast nie jest tu opcjonalny */
-    --ink:#1c211d; --soft:#5b635c; --muted:#6b736b;
-    --line:rgba(28,38,30,.14); --halo-ring:rgba(var(--accent-rgb),.16);
-    --clay:#7a5539; --card:#ffffff; --photo:#eef2ec;
+    --ink:#1a1f1b; --soft:#565e56; --muted:#676f67;
+    --line:rgba(46,40,28,.13); --halo-ring:rgba(var(--accent-rgb),.16);
+    --clay:#7a5539; --card:#fffefb; --photo:#efece3;
     /* ===== stan alarmowy =====
        Ekran kryzysowy ma wyglądać inaczej niż cała reszta strony i to jest
        jego zadanie, nie niedopatrzenie. Wartości siedzą w osobnej grupie,
        żeby następna zmiana motywu przemalowała stronę, a nie alarm. */
     --alert-bg:#f7e9e6; --alert-line:#e3bcb2; --alert-ink:#7a2e1e;
     --alert-body:#6b3326; --alert-surface:#ffffff; --alert-text:#3a2520; --alert-hint:#c9a59c;
-    --shadow:0 2px 5px rgba(40,55,42,.05),0 20px 46px -28px rgba(40,55,42,.20); --shadow-sm:0 1px 3px rgba(40,55,42,.05),0 13px 28px -18px rgba(40,55,42,.14);
+    /* cień też jest ciepły - zimny cień na ciepłym papierze czyta się jak brud */
+    --shadow:0 2px 5px rgba(58,48,30,.06),0 20px 46px -28px rgba(58,48,30,.22); --shadow-sm:0 1px 3px rgba(58,48,30,.06),0 13px 28px -18px rgba(58,48,30,.16);
     /* --- tła --- */
-    --bg:#fbfcfa; --bg-top:#ffffff; --bg-bottom:#eef2eb; --surface:#ffffff;
+    --bg:#f7f5ef; --bg-top:#fbf9f4; --bg-bottom:#efebe0; --surface:#fffefb;
     /* ===== warstwy, które nie są zwykłym kolorem =====
        Wcześniej te cztery rzeczy - kurtyna nad modalem, ściemniacz u góry,
        ziarno i cień logo - miały w trybie ciemnym własne, zdublowane reguły
        komponentów. Teraz są tokenami, więc motyw przełącza wyłącznie tę
-       jedną listę, a nie osiem selektorów rozsypanych po arkuszu. */
-    --veil:rgba(20,28,22,.42); --veil-solid:rgba(20,28,22,.74);
-    --scrim-rgb:255,255,255; --grain-op:.045;
-    --chip-bg:rgba(255,255,255,.94); --chip-solid:#ffffff;
-    --logo-shadow:rgba(35,45,38,.08);
+       jedną listę, a nie osiem selektorów rozsypanych po arkuszu.
+       --scrim-rgb MUSI równać się --bg-top: ściemniacz udaje ciąg dalszy
+       tła pod belką, więc każda rozbieżność rysuje poziomy szew przez ekran. */
+    --veil:rgba(28,24,16,.42); --veil-solid:rgba(28,24,16,.74);
+    --scrim-rgb:251,249,244; --grain-op:.045;
+    --chip-bg:rgba(255,254,251,.94); --chip-solid:#fffefb;
+    --logo-shadow:rgba(50,42,28,.09);
+    /* Sekcja wyróżniona i wielkie numery sekcji brały wcześniej szałwię.
+       To była dekoracja, nie znaczenie - teraz różnicuje je sam krok jasności,
+       a akcent zostaje rzadki i przez to mocny. */
+    --panel-step:rgba(38,32,20,.028); --num-quiet:rgba(38,32,20,.05); --vignette:rgba(38,32,20,.045);
     /* --- promienie --- */
     --r-xs:6px; --r-sm:10px; --r-md:13px; --r-lg:18px;
     /* --- spacing --- */
@@ -181,10 +193,11 @@
      wygląda, ale kosztuje przemalowanie tła przy każdym pikselu przewijania
      (a iOS i tak tego nie honoruje). Osobny fixed div kompozytor rysuje raz. */
   .grade{position:fixed;inset:0;z-index:0;pointer-events:none;
+    /* Trzy szałwiowe poświaty zeszły stąd na rzecz jednej neutralnej winiety.
+       Atmosfera zostaje - robi ją światło, nie barwa marki. Akcent ma być
+       rzadki, a tło to najgorsze miejsce na wydanie go. */
     background-image:
-      radial-gradient(92% 84% at 50% 42%,transparent 66%,rgba(var(--accent-rgb),.05) 100%),
-      radial-gradient(120% 90% at 88% 0%, rgba(var(--accent-rgb),.06), transparent 55%),
-      radial-gradient(110% 90% at 0% 100%, rgba(var(--accent-rgb),.05), transparent 58%),
+      radial-gradient(92% 84% at 50% 42%,transparent 62%,var(--vignette) 100%),
       linear-gradient(180deg,var(--bg-top),var(--bg) 55%,var(--bg-bottom))}
   .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
   .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,rgb(var(--scrim-rgb)) 0%,rgba(var(--scrim-rgb),.92) 26%,rgba(var(--scrim-rgb),.5) 60%,transparent 100%)}
@@ -229,7 +242,7 @@
   .navtoggle.open span{background:transparent}
   .navtoggle.open span::before{top:0;transform:rotate(45deg)}
   .navtoggle.open span::after{top:0;transform:rotate(-45deg)}
-  .mobilemenu{display:none;position:fixed;top:70px;left:12px;right:12px;z-index:9;flex-direction:column;gap:2px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 24px 60px -24px rgba(20,30,24,.35)}
+  .mobilemenu{display:none;position:fixed;top:70px;left:12px;right:12px;z-index:9;flex-direction:column;gap:2px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 24px 60px -24px rgba(40,32,18,.32)}
   .mobilemenu.open{display:flex}
   .mobilemenu a{font-family:var(--label);font-size:var(--text-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);padding:14px;border-radius:var(--r-sm)}
   .mobilemenu a:hover,.mobilemenu a:focus-visible{background:rgba(var(--accent-rgb),.06);color:var(--accent)}
@@ -254,7 +267,7 @@
   }
   .inner{position:relative;z-index:1;width:100%;max-width:1320px;margin:0 auto}
   .col{width:100%;max-width:620px;position:relative;z-index:1}
-  .sidx{position:absolute;top:-2vh;right:0;font-family:var(--display);font-weight:500;font-size:clamp(4.5rem,11vw,10rem);line-height:1;color:rgba(var(--accent-rgb),.055);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
+  .sidx{position:absolute;top:-2vh;right:0;font-family:var(--display);font-weight:500;font-size:clamp(4.5rem,11vw,10rem);line-height:1;color:var(--num-quiet);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
   @media(max-width:760px){ .sidx{font-size:clamp(2.8rem,15vw,4.5rem);top:-1vh} }
 
   .eyebrow{font-family:var(--label);font-size:var(--text-xs);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
@@ -363,7 +376,7 @@
   .scene.show .svc .dl{stroke-dashoffset:100;animation:svgdraw 1s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards}
   .svc h3{font-family:var(--display);font-weight:500;font-size:1.4rem;color:var(--ink);margin-bottom:9px}
   .svc p{font-size:.94rem;color:var(--soft);line-height:1.55}
-  .svc-note{margin-top:24px;display:block;border:1px solid var(--line);background:rgba(var(--accent-rgb),.05);border-radius:var(--r-lg);padding:18px 20px;font-size:.94rem;line-height:1.6;color:var(--soft);max-width:none}
+  .svc-note{margin-top:24px;display:block;border:1px solid var(--line);background:var(--panel-step);border-radius:var(--r-lg);padding:18px 20px;font-size:.94rem;line-height:1.6;color:var(--soft);max-width:none}
   .svc-note b{color:var(--ink)}
   .sway{transform-box:fill-box;transform-origin:50% 100%}.bloom{transform-box:fill-box;transform-origin:50% 92%}.rings{transform-box:fill-box;transform-origin:center}
   @keyframes svgdraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
@@ -409,7 +422,7 @@
   .scene.show .pc{opacity:1}
   .scene.show .pc:nth-child(2){transition-delay:.08s}.scene.show .pc:nth-child(3){transition-delay:.16s}.scene.show .pc:nth-child(4){transition-delay:.24s}.scene.show .pc:nth-child(5){transition-delay:.32s}.scene.show .pc:nth-child(6){transition-delay:.4s}
   .pc h3{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:1.25rem;color:var(--ink);padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--line)}
-  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid rgba(28,38,30,.09);font-size:.94rem;color:var(--soft)}
+  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:.94rem;color:var(--soft)}
   .pr:last-child{border-bottom:0;padding-bottom:0}
   .pp{white-space:nowrap;font-family:var(--display);font-weight:500;font-size:1.05rem;color:var(--accent)}
   .price-foot{font-family:var(--label);font-size:var(--text-xs);color:var(--muted);margin-top:24px;letter-spacing:.03em}
@@ -453,14 +466,14 @@
 
   .team-teaser{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:30px;padding:24px 28px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
   .tt-avatars{display:flex;flex:none}
-  .tt-avatars img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:center 16%;border:2px solid var(--surface);margin-left:-16px;box-shadow:0 2px 7px rgba(35,45,38,.18)}
+  .tt-avatars img{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:center 16%;border:2px solid var(--surface);margin-left:-16px;box-shadow:0 2px 7px rgba(50,40,24,.18)}
   .tt-avatars img:first-child{margin-left:0}
   .tt-text{flex:1;min-width:260px;color:var(--soft);font-size:1rem;line-height:1.55}
   .tt-text b{color:var(--ink);font-family:var(--display);font-weight:500;font-size:1.18rem;display:block;margin-bottom:4px}
   /* teaser cennika */
   .price-teaser{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;margin-top:36px;padding:28px 30px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
   .pt-rows{display:flex;flex-direction:column}
-  .pt-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:12px 0;border-bottom:1px solid rgba(35,48,40,.09);font-size:.98rem;color:var(--soft)}
+  .pt-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:.98rem;color:var(--soft)}
   .pt-row:last-child{border-bottom:0}
   .pt-row b{font-family:var(--display);font-weight:500;color:var(--accent);white-space:nowrap;font-size:1.05rem}
   .pt-side p{color:var(--soft);line-height:1.6;margin-bottom:22px}
@@ -565,7 +578,7 @@
   @media(max-width:620px){ .team-grid{grid-template-columns:repeat(2,1fr);gap:12px} }
   /* ===== Dobór - band ===== */
   /* === RYTM SEKCJI: panel (subtelnie zagłębiony pas) === */
-  .scene--panel{background:rgba(91,121,90,.05)}
+  .scene--panel{background:var(--panel-step)}
   .scene--panel::before,.scene--panel::after{content:"";position:absolute;left:0;right:0;height:1px;z-index:1;background:linear-gradient(90deg,transparent,var(--line) 18%,var(--line) 82%,transparent)}
   .scene--panel::before{top:0}.scene--panel::after{bottom:0}
 
@@ -613,7 +626,7 @@
     opacity:0;transition:opacity .3s var(--ease)}
   .modal.in .modal-bg{opacity:1}
   .modal.out .modal-bg{opacity:0;transition-timing-function:var(--ease-in)}
-  .modal-card{position:relative;width:min(680px,calc(100% - 28px));max-height:90vh;margin:5vh auto;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 40px 100px -40px rgba(20,30,24,.5);overflow:hidden;
+  .modal-card{position:relative;width:min(680px,calc(100% - 28px));max-height:90vh;margin:5vh auto;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 40px 100px -40px rgba(40,32,18,.48);overflow:hidden;
     opacity:0;transform:scale(.92);transition:opacity .34s var(--ease),transform .34s var(--ease)}
   .modal.in .modal-card{opacity:1;transform:none}
   .modal.out .modal-card{opacity:0;transform:scale(.92);transition-timing-function:var(--ease-in);transition-duration:.26s}
@@ -675,10 +688,15 @@
   @media(max-width:760px){ .dobor-grid{grid-template-columns:1fr;gap:30px} .dobor-alt{flex-direction:column} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
   /* ===== TRYB CIEMNY =====
      Cała zmiana idzie przez tokeny — ani jeden selektor komponentu nie jest
-     tu dublowany. Akcent musi się rozjaśnić: szałwia #5b795a na ciemnym tle
-     daje 2,9:1, więc na ciemnym pracuje jaśniejszy wariant. Paleta alarmowa
+     tu dublowany. Akcent musi się rozjaśnić: szałwia #557253 na ciemnym tle
+     daje 2,6:1, więc na ciemnym pracuje jaśniejszy wariant. Paleta alarmowa
      ma własny wariant, a nie odziedziczony: ekran kryzysowy ma zostać ciepły
      i odrębny również w nocy.
+
+     Noc jest ciepłym węglem, nie zielenią-czernią: skoro dzień stoi na
+     ciepłym papierze, ta sama kartka wieczorem nie może nagle ostygnąć.
+     Ziemia siedzi w powierzchniach, a nie w akcencie - szałwia zostaje
+     szałwią, bo to ona niesie markę.
 
      Wejścia do trybu ciemnego są dwa i dlatego są tu dwa selektory:
        1. system mówi „ciemno", a użytkownik niczego nie wybrał — działa bez
@@ -690,37 +708,37 @@
     :root:not([data-theme="light"]){
       color-scheme:dark;
       --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
-      --sage:#7d9077; --sage-2:#5d6d59;
-      --ink:#e8eee6; --soft:#aab3a7; --muted:#8b948a;
-      --line:rgba(226,238,222,.15); --halo-ring:rgba(var(--accent-rgb),.20);
-      --clay:#d9a780; --card:#1b201a; --photo:#232a22;
-      --bg:#131711; --bg-top:#181d16; --bg-bottom:#0e120d; --surface:#1b201a;
+      --ink:#eeeae1; --soft:#b2ada2; --muted:#928d83;
+      --line:rgba(238,234,225,.15); --halo-ring:rgba(var(--accent-rgb),.20);
+      --clay:#d9a780; --card:#272018; --photo:#30281e;
+      --bg:#1d1711; --bg-top:#221c15; --bg-bottom:#14100b; --surface:#272018;
       --shadow:0 2px 5px rgba(0,0,0,.34),0 20px 46px -28px rgba(0,0,0,.7);
       --shadow-sm:0 1px 3px rgba(0,0,0,.3),0 13px 28px -18px rgba(0,0,0,.5);
       --alert-bg:#2e1c17; --alert-line:#573229; --alert-ink:#f0b9a5;
       --alert-body:#dcb1a3; --alert-surface:#1d1310; --alert-text:#e9d5cd; --alert-hint:#8a5346;
-      --veil:rgba(6,9,6,.62); --veil-solid:rgba(6,9,6,.82);
-      --scrim-rgb:24,29,22; --grain-op:.03;
-      --chip-bg:rgba(27,32,26,.94); --chip-solid:#1b201a;
+      --veil:rgba(11,8,4,.63); --veil-solid:rgba(11,8,4,.83);
+      --scrim-rgb:34,28,21; --grain-op:.03;
+      --chip-bg:rgba(39,32,24,.94); --chip-solid:#272018;
       --logo-shadow:rgba(0,0,0,.45);
+      --panel-step:rgba(255,246,226,.030); --num-quiet:rgba(255,246,226,.05); --vignette:rgba(0,0,0,.26);
     }
   }
   :root[data-theme="dark"]{
     color-scheme:dark;
     --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
-    --sage:#7d9077; --sage-2:#5d6d59;
-    --ink:#e8eee6; --soft:#aab3a7; --muted:#8b948a;
-    --line:rgba(226,238,222,.15); --halo-ring:rgba(var(--accent-rgb),.20);
-    --clay:#d9a780; --card:#1b201a; --photo:#232a22;
-    --bg:#131711; --bg-top:#181d16; --bg-bottom:#0e120d; --surface:#1b201a;
+    --ink:#eeeae1; --soft:#b2ada2; --muted:#928d83;
+    --line:rgba(238,234,225,.15); --halo-ring:rgba(var(--accent-rgb),.20);
+    --clay:#d9a780; --card:#272018; --photo:#30281e;
+    --bg:#1d1711; --bg-top:#221c15; --bg-bottom:#14100b; --surface:#272018;
     --shadow:0 2px 5px rgba(0,0,0,.34),0 20px 46px -28px rgba(0,0,0,.7);
     --shadow-sm:0 1px 3px rgba(0,0,0,.3),0 13px 28px -18px rgba(0,0,0,.5);
     --alert-bg:#2e1c17; --alert-line:#573229; --alert-ink:#f0b9a5;
     --alert-body:#dcb1a3; --alert-surface:#1d1310; --alert-text:#e9d5cd; --alert-hint:#8a5346;
-    --veil:rgba(6,9,6,.62); --veil-solid:rgba(6,9,6,.82);
-    --scrim-rgb:24,29,22; --grain-op:.03;
-    --chip-bg:rgba(27,32,26,.94); --chip-solid:#1b201a;
+    --veil:rgba(11,8,4,.63); --veil-solid:rgba(11,8,4,.83);
+    --scrim-rgb:34,28,21; --grain-op:.03;
+    --chip-bg:rgba(39,32,24,.94); --chip-solid:#272018;
     --logo-shadow:rgba(0,0,0,.45);
+    --panel-step:rgba(255,246,226,.030); --num-quiet:rgba(255,246,226,.05); --vignette:rgba(0,0,0,.26);
   }
   /* wybór jasnego to też wybór: bez tego pole tekstowe i pasek przewijania
      zostałyby ciemne na systemie ustawionym na noc */
@@ -735,11 +753,11 @@
      Wartości nocne są własne, nie odbite: na ciemnym tle kontrast podnosi
      się rozjaśnianiem tekstu, a nie przyciemnianiem. */
   @media(prefers-contrast:more){
-    :root{--line:rgba(28,38,30,.34);--line-hc:rgba(28,38,30,.42);--muted:#4f564f;--soft:#454c46}
+    :root{--line:rgba(46,40,28,.34);--line-hc:rgba(46,40,28,.42);--muted:#4d534c;--soft:#434841}
     @media(prefers-color-scheme:dark){
-      :root:not([data-theme="light"]){--line:rgba(226,238,222,.38);--line-hc:rgba(226,238,222,.46);--muted:#c6cfc3;--soft:#d7dfd4}
+      :root:not([data-theme="light"]){--line:rgba(238,234,225,.38);--line-hc:rgba(238,234,225,.46);--muted:#cbc7bd;--soft:#dcd8ce}
     }
-    :root[data-theme="dark"]{--line:rgba(226,238,222,.38);--line-hc:rgba(226,238,222,.46);--muted:#c6cfc3;--soft:#d7dfd4}
+    :root[data-theme="dark"]{--line:rgba(238,234,225,.38);--line-hc:rgba(238,234,225,.46);--muted:#cbc7bd;--soft:#dcd8ce}
     .svc,.pc,.tc,.rescard,.qtile,.filt,.dlg-note,.svc-note,.team-teaser,.price-teaser,.dobor-panel{border-color:var(--line-hc)}
     :focus-visible{outline-width:3px}
     .btn-ghost{border-color:var(--accent)}
@@ -1434,7 +1452,7 @@
 
   function zsynchronizuj(){
     var t = widoczny(), ciemno = (t === 'dark');
-    meta.setAttribute('content', ciemno ? '#131711' : '#fbfcfa');
+    meta.setAttribute('content', ciemno ? '#1d1711' : '#f7f5ef');   // musi zgadzać się z --bg
     if(btn) btn.setAttribute('aria-pressed', ciemno ? 'true' : 'false');
     /* chmura punktów czyta kolor akcentu raz, przy starcie - musi wiedzieć,
        że właśnie się zmienił, inaczej zostałaby ciemnozielona na czarnym */
