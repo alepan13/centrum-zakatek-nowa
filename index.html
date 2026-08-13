@@ -2381,11 +2381,31 @@
      GPU raz, a każda klatka zmienia tylko jedną liczbę (uMix). Wcześniej ta
      sama animacja przepisywała ~120 tys. floatów i wysyłała 480 kB bufora
      przy KAŻDEJ klatce przewijania. */
+  /* Rozpraszanie pod kursorem liczymy w przestrzeni WIDOKU, nie modelu.
+     W przestrzeni modelu trzeba by co klatkę odwracać macierz obrotu, żeby
+     wsadzić w nią kursor; w widoku kursor jest po prostu punktem na wprost
+     kamery, a punkty uciekają równolegle do ekranu - czyli dokładnie tam,
+     gdzie oko się tego spodziewa.
+
+     Losowość na punkt nie potrzebuje trzeciego bufora. Cel „rozwiania" był
+     budowany jako base*2.25 + rand*1.7 (oś Z: base*1.2375 + rand*0.7), więc
+     rand da się z tych dwóch atrybutów odzyskać równaniem - 477 kB pamięci
+     GPU mniej, a szum jest ten sam i stały dla punktu. */
   var VERT=
     'attribute vec3 aBase;attribute vec3 aTarget;'+
     'uniform mat4 uProj,uMV;uniform float uMix,uSize;'+
+    'uniform vec3 uCursor;uniform float uScatterR,uScatterF,uTurb;'+
     'void main(){'+
       'vec4 mv=uMV*vec4(mix(aBase,aTarget,uMix),1.0);'+
+      'if(uScatterF>0.0){'+
+        'vec3 away=mv.xyz-uCursor;'+
+        'float d=length(away);'+
+        'float infl=1.0-smoothstep(0.0,uScatterR,d);'+
+        'if(infl>0.0){'+
+          'vec3 rnd=(aTarget-aBase*vec3(2.25,2.25,1.2375))/vec3(0.85,0.85,0.35);'+
+          'mv.xyz+=normalize(away+rnd*uTurb+vec3(1e-5))*infl*uScatterF;'+
+        '}'+
+      '}'+
       'gl_Position=uProj*mv;'+
       'gl_PointSize=uSize/max(0.001,-mv.z);'+
     '}';
@@ -2408,6 +2428,13 @@
   var U_PROJ=gl.getUniformLocation(prog,'uProj'), U_MV=gl.getUniformLocation(prog,'uMV');
   var U_MIX=gl.getUniformLocation(prog,'uMix'), U_SIZE=gl.getUniformLocation(prog,'uSize');
   var U_COLOR=gl.getUniformLocation(prog,'uColor'), U_OPACITY=gl.getUniformLocation(prog,'uOpacity');
+  var U_CUR=gl.getUniformLocation(prog,'uCursor'), U_SCR=gl.getUniformLocation(prog,'uScatterR'),
+      U_SCF=gl.getUniformLocation(prog,'uScatterF'), U_TURB=gl.getUniformLocation(prog,'uTurb');
+  /* Zasięg i siła w jednostkach WIDOKU. Na głębokości modelu kadr ma 2,61
+     takiej jednostki wysokości, więc 0,46 to ok. 16% wysokości okna zasięgu,
+     a 0,28 to ok. 10% maksymalnego wypchnięcia - przy 900 px odpowiednio
+     ~145 px i ~96 px. */
+  gl.uniform1f(U_SCR,0.46); gl.uniform1f(U_TURB,0.55); gl.uniform1f(U_SCF,0);
   /* kolor z tokenu, nie z liczby wklepanej w shader. Token niesie tło drugiego
      motywu (patrz --brain-rgb), więc chmura zawsze stoi na przeciwnym krańcu
      jasności niż to, na czym leży. Odczyt powtarza się przy każdej zmianie
@@ -2446,12 +2473,12 @@
     mv[12]=px;       mv[13]=py;      mv[14]=-CAM_Z;  mv[15]=1;
   }
 
-  var dpr=Math.min(window.devicePixelRatio||1,2), cssH=1;
+  var dpr=Math.min(window.devicePixelRatio||1,2), cssH=1, aspektNow=1;
   function size(){
-    cssH=innerHeight;
+    cssH=innerHeight; aspektNow=innerWidth/innerHeight;
     canvas.width=Math.round(innerWidth*dpr); canvas.height=Math.round(innerHeight*dpr);
     gl.viewport(0,0,canvas.width,canvas.height);
-    setProj(innerWidth/innerHeight);
+    setProj(aspektNow);
     gl.uniformMatrix4fv(U_PROJ,false,proj);
     /* dokładnie ta sama atenuacja, którą liczył PointsMaterial:
        rozmiar · pixelRatio · (wysokość CSS / 2) / odległość */
@@ -2462,6 +2489,35 @@
   canvas.style.opacity='0';                               // intro: chmura pojawi się płynnie
   var count=0, ready=false, BASE=0.82, FINALX=0.86, baseScale=1.05;
   var posX=0, rotY=0, introT=0, introStart=0, scaleNow=baseScale;
+
+  /* ---------- reakcja na kursor: parallaksa + rozpraszanie ----------
+     Tylko przy myszy. Na dotyku nie ma kursora, który by „przejeżdżał",
+     a każdy tap wyglądałby jak przypadkowe szarpnięcie chmury. */
+  var FINE=matchMedia('(pointer:fine)').matches && !reduce;
+  var pxNdc=0, pyNdc=0,          // wskaźnik w NDC, przycięty do [-1,1]
+      pxEase=0, pyEase=0,        // ten sam, wygładzony (parallaksa)
+      curX=0, curY=0,            // kursor w przestrzeni widoku, wygładzony
+      scatter=0, scatterCel=0,   // narastanie i wygasanie siły
+      nadKadrem=false;
+  /* Kursor w przestrzeni widoku na głębokości środka modelu. Bez odwracania
+     macierzy: proj[0]=f/aspect, proj[5]=f, więc z NDC wychodzi się wprost. */
+  function kursorWidok(){
+    var f=1/Math.tan(FOV/2);
+    return [pxEase*CAM_Z*aspektNow/f, pyEase*CAM_Z/f, -CAM_Z];
+  }
+  if(FINE){
+    addEventListener('pointermove',function(e){
+      if(e.pointerType && e.pointerType!=='mouse') return;
+      pxNdc=Math.max(-1,Math.min(1, (e.clientX/innerWidth)*2-1));
+      pyNdc=Math.max(-1,Math.min(1, -((e.clientY/innerHeight)*2-1)));
+      /* chmura żyje tylko w hero; niżej i tak jest rozwiana, więc siła schodzi */
+      nadKadrem = e.clientY < innerHeight*1.05;
+      scatterCel = nadKadrem?1:0;
+      wake();
+    },{passive:true});
+    addEventListener('pointerleave',function(){ scatterCel=0; wake(); },{passive:true});
+    document.addEventListener('mouseleave',function(){ scatterCel=0; wake(); },{passive:true});
+  }
 
   fetch('assets/brain-points.bin').then(function(res){
     if(!res.ok) throw new Error('brak pliku');
@@ -2494,7 +2550,12 @@
   }).catch(function(){ /* brak chmury - strona działa bez mózgu */ });
 
   function draw(mix,opacity){
-    setMV(posX,0.06,-0.18,rotY,scaleNow);
+    /* Parallaksa jest CELOWO mniejsza niż w pierwowzorze (tam 0.45/0.28 rad).
+       Tam chmura jest bohaterem kadru; tu leży pod nagłówkiem, którego prawy
+       margines wobec kropek policzyłem co do piksela. Obwiednia pełnego
+       obrotu wokół Y już te 0.26 rad obejmuje, więc korytarz się nie zmienia;
+       pochylenie trzymam na 0.10 rad, bo tego obwiednia nie mierzyła. */
+    setMV(posX,0.06,-0.18+pyEase*0.10,rotY+pxEase*0.26,scaleNow);
     gl.uniformMatrix4fv(U_MV,false,mv);
     gl.uniform1f(U_MIX,mix); gl.uniform1f(U_OPACITY,opacity);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -2539,6 +2600,22 @@
       e=curProg*curProg*(3-2*curProg);          // smoothstep
       canvas.style.opacity=(BASE*(1-e)+0.4*e).toFixed(3);
       moving=true;
+    }
+    /* Kursor: trzy osobne wygładzenia (parallaksa, pozycja kursora, siła),
+       każde zgłasza ruch samodzielnie. Dzięki temu pętla zasypia dopiero,
+       gdy WSZYSTKIE trzy dobiegły do celu - inaczej zatrzymywałaby się
+       w połowie dojazdu i chmura zastygała w pozycji pośredniej. */
+    if(FINE){
+      var dsc=scatterCel-scatter;
+      if(Math.abs(dsc)>0.002){ scatter+=dsc*0.09; moving=true; } else scatter=scatterCel;
+      var dpx=pxNdc-pxEase, dpy=pyNdc-pyEase;
+      if(Math.abs(dpx)>0.0008||Math.abs(dpy)>0.0008){ pxEase+=dpx*0.06; pyEase+=dpy*0.06; moving=true; }
+      var kw=kursorWidok(), dcx=kw[0]-curX, dcy=kw[1]-curY;
+      if(Math.abs(dcx)>0.0008||Math.abs(dcy)>0.0008){ curX+=dcx*0.09; curY+=dcy*0.09; moving=true; }
+      gl.uniform3f(U_CUR,curX,curY,-CAM_Z);
+      /* po rozwianiu chmura jest tłem całej strony, nie obiektem w hero -
+         wtedy kursor przestaje ją ruszać, bo nie ma już czego rozpraszać */
+      gl.uniform1f(U_SCF, 0.28*scatter*(1-e));
     }
     draw(e, 0.2*(1-e)+0.15*e);                  // kropki zostają delikatne, nie znikają
     if(moving) raf=requestAnimationFrame(tick); // nic się nie rusza -> pętla zasypia
