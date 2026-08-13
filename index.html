@@ -233,7 +233,33 @@
       radial-gradient(92% 84% at 50% 42%,transparent 62%,var(--vignette) 100%),
       linear-gradient(180deg,var(--bg-top),var(--bg) 55%,var(--bg-bottom))}
   .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:var(--grain-op);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
-  .topscrim{position:fixed;top:0;left:0;right:0;height:120px;z-index:7;pointer-events:none;background:linear-gradient(180deg,rgb(var(--scrim-rgb)) 0%,rgba(var(--scrim-rgb),.92) 26%,rgba(var(--scrim-rgb),.5) 60%,transparent 100%)}
+  /* Ściemniacz musi być NIEPRZEZROCZYSTY na całym pasie, w którym stoją logo
+     i nawigacja - inaczej przewijany tekst przechodzi pod spodem i zabiera
+     kontrast linkom. Wcześniej gradient schodził do .5 już na 72 px, a dolna
+     krawędź linków siedzi na 66 px: pod „ZAKRES ZESPÓŁ CENNIK" prześwitywało
+     ok. 44% treści strony.
+     --pas to dół tej belki. Logo skaluje się z wysokością okna
+     (16 px + clamp(62px,9vh,94px)), więc pas też musi - stała wartość albo
+     nie dokrywa na wysokim oknie, albo wchodzi w chmurę na niskim.
+     Górna krawędź chmury punktów to ok. 0,148 wysokości okna (105 px przy
+     720, 160 px przy 1080), a pas kończy się 20-50 px nad nią - dlatego
+     nieprzezroczystość nie obcina mózgu na żadnym rozmiarze.
+     Zbocze pod pasem jest DWUCZĘŚCIOWE i to nie jest ozdoba. Najpierw szybki
+     spadek do .38 na 18 px - tuż pod belką treść ma wychodzić czysto, nie
+     majaczyć. Potem długi, płaski ogon do zera, bo pod nim wraca ziarno
+     i --grade: nagły koniec rysowałby poziomy szew przez ekran.
+     Ogon musi być płaski, bo pierwsza dana hero („27 specjalistów") stoi
+     na 163 px przy 900 i łapie się jeszcze w jego zasięgu - przy jednym,
+     równomiernym zboczu do 226 px gasła o 46%. Teraz o 9%, czyli poniżej
+     progu widzialności. */
+  .topscrim{--pas:clamp(84px,12vh,132px);
+    position:fixed;top:0;left:0;right:0;height:calc(var(--pas) + 88px);z-index:7;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgb(var(--scrim-rgb)) 0,
+      rgb(var(--scrim-rgb)) var(--pas),
+      rgba(var(--scrim-rgb),.38) calc(var(--pas) + 18px),
+      rgba(var(--scrim-rgb),.12) calc(var(--pas) + 44px),
+      transparent 100%)}
 
   .brandmark{position:fixed;top:16px;left:34px;z-index:8;display:flex;align-items:center;cursor:pointer}
   /* logo skaluje się z wysokością okna: 94 px na niskim ekranie zjadałoby
@@ -328,8 +354,13 @@
      razem z h1 na każdej szerokości. */
   /* dokończenie zdania w prawym dolnym rogu: ten sam krój i skala co h1,
      ale mniejszy stopień - to echo pierwszego bloku, nie drugi nagłówek */
+  /* Odstęp nad echem jest w em, więc jedzie ze stopniem pisma na każdej
+     szerokości - i dlatego stoi tu, a nie w bloku desktopowym: pod 1024 px
+     „Resztę" siadało dokładnie na podkreśleniu „poprosić o pomoc.".
+     .68em, nie mniej: w tej szparze mieszka kreska akcentu, rysowana jako tło
+     na wysokości (100% - .06em) wiersza, więc zjada jej dolne osiem pikseli. */
   .h1-echo{font-size:calc(var(--t-display) * .72);line-height:var(--lh-tight);
-    letter-spacing:var(--tr-display);font-weight:340;margin:0;text-wrap:wrap}
+    letter-spacing:var(--tr-display);font-weight:340;margin:.68em 0 0;text-wrap:wrap}
   .h1-beat{display:block;margin-top:.72em;font-size:.72em;text-wrap:wrap}
   /* drugie podkreślenie dociąga po pierwszym - dwa takty czytają się po kolei */
   .h1-beat .accentword{transition-delay:1.15s}
@@ -418,18 +449,22 @@
        lede 814 px w jednym ciągu (czyli ~450 px na dwa wiersze). */
     /* Blok otwierający schodzi z górnej krawędzi: przyklejony do niej wisiał
        tuż pod belką, a pod nim zostawało pół kadru pustki. Niżej rozkłada
-       ciężar równiej względem zdania w prawym dolnym rogu. */
+       ciężar równiej względem zdania w prawym dolnym rogu. Jak nisko - patrz
+       blok min-height:801px niżej; tutaj zostaje wariant na niskie okno. */
     .hero-tl{position:absolute;top:6%;left:0;max-width:min(44rem,52%)}
-    /* zdanie domykające wróciło pod nagłówek: to jeden oddech, nie dwa
-       osobne bloki - dlatego odstęp nad nim jest mniejszy niż pod nim */
-    .hero-tl .h1-echo{margin:.5em 0 0}
-    .hero-tl .cta{margin-top:34px}
+    /* zdanie domykające wróciło pod nagłówek: to jeden oddech, nie dwa osobne
+       bloki - dlatego odstęp nad nim (.68em, ustawiony przy .h1-echo) jest
+       mniejszy niż pod nim. Jako jedyna korekta rytmu działa też na niskim
+       oknie: kosztuje 5 px, a odkleja dwa takty od siebie. */
     /* lede przejmuje prawy dolny róg po zdaniu domykającym. Blok jest zaczepiony
        do prawej krawędzi, ale tekst w nim wyrównany DO LEWEJ: to proza, a nie
        hasło - rwana lewa krawędź kazałaby oku szukać początku każdego wiersza. */
     .hero-br{position:absolute;right:0;bottom:0;text-align:left;max-width:min(34rem,44%);margin:0}
     .hero h1{margin:0}
-    .hero .cta{margin-top:28px}
+    /* `.hero .cta{margin-top:28px}` stało tu i - przy równej wadze, ale niżej
+       w pliku - unieważniało odstęp ustawiony wyżej dla .hero-tl. Na desktopie
+       hero ma dokładnie jeden blok przycisków, więc reguła była podwójna,
+       nie dopełniająca. Odstęp przycisków jest teraz w jednym miejscu. */
     /* dane przypięte do linii siatki - stoją 10 px w prawo od swojej linii,
        więc siatka przestaje być dekoracją i zaczyna coś trzymać */
     /* Dokładnie dwa wiersze: liczba i jedno słowo pod nią. Trzeci wiersz
@@ -460,6 +495,59 @@
     .hero-fakt.-a{left:90%;top:4%}      /* 27     - prawy górny róg    */
     .hero-fakt.-b{left:60%;top:74%}     /* 6      - podbrzusze płata   */
   }
+
+  /* ===== HERO na wysokim oknie: blok zjeżdża i rozsuwa rytm =====
+     Powyżej 800 px wysokości hero ma zapas, którego nie wydawał: blok tekstu
+     wisiał w górnej połowie kadru, a pod przyciskami zostawało 300 px pustki.
+     Tu schodzi niżej i dostaje trzy RÓŻNE odstępy zamiast trzech podobnych
+     (było 21 / 16 / 26 px - jedna wartość powtórzona trzy razy czyta się jak
+     zbity blok, nie jak kompozycja). Teraz 28 / 23 / 39 px przy 1440x900:
+     nadtytuł należy do nagłówka, więc stoi blisko; nagłówek i echo to jedno
+     zdanie na dwa takty, więc najciaśniej; przyciski to osobny akt, więc
+     najszerzej. Wartości w vh, nie w px - inaczej rytm ustawiony na 900 px
+     rozsadza kadr na 1080 i dusi się na 850.
+
+     Progu 800 px pilnujemy, bo na 1280x720 (nadal najpospolitszy laptop) hero
+     nie ma czego rozdawać: zejście o 22 px wsadzało przyciski na adres.
+     Tam zostaje kompozycja wyżej, z odstępami z bloku max-height:800px. */
+  @media(min-width:1024px) and (min-height:801px){
+    /* 6% -> 10%. Granicę wyznacza chmura, nie gust. Sylwetkę liczy się z
+       assets/brain-points.bin tą samą macierzą co shader (zrzut ekranu jej
+       nie łapie, dopóki panel podglądu jest schowany - rAF wtedy śpi).
+       Pierwszy wiersz nagłówka sięga 735 px przy 1440x900, a lewa krawędź
+       chmury cofa się z 770 px (y=230) do 690 px (y=330): każde 10 px
+       zejścia zabiera ~6 px korytarza, więc to ten wiersz, a nie przyciski,
+       jest tu sufitem. „Jest" wchodzi na skrajne, pojedyncze kropki - te,
+       których w rendererze praktycznie nie widać; gęsty rdzeń chmury zaczyna
+       się na tej wysokości dopiero ok. 1000 px. Niżej niż 10% nie schodzimy:
+       przy 12% (sprawdzone na renderze) „jest" dochodzi już do kropek, które
+       widać - korytarz między wyrazem a chmurą znika. */
+    .hero-tl{top:10%}
+    .scene.hero .eyebrow{margin-bottom:clamp(28px,3.4vh,40px)}
+    .scene.hero .cta{margin-top:clamp(34px,4.6vh,50px)}
+    /* Adres wychodzi spod przycisków i wraca pod skrzydło mózgu: w górę o 16 px
+       i w prawo o 4 punkty procentowe, czyli 52 px przy 1440. Dwie osi, dwa
+       różne powody.
+
+       PION nie jest procentem. Dół bloku tekstu to prawie sam tekst o stopniu
+       przyciętym clampem, więc od góry kadru odsuwa się o ~460 px przy 900 i
+       ~487 px przy 1080 - liniowo, nie proporcjonalnie. Procent, który daje
+       25 px luzu pod przyciskami na 900, daje 98 px na 1080 i wypycha adres
+       290 px od chmury, czyli w pustkę. calc trzyma ten sam luz na całym
+       zakresie.
+
+       POZIOM zatrzymuje się na 42%, nie dalej, bo chmura nie stoi w miejscu
+       względem kadru: jej lewa krawędź to przy 1440x900 ok. 810 px na
+       wysokości adresu, a przy 1920x1080 ok. 910 px - czyli 56% szerokości
+       tam, a 47% tu. 44% wyglądało dobrze na 1440 i wchodziło na płat
+       skroniowy na 1920. 42% mieści się w obu.
+
+       Oba warunki dotyczą wysokiego okna. Przy <=800 px adres zostaje na
+       38% / 61%: tam chmura siedzi wyżej i szerzej, a 42% wsadziłoby napis
+       prosto w kropki. */
+    .hero-fakt.-c{left:42%;top:calc(15vh + 342px)}
+  }
+
   @media(max-width:1023px){
     .hero-fakt{display:none}
     .hero-br{margin-top:22px}
