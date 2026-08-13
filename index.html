@@ -610,13 +610,66 @@
   .scene.show .svc .dl{stroke-dashoffset:100;animation:svgdraw 1s cubic-bezier(.6,.04,.3,1) var(--d,0s) forwards}
   .svc h3{font-family:var(--display);font-weight:500;font-size:var(--t-h4);color:var(--ink);margin-bottom:9px}
   .svc p{font-size:var(--t-body);color:var(--soft);line-height:var(--lh-normal)}
+  /* Cały kafel jest celem kliknięcia, ale klikalnym elementem jest przycisk
+     wewnątrz nagłówka, którego ::after rozciąga pole na kafel. Dzięki temu
+     <h3> zostaje nagłówkiem (siatka sześciu tytułów to struktura dla czytnika),
+     a przycisk zostaje przyciskiem - Enter, Spacja i focus działają same,
+     bez role="button" i ręcznej obsługi klawiszy. <h3> wewnątrz <button>
+     byłoby niepoprawne: button przyjmuje treść frazową, nie blokową. */
+  .svc-open{font:inherit;color:inherit;letter-spacing:inherit;background:none;border:0;padding:0;text-align:left;cursor:pointer}
+  .svc-open::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg)}
+  .svc-open:focus-visible{outline:none}
+  .svc-open:focus-visible::after{outline:2px solid var(--accent);outline-offset:3px}
+  /* Plusik siedzi w pasie zarezerwowanym przez padding-bottom kafla, więc nie
+     wchodzi na najdłuższy akapit. Obrót o 90 stopni jest ruchem bez zmiany
+     znaczenia - plus obrócony o ćwierć obrotu to nadal plus, a nie krzyżyk
+     „zamknij", którym byłby przy 45 stopniach. */
+  .svc{padding-bottom:calc(var(--space-4) + 30px)}
+  .svc-plus{position:absolute;right:16px;bottom:16px;width:30px;height:30px;border-radius:50%;
+    display:grid;place-items:center;color:var(--accent);
+    border:1px solid rgba(var(--accent-rgb),.28);background:rgba(var(--accent-rgb),.08);
+    transition:background .3s,border-color .3s,color .3s,transform .45s var(--ease)}
+  .svc-plus svg{width:14px;height:14px}
+  .svc:hover .svc-plus,.svc:has(.svc-open:focus-visible) .svc-plus{
+    background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:rotate(90deg)}
+
+  /* ===== karta zakresu w modalu ===== */
+  .svcm-top{display:flex;align-items:center;gap:16px;padding-right:40px}
+  .svcm-ic{flex:none;display:grid;place-items:center;width:64px;height:64px;border-radius:var(--r-md);
+    background:rgba(var(--accent-rgb),.10);box-shadow:inset 0 0 0 1px rgba(var(--accent-rgb),.14);color:var(--accent-2)}
+  .svcm-ic svg{width:38px;height:38px;overflow:visible;stroke-width:1.9}
+  .svcm-n{font-family:var(--display);font-size:var(--t-h3);letter-spacing:var(--tr-head);color:var(--ink);line-height:var(--lh-tight)}
+  .svcm-c{font-size:var(--t-meta);color:var(--accent);font-weight:600;margin-top:5px}
+  .svcm-desc{margin-top:20px;font-size:var(--t-body);color:var(--soft);line-height:var(--lh-relaxed)}
+  .svcm-h{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:var(--label);font-size:var(--t-micro);letter-spacing:var(--tr-widest);text-transform:uppercase;color:var(--soft)}
+  /* Lista osób to wiersze, nie kafle ze zdjęciem na pół ekranu: przy siedemnastu
+     nazwiskach karty zespołu zamieniłyby modal w drugą stronę. Zdjęcie zostaje,
+     bo twarz jest tu treścią - tylko zejdź do rozmiaru, w którym da się przejść
+     wzrokiem całą listę. */
+  .svc-people{margin-top:12px;display:grid;gap:6px}
+  .sp-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+    padding:8px 10px;border:1px solid transparent;border-radius:var(--r-md);background:none;
+    transition:background .2s,border-color .2s}
+  .sp-row:hover{background:rgba(var(--accent-rgb),.06);border-color:rgba(var(--accent-rgb),.22)}
+  .sp-row img{width:44px;height:44px;flex:none;border-radius:50%;object-fit:cover;object-position:center 14%;background:var(--photo)}
+  .sp-t{min-width:0;display:block}
+  .sp-n{display:block;font-family:var(--display);font-weight:500;font-size:var(--t-body);color:var(--ink);line-height:var(--lh-tight)}
+  .sp-r{display:block;font-size:var(--t-micro);color:var(--soft);line-height:var(--lh-snug);margin-top:2px}
+  .svcm-back{display:inline-flex;align-items:center;gap:7px;margin-bottom:14px;cursor:pointer;
+    background:none;border:0;padding:0;font-family:var(--label);font-size:var(--t-micro);
+    letter-spacing:var(--tr-label);text-transform:uppercase;color:var(--soft);transition:color .2s}
+  .svcm-back:hover{color:var(--accent)}
+  @media(max-width:560px){ .svcm-top{gap:13px;padding-right:34px} .svcm-ic{width:52px;height:52px} .svcm-ic svg{width:30px;height:30px} }
   .svc-note{margin-top:24px;display:block;border:1px solid var(--line);background:var(--panel-step);border-radius:var(--r-lg);padding:18px 20px;font-size:var(--t-body);line-height:var(--lh-relaxed);color:var(--soft);
     /* 68ch zamiast pełnej szerokości siatki: na 1440 px ta notka jechała
        126 znaków w wierszu, czyli półtora raza ponad granicę, przy której
        oko gubi początek następnego wiersza. Wyśrodkowana, żeby węższa
        kolumna czytała się jak decyzja, a nie jak niedokończony blok. */
-    max-width:68ch;margin-inline:auto}
-  .svc-note b{color:var(--ink)}
+    max-width:68ch;margin-inline:auto;text-align:center}
+  /* Pytanie idzie na własny wers nad odpowiedzią: w jednym ciągu czytało się
+     jak początek zdania, a nie jak pytanie, na które reszta notki odpowiada. */
+  .svc-note b{display:block;margin-bottom:7px;color:var(--ink);font-size:var(--t-h5);font-family:var(--display);font-weight:500}
   .sway{transform-box:fill-box;transform-origin:50% 100%}.bloom{transform-box:fill-box;transform-origin:50% 92%}.rings{transform-box:fill-box;transform-origin:center}
   @keyframes svgdraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
   @keyframes svgsway{0%,100%{transform:none}25%{transform:rotate(2.6deg)}75%{transform:rotate(-2.6deg)}}
@@ -934,8 +987,36 @@
   .dobor-right{display:flex;flex-direction:column}
   .dobor-or{display:flex;align-items:center;gap:16px;margin:20px 2px 16px;font-family:var(--label);font-size:var(--t-micro);letter-spacing:var(--tr-widest);text-transform:uppercase;color:var(--soft)}
   .dobor-or::before,.dobor-or::after{content:"";flex:1;height:1px;background:var(--line)}
-  .dobor-alt{display:flex;gap:12px}
-  .dobor-alt .btn{flex:1;justify-content:center;min-width:0;padding:15px 18px}
+  /* Dwie drogi wprost: telefon i mail. Pełna szerokość kolumny, jedna pod
+     drugą - nie obok siebie. Adres ma 29 znaków i przy podziale na pół łamał
+     się w środku słowa; poza tym para pełnych wierszy rymuje się z listą
+     faktów po lewej, więc obie kolumny czyta się tym samym ruchem oka.
+     To NIE są przyciski, choć wyglądem są im bliskie: przycisk obiecuje
+     akcję na miejscu, a te dwa linki wyprowadzają ze strony (tel:, mailto:).
+     Stąd wiersz z ikoną i podpisem zamiast pigułki z jednym słowem. */
+  .dobor-alt{display:flex;flex-direction:column;gap:10px}
+  .route{display:flex;align-items:center;gap:13px;padding:13px 16px;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+    color:var(--ink);transition:border-color .25s,background .25s,transform .25s var(--ease)}
+  .route:hover{border-color:var(--accent);background:rgba(var(--accent-rgb),.06);transform:translateY(-1px)}
+  /* ikona wypełnia się na hoverze - to jedyny ruch koloru w tym wierszu,
+     więc tekst nie musi zmieniać barwy, żeby dało się poczuć najechanie */
+  .route-ic{flex:0 0 40px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+    background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.22);color:var(--accent);
+    transition:background .25s,border-color .25s,color .25s}
+  .route:hover .route-ic{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .route-ic svg{width:19px;height:19px}
+  .route-t{min-width:0;display:flex;flex-direction:column;gap:3px}
+  /* Adres nie ma w sobie spacji ani dywizu, więc przeglądarka nie ma gdzie go
+     złamać: 253 px przy stopniu prozy, a wiersz przy 320 px okna ma na tekst
+     195 px. Musi być `anywhere`, nie `break-word` - obie łamią wyraz, ale
+     tylko `anywhere` zmniejsza szerokość min-content, a to ona rozpycha
+     element w kolumnie flex. Na `break-word` wiersz wychodził 72 px poza
+     kolumnę i był po cichu przycinany przez overflow:hidden sekcji: nic nie
+     przewijało się w bok, adres po prostu kończył się w połowie. */
+  .route-t b{font-family:var(--display);font-weight:500;font-size:var(--t-body);
+    line-height:var(--lh-tight);color:var(--ink);overflow-wrap:anywhere}
+  .route-t>span{font-size:var(--t-micro);color:var(--soft);line-height:var(--lh-snug)}
   .dobor-text .eyebrow{margin-bottom:18px}
   .dobor-text h2{font-size:var(--t-h2);line-height:var(--lh-tight)}
   .dobor-lede{margin-top:18px;max-width:48ch;color:var(--soft);font-size:var(--t-lede);line-height:var(--lh-relaxed)}
@@ -1031,7 +1112,10 @@
   .spec-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
   .spec-price{font-size:var(--t-meta);color:var(--accent);font-weight:700}
   .spec-cta{display:flex;gap:9px;flex-wrap:wrap}
-  @media(max-width:760px){ .dobor-grid{grid-template-columns:1fr;gap:30px} .dobor-alt{flex-direction:column} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
+  /* .dobor-alt{flex-direction:column} stało tu, dopóki drogi kontaktu leżały
+     obok siebie. Teraz kolumna jest ich stanem domyślnym na każdej szerokości,
+     więc reguła nie miała już czego zmieniać. */
+  @media(max-width:760px){ .dobor-grid{grid-template-columns:1fr;gap:30px} .spec-top{flex-direction:column;text-align:center;padding-right:0} .modal-scroll{padding:22px} .modal-card{margin:3vh auto} }
   /* ===== TRYB CIEMNY =====
      Cała zmiana idzie przez tokeny — ani jeden selektor komponentu nie jest
      tu dublowany. Akcent musi się rozjaśnić: szałwia #557253 na ciemnym tle
@@ -1147,10 +1231,14 @@
 <div class="topscrim"></div>
 <a class="brandmark" data-goto="hero" href="#hero" aria-label="Centrum Zakątek - strona główna"><img class="lm lm-light" src="assets/brand/logo-mark.webp" alt="Centrum Zakątek" width="133" height="94"><img class="lm lm-dark" src="assets/brand/logo-mark-dark.webp" alt="" aria-hidden="true" width="133" height="94"></a>
 <nav class="topnav">
+  <!-- Kolejnosc pozycji idzie za kolejnoscia sekcji na stronie: po zamianie
+       cennika z procesem „Prywatnosc" (kotwica w sekcji proces) lezy WYZEJ niz
+       cennik. Przy starej kolejnosci klikanie po menu od lewej do prawej
+       cofalo widok do gory - menu obiecywalo ruch w dol, a robilo w gore. -->
   <a data-goto="zakres">Zakres</a>
   <a data-goto="zespol">Zespół</a>
-  <a data-goto="cennik">Cennik</a>
   <a data-goto="prywatnosc">Prywatność</a>
+  <a data-goto="cennik">Cennik</a>
   <button class="themetoggle" id="themetoggle" type="button" aria-pressed="false" aria-label="Tryb ciemny" title="Tryb ciemny">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <defs><mask id="ttMask" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
@@ -1169,8 +1257,8 @@
 <div class="mobilemenu" id="mobilemenu">
   <a data-goto="zakres">Zakres pomocy</a>
   <a data-goto="zespol">Zespół</a>
-  <a data-goto="cennik">Cennik</a>
   <a data-goto="prywatnosc">Prywatność</a>
+  <a data-goto="cennik">Cennik</a>
   <a data-goto="umow">Kontakt</a>
 </div>
 <main>
@@ -1183,7 +1271,11 @@
         <h1 data-litery>Największą odwagą jest<br><span class="accentword">poprosić o&nbsp;pomoc.</span></h1>
         <h2 class="h1-echo" data-litery data-opoznienie="800">Resztę przejdziemy razem,<br><span class="accentword">w&nbsp;Twoim tempie.</span></h2>
         <div class="cta reveal">
-          <a class="btn btn-primary btn-ramka" href="tel:575805505"><span class="wype"></span>Umów wizytę · 575 805 505<span class="szewrony" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
+          <!-- Przycisk nie dzwoni, tylko prowadzi do sekcji z trzema drogami
+               kontaktu: telefon, mail, asystent. Numer zszedł z etykiety, bo
+               `tel:` na desktopie trafia w nic, a wybór drogi i tak należy do
+               odwiedzającego - hero ma go tam zaprowadzić, a nie wybrać za niego. -->
+          <a class="btn btn-primary btn-ramka" data-goto="dlaczego" href="#dlaczego"><span class="wype"></span>Umów wizytę<span class="szewrony" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></a>
           <a class="btn btn-ghost" data-goto="zespol" href="#zespol">Poznaj zespół</a>
         </div>
       </div>
@@ -1201,7 +1293,7 @@
       <div class="dobor-grid">
         <div class="dobor-text">
           <h2 class="reveal">Nie musisz wiedzieć, do kogo się umówić. <span class="accentword">My pomożemy.</span></h2>
-          <p class="dobor-lede reveal">Asystent działa anonimowo, bez zakładania konta. Wolisz porozmawiać - zadzwoń.</p>
+          <p class="dobor-lede reveal">Zadzwoń, napisz maila albo pozwól asystentowi zadać kilka pytań. Wybierz tę drogę, która dziś przychodzi łatwiej - każda kończy się tą samą rejestracją, która potwierdzi specjalistę i termin.</p>
           <ul class="why-points reveal">
             <li><b>Bez skierowania</b> - umawiasz się bezpośrednio</li>
             <li><b>Stacjonarnie w Toruniu lub online</b></li>
@@ -1223,10 +1315,20 @@
               </button>
             </div>
           </div>
-          <div class="dobor-or" aria-hidden="true">lub</div>
+          <div class="dobor-or" aria-hidden="true">albo wprost do nas</div>
           <div class="dobor-alt">
-            <a class="btn btn-ghost" data-goto="umow" href="#umow">Napisz do nas</a>
-            <a class="btn btn-primary" href="tel:575805505">Zadzwoń · 575&nbsp;805&nbsp;505</a>
+            <a class="route" href="tel:575805505">
+              <span class="route-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h3l1.5 4-2 1.4a12 12 0 0 0 5.1 5.1l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2z"/></svg></span>
+              <span class="route-t"><b>575&nbsp;805&nbsp;505</b><span>Rejestracja wysłucha i pomoże nazwać potrzebę</span></span>
+            </a>
+            <a class="route" href="mailto:rejestracja@centrumzakatek.pl">
+              <span class="route-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.6 6.8l7.3 5.2a2 2 0 0 0 2.2 0l7.3-5.2"/></svg></span>
+              <!-- <wbr> po małpie: gdy adres musi się złamać (okno 320 px),
+                   pęka na „rejestracja@ / centrumzakatek.pl", a nie w środku
+                   nazwy domeny. Zero szerokości, więc szerszy ekran go nie widzi,
+                   a czytnik ekranu i kopiowanie dostają nadal jeden ciąg. -->
+              <span class="route-t"><b>rejestracja@<wbr>centrumzakatek.pl</b><span>Opisz sprawę własnymi słowami - odpiszemy</span></span>
+            </a>
           </div>
         </div>
       </div>
@@ -1236,32 +1338,44 @@
   <section class="scene scene--panel" id="zakres">
     <div class="inner">
       <div class="svc-head">
-        <h2 class="reveal">Pełna opieka nad zdrowiem psychicznym w&nbsp;jednym miejscu.</h2>
+        <h2 class="reveal">Kompleksowa opieka nad zdrowiem psychicznym w&nbsp;jednym miejscu.</h2>
       </div>
       <div class="svc-grid">
         <article class="svc">
-          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="dl" pathLength="100" cx="22" cy="22" r="13"/><path class="dl pulse" style="--d:.4s" pathLength="100" d="M10 23h6l2.4-6.4L23 28.5l2.6-5.5H34"/></svg></span>
-          <h3>Psychiatria</h3><p>Diagnoza i leczenie, w tym farmakoterapia. Depresja, lęk, bezsenność, wahania nastroju.</p>
+          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M22 7c6.8 0 12.3 5.2 12.3 11.5 0 4.2-2.4 7.2-4.9 9.1-1.2.9-1.9 2.2-1.9 3.6V35H16.5v-3.8c0-1.4-.7-2.7-1.9-3.6-2.5-1.9-4.9-4.9-4.9-9.1C9.7 12.2 15.2 7 22 7Z"/><path class="dl pulse" style="--d:.45s" pathLength="100" d="M13.6 19.8h3.5l2.2-5 3.3 8.9 2.1-3.9h5.7"/></svg></span>
+          <h3><button class="svc-open" type="button" data-svc="psychiatria">Psychiatria</button></h3>
+          <p>Diagnoza i leczenie, w tym farmakoterapia. Depresja, lęk, bezsenność, wahania nastroju.</p>
+          <span class="svc-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></span>
         </article>
         <article class="svc">
-          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M22 37V17"/><path class="dl" style="--d:.1s" pathLength="100" d="M15 37h14"/><g class="sway"><path class="dl" style="--d:.25s" pathLength="100" d="M22 27c-6.5 1-10.2-3.2-9.5-9.5 6.5-.7 10.2 3.2 9.5 9.5Z"/><path class="dl" style="--d:.4s" pathLength="100" d="M22 23c6.5 1 10.2-3.2 9.5-9.5-6.5-.7-10.2 3.2-9.5 9.5Z"/></g></svg></span>
-          <h3>Dzieci i&nbsp;młodzież</h3><p>Psychiatria i wsparcie dzieci, nastolatków oraz ich rodzin.</p>
+          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="dl" pathLength="100" cx="15.5" cy="13.5" r="5.2"/><path class="dl" style="--d:.15s" pathLength="100" d="M6.8 34.5c0-4.8 3.9-8.7 8.7-8.7s8.7 3.9 8.7 8.7"/><g class="sway"><circle class="dl" style="--d:.3s" pathLength="100" cx="30.8" cy="21.2" r="3.8"/><path class="dl" style="--d:.45s" pathLength="100" d="M24.4 34.5c0-3.5 2.9-6.4 6.4-6.4s6.4 2.9 6.4 6.4"/></g></svg></span>
+          <h3><button class="svc-open" type="button" data-svc="dzieci">Dzieci i&nbsp;młodzież</button></h3>
+          <p>Psychiatria i wsparcie dzieci, nastolatków oraz ich rodzin.</p>
+          <span class="svc-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></span>
         </article>
         <article class="svc">
-          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M9 13h13a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-6l-4.5 4v-4H9a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Z"/><path class="dl" style="--d:.3s" pathLength="100" d="M27 9h8a3 3 0 0 1 3 3v4.5a3 3 0 0 1-3 3h-1l-3.5 3.2V19.5a3 3 0 0 1-3-3V12a3 3 0 0 1 3-3Z"/></svg></span>
-          <h3>Psychoterapia</h3><p>Terapia indywidualna oraz terapia par, w różnych nurtach. Regularna praca nad zmianą.</p>
+          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect class="dl" pathLength="100" x="5" y="7" width="20" height="12.5" rx="3.4"/><path class="dl" style="--d:.2s" pathLength="100" d="M10.6 19.5v4.3l4.4-4.3"/><rect class="dl" style="--d:.4s" pathLength="100" x="19" y="21" width="20" height="12.5" rx="3.4"/><path class="dl" style="--d:.6s" pathLength="100" d="M33.4 33.5v4.3L29 33.5"/></svg></span>
+          <h3><button class="svc-open" type="button" data-svc="psychoterapia">Psychoterapia</button></h3>
+          <p>Terapia indywidualna oraz terapia par, w różnych nurtach. Regularna praca nad zmianą.</p>
+          <span class="svc-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></span>
         </article>
         <article class="svc">
-          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="bloom"><path class="dl" pathLength="100" d="M22 26c-3.2-4-3.2-8.5 0-14 3.2 5.5 3.2 10 0 14Z"/><path class="dl" style="--d:.12s" pathLength="100" transform="rotate(38 22 26)" d="M22 26c-3.2-4-3.2-8.5 0-14 3.2 5.5 3.2 10 0 14Z"/><path class="dl" style="--d:.24s" pathLength="100" transform="rotate(-38 22 26)" d="M22 26c-3.2-4-3.2-8.5 0-14 3.2 5.5 3.2 10 0 14Z"/><path class="dl" style="--d:.36s" pathLength="100" transform="rotate(74 22 26)" d="M22 26c-2.6-3.4-2.8-7 0-11.5 2.8 4.5 2.6 8.1 0 11.5Z"/><path class="dl" style="--d:.48s" pathLength="100" transform="rotate(-74 22 26)" d="M22 26c-2.6-3.4-2.8-7 0-11.5 2.8 4.5 2.6 8.1 0 11.5Z"/></g><path class="dl" style="--d:.6s" pathLength="100" d="M13 27c2.4 2.3 15.6 2.3 18 0"/></svg></span>
-          <h3>Psychologia i&nbsp;diagnoza</h3><p>Konsultacje i diagnoza, m.in. nadpobudliwości z deficytem uwagi (ADHD), spektrum autyzmu, osobowości i trudnych emocji.</p>
+          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M18.5 7.2c6.2 0 11.2 4.7 11.2 10.5 0 3.9-2.2 6.7-4.5 8.4-1.1.8-1.7 2-1.7 3.3V33H13.5v-3.6c0-1.3-.6-2.5-1.7-3.3-2.3-1.7-4.5-4.5-4.5-8.4C7.3 11.9 12.3 7.2 18.5 7.2Z"/><circle class="dl" style="--d:.35s" pathLength="100" cx="30" cy="28" r="5.6"/><path class="dl" style="--d:.55s" pathLength="100" d="m33.9 31.9 3.7 3.7"/></svg></span>
+          <h3><button class="svc-open" type="button" data-svc="psychologia">Psychologia i&nbsp;diagnoza</button></h3>
+          <p>Konsultacje i diagnoza, m.in. nadpobudliwości z deficytem uwagi (ADHD), spektrum autyzmu, osobowości i trudnych emocji.</p>
+          <span class="svc-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></span>
         </article>
         <article class="svc">
-          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dl" pathLength="100" d="M6 24c5 0 5-9.5 11-9.5S23 33 29 33s5-9 9-9"/><circle class="node" cx="17" cy="14.5" r="2.4" fill="currentColor" stroke="none"/><circle class="node" cx="29" cy="33" r="2.4" fill="currentColor" stroke="none"/></svg></span>
-          <h3>Neurologia</h3><p>Bóle i zawroty głowy, drętwienia, zaburzenia pamięci i&nbsp;koncentracji.</p>
+          <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="dl" pathLength="100" cx="15" cy="22" r="5.6"/><path class="dl" style="--d:.12s" pathLength="100" d="M15 16.4V9.5"/><path class="dl" style="--d:.18s" pathLength="100" d="m11.1 18.1-4.7-4.7"/><path class="dl" style="--d:.24s" pathLength="100" d="M9.4 22H3.5"/><path class="dl" style="--d:.3s" pathLength="100" d="m11.1 25.9-4.7 4.7"/><path class="dl" style="--d:.36s" pathLength="100" d="M15 27.6v6.9"/><path class="dl" style="--d:.44s" pathLength="100" d="M20.6 22h6.9"/><path class="dl" style="--d:.56s" pathLength="100" d="M27.5 22c3.3 0 3.3-4.8 6.6-4.8"/><path class="dl" style="--d:.64s" pathLength="100" d="M27.5 22c3.3 0 3.3 4.8 6.6 4.8"/><circle class="node" cx="35.6" cy="17.2" r="2.2" fill="currentColor" stroke="none"/><circle class="node" cx="35.6" cy="26.8" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+          <h3><button class="svc-open" type="button" data-svc="neurologia">Neurologia</button></h3>
+          <p>Bóle i zawroty głowy, drętwienia, zaburzenia pamięci i&nbsp;koncentracji.</p>
+          <span class="svc-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></span>
         </article>
         <article class="svc">
           <span class="svc-art"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="rings"><circle class="dl" pathLength="100" cx="17.5" cy="22" r="8.5"/><circle class="dl" style="--d:.3s" pathLength="100" cx="26.5" cy="22" r="8.5"/></g></svg></span>
-          <h3>Seksuologia</h3><p>Dyskretne wsparcie w intymnych trudnościach - indywidualnie i&nbsp;w parach.</p>
+          <h3><button class="svc-open" type="button" data-svc="seksuologia">Seksuologia</button></h3>
+          <p>Dyskretne wsparcie w intymnych trudnościach - indywidualnie i&nbsp;w parach.</p>
+          <span class="svc-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></span>
         </article>
       </div>
       <p class="svc-note reveal"><b>Psychiatra czy psycholog?</b> Psychiatra jest lekarzem i może włączyć leczenie farmakologiczne; psycholog i psychoterapeuta pracują rozmową. Często obie formy się uzupełniają - a jeśli masz wątpliwości, pomożemy wybrać.</p>
@@ -1270,7 +1384,7 @@
 
   <section class="scene" id="zespol">
     <div class="inner">
-      <h2 class="reveal">27 specjalistów. <span class="accentword">Każdy z imienia i&nbsp;nazwiska.</span></h2>
+      <h2 class="reveal">27 specjalistów.</h2>
       <p class="lede reveal" id="teamLede">Rozwiń, by zobaczyć profile - z ceną i&nbsp;orientacyjnym terminem.</p>
       <div class="team-teaser reveal" id="teamTeaser"></div>
       <div class="team-full" id="teamFull" hidden>
@@ -1282,20 +1396,7 @@
     </div>
   </section>
 
-  <section class="scene scene--panel" id="cennik">
-    <div class="inner">
-      <h2 class="reveal">Ceny widoczne <span class="accentword">przed decyzją.</span></h2>
-      <div class="price-teaser reveal" id="priceTeaser"></div>
-      <div class="price-full" id="priceFull" hidden>
-        <div class="full-top"><b>Pełny cennik</b><button class="collapse-cta ghost sm" data-price-collapse>Zwiń <span>↑</span></button></div>
-        <div class="price-grid" id="priceGrid"></div>
-        <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
-        <button class="collapse-cta ghost" data-price-collapse>Zwiń cennik <span>↑</span></button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene proc" id="proces">
+  <section class="scene proc scene--panel" id="proces">
     <div class="inner"><div class="col" style="max-width:none;width:100%">
       <h2 class="reveal">Od pierwszego telefonu<br>do spokojnej opieki.</h2>
       <div class="steps">
@@ -1317,6 +1418,19 @@
         </ul>
       </div>
     </div></div>
+  </section>
+
+  <section class="scene" id="cennik">
+    <div class="inner">
+      <h2 class="reveal">Ceny widoczne <span class="accentword">przed decyzją.</span></h2>
+      <div class="price-teaser reveal" id="priceTeaser"></div>
+      <div class="price-full" id="priceFull" hidden>
+        <div class="full-top"><b>Pełny cennik</b><button class="collapse-cta ghost sm" data-price-collapse>Zwiń <span>↑</span></button></div>
+        <div class="price-grid" id="priceGrid"></div>
+        <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
+        <button class="collapse-cta ghost" data-price-collapse>Zwiń cennik <span>↑</span></button>
+      </div>
+    </div>
   </section>
 
   <section class="scene contact" id="umow">
@@ -1980,19 +2094,106 @@
     });
   }
 
-  function openSpec(id){
+  /* Modal bywa juz otwarty: wejscie z kafla zakresu w profil osoby to podmiana
+     tresci, nie drugie otwarcie. Ponowne openModal() zapisaloby jako lastFocus
+     wiersz, ktory za chwile znika z DOM - i po zamknieciu focus wracalby donikad. */
+  function showInModal(html){
+    if(!modalBody) return;
+    modalBody.innerHTML=html;
+    if(modal&&modal.classList.contains('open')){
+      var sc=modal.querySelector('.modal-scroll'); if(sc) sc.scrollTop=0;
+      if(modalCard) modalCard.focus();
+    } else { openModal(); }
+    typoPass(modalBody);
+  }
+
+  function openSpec(id,skad){
     if(typeof SPECIALISTS==='undefined'||!modalBody) return;
     var s=SPECIALISTS.filter(function(x){return x.id===id;})[0]; if(!s) return;
     var fl=flags(s);
-    modalBody.innerHTML='<div class="spec-top"><img src="'+s.photo+'" alt="'+s.name+'"><div><div class="spec-n">'+s.name+'</div><div class="spec-r">'+s.role+'</div>'
+    var wroc=skad?'<button class="svcm-back" type="button" data-back="'+skad+'">&larr; '+nazwaZakresu(skad)+'</button>':'';
+    var html=wroc+'<div class="spec-top"><img src="'+s.photo+'" alt="'+s.name+'"><div><div class="spec-n">'+s.name+'</div><div class="spec-r">'+s.role+'</div>'
       +(fl.length?'<div class="spec-fl">'+fl.map(function(x){return '<span>'+x+'</span>';}).join('')+'</div>':'')+'</div></div>'
       +(s.motto?'<blockquote class="spec-motto">„'+s.motto+'"</blockquote>':'')
       +'<p class="spec-desc">'+s.desc+'</p>'
       +'<div class="spec-foot"><span class="spec-price">'+(s.priceFrom?('od '+s.priceFrom+' zł · '+s.priceLabel):s.priceLabel)+' · termin '+slot(s.availDays)+'</span>'
       +'<div class="spec-cta"><a class="btn btn-ghost btn-sm" href="'+s.url+'" target="_blank" rel="noopener">Profil na stronie</a><a class="btn btn-primary btn-sm" href="tel:575805505">Umów wizytę</a></div></div>';
-    openModal(); typoPass(modalBody);
+    showInModal(html);
   }
   window.openSpec=openSpec;
+
+  /* ---------- kafle zakresu: karta z opisem i skladem zespolu ----------
+     Przypisanie osob do zakresu WYNIKA Z DANYCH (group, treats, tags, role
+     w data.js), a nie z szesciu recznych list. Recznie pisana lista rozjezdza
+     sie z zespolem przy pierwszej zmianie kadrowej i nikt tego nie zauwaza.
+     Walter jest wylaczony ze wszystkich zakresow: pies terapeuta towarzyszy
+     wizytom, ale nie jest osobna sciezka, ktora mozna wybrac. */
+  var USLUGI=[
+    {id:'psychiatria', nazwa:'Psychiatria',
+     kto:function(s){ return s.group==='psychiatra'; },
+     opis:'Psychiatra jest lekarzem: diagnozuje, prowadzi leczenie i - jeśli jest potrzebne - włącza farmakoterapię. Najczęściej trafiają tu osoby z depresją, zaburzeniami lękowymi, bezsennością, wahaniami nastroju, zaburzeniami psychotycznymi, otępiennymi oraz uzależnieniami. Pierwsza wizyta jest diagnostyczna: rozmowa, wywiad i ustalenie planu. Nie potrzebujesz skierowania.'},
+    {id:'dzieci', nazwa:'Dzieci i młodzież',
+     kto:function(s){ return s.group==='dzieci'||(s.treats||[]).indexOf('children')>-1; },
+     opis:'Osobna ścieżka dla dzieci, nastolatków i ich rodzin. Obejmuje psychiatrię dzieci i młodzieży, diagnozę psychologiczną, psychoterapię, trening umiejętności społecznych (TUS), terapię spektrum autyzmu oraz fizjoterapię dziecięcą. Część zespołu pracuje wyłącznie z młodszymi, część prowadzi też dorosłych - rejestracja pomoże ustalić, kto będzie właściwą osobą.'},
+    {id:'psychoterapia', nazwa:'Psychoterapia',
+     kto:function(s){ return /psychoterapeut|psychoterapii/i.test(s.role)||(s.tags||[]).indexOf('psychotherapy')>-1; },
+     opis:'Regularna praca nad zmianą - rozmową, w ustalonym rytmie spotkań. Terapia indywidualna i terapia par, w różnych nurtach: w zespole pracują psychoterapeuci poznawczo-behawioralni (CBT), integracyjni oraz specjaliści psychoterapii uzależnień. Nurt i częstotliwość ustala się na pierwszych spotkaniach, po rozpoznaniu, z czym przychodzisz.'},
+    {id:'psychologia', nazwa:'Psychologia i diagnoza',
+     kto:function(s){ var t=s.tags||[]; return s.group==='psycholog'&&(t.indexOf('diagnosis')>-1||t.indexOf('adhd')>-1||t.indexOf('asd')>-1||t.indexOf('personality')>-1||/diagnoz/i.test(s.role)); },
+     opis:'Konsultacja psychologiczna to rozmowa, która porządkuje sytuację: co się dzieje, od kiedy i co dalej. Diagnoza idzie krok dalej - to proces z wywiadem i testami, zakończony opisem. W Zakątku obejmuje między innymi nadpobudliwość z deficytem uwagi (ADHD), spektrum autyzmu (ASD), diagnozę neuropsychologiczną, osobowość i trudne emocje.'},
+    {id:'neurologia', nazwa:'Neurologia',
+     kto:function(s){ return s.group==='neurolog'||(s.tags||[]).indexOf('neurology')>-1; },
+     opis:'Neurolog zajmuje się układem nerwowym: bólami i zawrotami głowy, drętwieniami, zaburzeniami pamięci i koncentracji. Objaw, który wygląda na psychiczny, bywa neurologiczny - i odwrotnie. Dlatego neurologia stoi tu obok psychiatrii, pod jednym adresem, a nie w osobnym miejscu na drugim końcu miasta.'},
+    {id:'seksuologia', nazwa:'Seksuologia',
+     kto:function(s){ return /seksuolog/i.test(s.role)||(s.tags||[]).indexOf('sexology')>-1; },
+     opis:'Dyskretne wsparcie w trudnościach intymnych - indywidualnie i w parach. Przyjmują psycholodzy i seksuolodzy kliniczni, część z nich pracuje również w nurcie poznawczo-behawioralnym. Rozmowa zostaje w gabinecie: obowiązuje ta sama tajemnica zawodowa co przy każdej innej wizycie.'}
+  ];
+  function zakres(id){ return USLUGI.filter(function(x){return x.id===id;})[0]; }
+  function nazwaZakresu(id){ var u=zakres(id); return u?u.nazwa:'Zakres pomocy'; }
+  function ludzieZakresu(u){
+    if(typeof SPECIALISTS==='undefined') return [];
+    return SPECIALISTS.filter(function(s){ return s.group!=='walter'&&u.kto(s); });
+  }
+  /* 1 specjalista / 2-4 specjalisci / 5+ specjalistow, z wyjatkiem nastek */
+  function ilu(n){
+    if(n===1) return '1 specjalista';
+    var d=n%10, st=n%100;
+    return n+(d>=2&&d<=4&&!(st>=12&&st<=14)?' specjaliści':' specjalistów');
+  }
+  function openSvc(id){
+    var u=zakres(id); if(!u||!modalBody) return;
+    var ludzie=ludzieZakresu(u);
+    /* ikona nie jest duplikowana w JS - bierzemy te sama, ktora stoi na kaflu */
+    var przycisk=document.querySelector('.svc-open[data-svc="'+id+'"]');
+    var kafel=przycisk?przycisk.closest('.svc'):null;
+    var ikona=kafel&&kafel.querySelector('.svc-art svg')?kafel.querySelector('.svc-art svg').outerHTML:'';
+    var html='<div class="svcm-top"><span class="svcm-ic">'+ikona+'</span>'
+      +'<div><div class="svcm-n">'+u.nazwa+'</div>'
+      +(ludzie.length?'<div class="svcm-c">'+ilu(ludzie.length)+' w zespole</div>':'')
+      +'</div></div><p class="svcm-desc">'+u.opis+'</p>';
+    if(ludzie.length){
+      html+='<div class="svcm-h">Kto się tym zajmuje</div><div class="svc-people">'
+        +ludzie.map(function(s){
+          return '<button class="sp-row" type="button" data-spec="'+s.id+'" data-from="'+id+'">'
+            +'<img src="'+s.photo+'" alt="" loading="lazy" width="44" height="44">'
+            +'<span class="sp-t"><span class="sp-n">'+s.name+'</span><span class="sp-r">'+s.role+'</span></span></button>';
+        }).join('')+'</div>';
+    }
+    showInModal(html);
+  }
+  window.openSvc=openSvc;
+  document.querySelectorAll('.svc-open[data-svc]').forEach(function(b){
+    b.addEventListener('click',function(){ openSvc(b.getAttribute('data-svc')); });
+  });
+  /* delegacja, bo wiersze osob i przycisk powrotu powstaja dopiero przy otwarciu */
+  if(modalBody){
+    modalBody.addEventListener('click',function(e){
+      var w=e.target.closest?e.target.closest('[data-spec]'):null;
+      if(w){ openSpec(w.getAttribute('data-spec'), w.getAttribute('data-from')); return; }
+      var b=e.target.closest?e.target.closest('[data-back]'):null;
+      if(b){ openSvc(b.getAttribute('data-back')); }
+    });
+  }
 
   /* ---------- silnik doboru (inline w panelu #doborPanel, bez popupu) ---------- */
   var AST={answers:{},idx:0,flow:[]};
