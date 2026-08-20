@@ -3117,7 +3117,12 @@ document.documentElement.classList.add('js');
      Wartość dobrana tak, żeby oba napisy - „Toruń" i „27 specjalistów" -
      stały o kilkadziesiąt pikseli bardziej w prawo niż po pierwszym podejściu.
      Jedna liczba, jeśli trzeba je ruszyć jeszcze raz. */
-  var KOTWICE={'-a':[0.806,0.033], '-b':[0.222,0.941], '-c':[null,0.773]};
+  /* [ułamek X (null = stały odstęp), ułamek Y, dosunięcie w px]
+     Trzecia liczba to poprawka po obejrzeniu na żywo, nie część modelu:
+     „27 specjalistów" jechał o pół własnej szerokości za blisko chmury.
+     Przy wąskim oknie nic nie zmienia, bo napis opiera się wtedy o krawędź
+     kadru - i tak ma być. */
+  var KOTWICE={'-a':[0.806,0.033,53], '-b':[0.222,0.941,0], '-c':[null,0.773,0]};
   var ODSTEP_C=50;
   function ustawNapisy(){
     if(!punkty || !count) return;
@@ -3143,9 +3148,9 @@ document.documentElement.classList.add('js');
     Object.keys(KOTWICE).forEach(function(k){
       var el=document.querySelector('.hero-fakt.'+k); if(!el) return;
       var r=el.getBoundingClientRect();
-      var ekranX = (KOTWICE[k][0]===null)
+      var ekranX = ((KOTWICE[k][0]===null)
         ? (minx + ODSTEP_C - r.width)          // „Toruń": stały odstęp od lewej krawędzi chmury
-        : (minx + KOTWICE[k][0]*bw);
+        : (minx + KOTWICE[k][0]*bw)) + (KOTWICE[k][2]||0);
       var lx = ekranX - ir.left;
       var ty = miny + KOTWICE[k][1]*bh - ir.top;
       /* Przycinamy do KADRU, nie do `.inner`. `.inner` jest wcięty o 4,5vw z
