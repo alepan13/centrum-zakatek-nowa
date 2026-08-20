@@ -572,9 +572,14 @@ document.documentElement.classList.add('js');
     /* Toruń idzie tak wysoko, jak pozwala blok tekstu: wyżej korytarz między
        zdaniem (koniec na 560 px) a kopułą (start ok. 700 px) zwęża się poniżej
        szerokości samego napisu, a na wysokości przycisków dzieliły je 3 px. */
-    .hero-fakt.-c{left:38%;top:61%}     /* Toruń  - lewy flank kopuły  */
-    .hero-fakt.-a{left:90%;top:4%}      /* 27     - prawy górny róg    */
-    .hero-fakt.-b{left:60%;top:74%}     /* 6      - podbrzusze płata   */
+    /* Procenty są ZAPASEM, nie pozycją docelową: obowiązują, dopóki skrypt nie
+       policzy rzutu chmury, i zostają na zawsze tam, gdzie chmury nie ma
+       (wąski ekran, tryb oszczędzania danych, brak WebGL). Wartość z JS wchodzi
+       przez --fx/--fy i wygrywa, bo var() z ustawioną zmienną bije wartość
+       zapasową w tym samym zapisie. */
+    .hero-fakt.-c{left:var(--fx,38%);top:var(--fy,61%)}   /* Toruń  - lewy flank kopuły  */
+    .hero-fakt.-a{left:var(--fx,90%);top:var(--fy,4%)}    /* 27     - prawy górny róg    */
+    .hero-fakt.-b{left:var(--fx,60%);top:var(--fy,74%)}   /* 6      - podbrzusze płata   */
   }
 
   /* ===== HERO na wysokim oknie: blok zjeżdża i rozsuwa rytm =====
@@ -626,7 +631,13 @@ document.documentElement.classList.add('js');
        Oba warunki dotyczą wysokiego okna. Przy <=800 px adres zostaje na
        38% / 61%: tam chmura siedzi wyżej i szerzej, a 42% wsadziłoby napis
        prosto w kropki. */
-    .hero-fakt.-c{left:42%;top:calc(15vh + 342px)}
+    /* Cały powyższy wywód dotyczy ręcznego dostrajania adresu do chmury,
+       która „nie stoi w miejscu względem kadru". Od teraz nie musi: skrypt
+       liczy rzut chmury i stawia napis na jego ułamku, więc te wartości są
+       już tylko ZAPASEM na wypadek, gdy chmury nie ma (brak WebGL, tryb
+       oszczędzania danych). Zostawiam je, bo bez JS nadal są najlepsze,
+       jakie się dało dobrać na sztywno. */
+    .hero-fakt.-c{left:var(--fx,42%);top:var(--fy,calc(15vh + 342px))}
   }
 
   @media(max-width:1023px){
@@ -1738,6 +1749,13 @@ document.documentElement.classList.add('js');
      z ostatnim znakiem poprzedniego elementu tak samo skutecznie. */
   var LEADING_DASH=/^[ \t]+-(?=\s)/;
   var SENTENCE_START=/([.!?]\s+\p{Lu}\S*)[ \t]+(?=\S)/gu;
+  /* Ten sam wzorzec, ale zakotwiczony na POCZĄTKU węzła - dla zdania, które
+     zaczyna się w innym elemencie niż kropka kończąca poprzednie.
+     „...umówić. <span>My pomożemy.</span>" trafia do pl() jako dwa osobne
+     łańcuchy, więc SENTENCE_START nie widzi kropki i „My" zostawało samo na
+     końcu wiersza. Stosowany WYŁĄCZNIE wtedy, gdy poprzedni węzeł faktycznie
+     zamknął zdanie - inaczej wiązałby pierwsze słowo każdego akapitu. */
+  var LEADING_SENTENCE=/^(\s*)(\p{Lu}\S*)[ \t]+(?=\S)/u;
   var ORPHAN=/(?<![\p{L}\p{N}])([aiouwzAIOUWZ]) +/gu;
   /* Sieroty. vehi wiąże wyłącznie jednoliterowce - to minimum, które podaje PWN.
      Pomiar na tej stronie pokazał jednak, że wiersze kończą przede wszystkim
@@ -1754,7 +1772,9 @@ document.documentElement.classList.add('js');
   var THOUSANDS=/(\d) +(?=\d{3}(?![\d]))/g;
   var ABBREV=/(?<![\p{L}])((?:m\.in|np|tj|tzn|tzw|ok|itd|itp|ul|al|nr|str|godz|dr|prof|mgr|inż|hab)\.) +/gu;
 
-  function pl(t){ if(!t) return t; try{ return t
+  function pl(t, poZdaniu){ if(!t) return t; try{
+    if(poZdaniu) t=t.replace(LEADING_SENTENCE,function(_m,ws,w){return ws+w+NBSP;});
+    return t
     .replace(LONG_DASH,'-')
     .replace(CLAUSE_DASH,function(_m,w){return w+NBSP+'-';})
     .replace(LEADING_DASH,NBSP+'-')
@@ -1773,7 +1793,18 @@ document.documentElement.classList.add('js');
       if(!/[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż]/.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT; }});
     var nodes=[],n; while((n=w.nextNode()))nodes.push(n);
-    nodes.forEach(function(n){var v=pl(n.nodeValue); if(v!==n.nodeValue)n.nodeValue=v;});
+    /* Węzły idą w kolejności dokumentu, więc pamiętamy, czy POPRZEDNI zamknął
+       zdanie. To jedyna informacja, której pl() nie ma sam z siebie, a bez
+       której reguła „pierwsze słowo zdania nie zostaje samo" gubi każde zdanie
+       zaczynające się w <span>, <b> czy <em>. */
+    var poZdaniu=false;
+    nodes.forEach(function(n){
+      var v=pl(n.nodeValue, poZdaniu);
+      if(v!==n.nodeValue)n.nodeValue=v;
+      var ogon=n.nodeValue.replace(/\s+$/,'');
+      if(/[.!?]$/.test(ogon)) poZdaniu=true;
+      else if(/\S/.test(n.nodeValue)) poZdaniu=false;
+    });
   }
 
   /* Dostępność pochodzi ze statycznej mapy AVAILABILITY, nie z kalendarza -
@@ -2873,7 +2904,7 @@ document.documentElement.classList.add('js');
   size(); addEventListener('resize',function(){ size(); onScroll(); wake(); },{passive:true});
 
   canvas.style.opacity='0';                               // intro: chmura pojawi się płynnie
-  var count=0, ready=false, BASE=0.82, FINALX=0.86, baseScale=1.05;
+  var count=0, ready=false, BASE=0.82, FINALX=0.86, baseScale=1.05, punkty=null;
   var posX=0, rotY=0, introT=0, introStart=0, scaleNow=baseScale;
 
   /* ---------- intro chmury: dwie fazy, nie jedna ----------
@@ -2955,6 +2986,7 @@ document.documentElement.classList.add('js');
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);
     }
     upload(A_BASE,base); upload(A_TARGET,target);
+    punkty=base;
     ready=true;
     draw(0,0.2);
     wake();                                    // chmura dojechała po tym, jak pętla zdążyła zasnąć
@@ -3051,10 +3083,69 @@ document.documentElement.classList.add('js');
     draw(e, 0.2*(1-e)+0.15*e);                  // kropki zostają delikatne, nie znikają
     if(moving) raf=requestAnimationFrame(tick); // nic się nie rusza -> pętla zasypia
   }
+  /* ---------- napisy kotwiczone w RZUCIE CHMURY ----------
+     Napisy przy narożnikach stały na procentach `.inner`, a chmura ma własną
+     skalę i własny rzut perspektywiczny - to dwa niezależne układy. Zgadzały
+     się tylko przy proporcji, dla której je dobrano: przy 1512x1296 chmura
+     jest o 60% szersza niż przy 16:9, więc „27 specjalistów" wyjeżdżało poza
+     kadr, a „Toruń" wjeżdżał na płat.
+
+     Liczymy prostokąt, jaki chmura zajmuje NA EKRANIE, i stawiamy napisy na
+     jego ułamkach. Trzy decyzje, które nie są oczywiste:
+
+     1. BEZ ŻYWEGO OBROTU. Model kręci się powoli wokół Y; gdyby napisy szły
+        za rzutem klatka po klatce, kołysałyby się razem z nim. Bierzemy więc
+        orientację odniesienia (ry=0), tę samą, w której dobierano ułamki.
+     2. Liczymy z PUNKTÓW, nie z prostopadłościanu obwiedni: chmura ma kształt
+        mózgu, a nie pudełka, i różnica na dole (móżdżek) to kilkadziesiąt px.
+     3. Wynik przycinamy do `.inner`. Przy wysokim oknie prawa krawędź chmury
+        wypada POZA kadrem - napis kotwiczony bezwzględnie poszedłby razem z nią. */
+  /* Ułamki pochodzą z POMIARU przy 1440x900 - to proporcja, w której układ
+     narożników był dobierany i w której wygląda tak, jak ma wyglądać. Zmierzony
+     rzut chmury: x 702..1375, y 145..693; stare pozycje procentowe wypadały
+     wtedy dokładnie tutaj. Od teraz ta sama relacja obowiązuje w każdym oknie. */
+  var KOTWICE={'-a':[0.806,0.033], '-b':[0.222,0.941], '-c':[-0.207,0.773]};
+  function ustawNapisy(){
+    if(!punkty || !count) return;
+    var inner=document.querySelector('#hero .inner'); if(!inner) return;
+    var probka=document.querySelector('.hero-fakt'); if(!probka || !probka.offsetParent) return;  // ukryte na wąskim ekranie
+    var f=1/Math.tan(FOV/2), s=baseScale, rx=-0.18;
+    var ca=Math.cos(rx), sa=Math.sin(rx);
+    /* dokładnie ta sama składanka co setMV(FINALX, 0.06, -0.18, 0, baseScale) */
+    var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+    for(var i=0;i<count;i++){
+      var x=punkty[i*3], y=punkty[i*3+1], z=punkty[i*3+2];
+      var vx = s*x + FINALX;
+      var vy = ca*s*y - sa*s*z + 0.06;
+      var vz = sa*s*y + ca*s*z - CAM_Z;
+      if(vz>=-0.001) continue;                       // za kamerą - pomijamy
+      var sx = ((f/aspektNow)*vx/(-vz)*0.5+0.5)*innerWidth;
+      var sy = (0.5-(f*vy/(-vz))*0.5)*innerHeight;
+      if(sx<minx)minx=sx; if(sx>maxx)maxx=sx;
+      if(sy<miny)miny=sy; if(sy>maxy)maxy=sy;
+    }
+    if(!(maxx>minx)) return;
+    var ir=inner.getBoundingClientRect(), bw=maxx-minx, bh=maxy-miny;
+    Object.keys(KOTWICE).forEach(function(k){
+      var el=document.querySelector('.hero-fakt.'+k); if(!el) return;
+      var r=el.getBoundingClientRect();
+      var lx = minx + KOTWICE[k][0]*bw - ir.left;
+      var ty = miny + KOTWICE[k][1]*bh - ir.top;
+      lx = Math.max(0, Math.min(lx, ir.width  - r.width  - 4));
+      ty = Math.max(0, Math.min(ty, ir.height - r.height - 4));
+      el.style.setProperty('--fx', Math.round(lx)+'px');
+      el.style.setProperty('--fy', Math.round(ty)+'px');
+    });
+  }
+  document.addEventListener('mozg-osiadl', function(){ setTimeout(ustawNapisy,0); });
+  var timerNapisy=0;
+  addEventListener('resize',function(){ clearTimeout(timerNapisy); timerNapisy=setTimeout(ustawNapisy,160); },{passive:true});
+
   /* fallback: gdy rAF jest wstrzymany (karta w tle / podgląd headless) - osadź chmurę w stanie końcowym */
   setTimeout(function(){
     if(ready && introT<1){ introT=1; posX=FINALX; scaleNow=baseScale; canvas.style.opacity=BASE; draw(0,0.2); }
-    ogloszOsiadanie();       // rAF wstrzymany albo plik nadal w drodze - strona przestaje czekać
+    ogloszOsiadanie();
+    ustawNapisy();       // rAF wstrzymany albo plik nadal w drodze - strona przestaje czekać
   }, 2600);
 })();
 </script>
