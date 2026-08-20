@@ -12,15 +12,27 @@
 <meta property="og:site_name" content="Centrum Zakątek">
 <meta property="og:title" content="Centrum Zakątek - zdrowie psychiczne w Toruniu">
 <meta property="og:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu. Doświadczony zespół i pełna dyskrecja.">
-<meta property="og:url" content="https://centrumzakatek.pl/">
-<meta property="og:image" content="https://centrumzakatek.pl/assets/brand/og-image.jpg">
+<!-- ===== PODGLĄD LINKU: trzy adresy do zmiany przy przeprowadzce na własną domenę =====
+     og:url, og:image i twitter:image niżej wskazują tam, gdzie strona FAKTYCZNIE
+     leży. Wcześniej wskazywały na centrumzakatek.pl, gdzie /assets/brand/og-image.jpg
+     zwraca 404 - a pod tym adresem stoi zupełnie inna, stara strona kliniki.
+     Skutek był taki, że iMessage nie mógł pobrać obrazka i podstawiał największe
+     zdjęcie znalezione na stronie, czyli portret z galerii zespołu.
+     Sam plik og-image.jpg jest w porządku i był od początku: 1200x630, logo na
+     firmowym tle. Zepsuty był wyłącznie adres.
+     `canonical` zostaje na centrumzakatek.pl celowo - to jest tag, który mówi
+     „prawdziwa wersja jest gdzie indziej", i tak ma zostać, dopóki ta kopia
+     jest podglądem. -->
+<meta property="og:url" content="https://alepan13.github.io/centrum-zakatek-nowa/">
+<meta property="og:image" content="https://alepan13.github.io/centrum-zakatek-nowa/assets/brand/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Centrum Zakątek - centrum zdrowia psychicznego w Toruniu">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Centrum Zakątek - zdrowie psychiczne w Toruniu">
 <meta name="twitter:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu.">
-<meta name="twitter:image" content="https://centrumzakatek.pl/assets/brand/og-image.jpg">
+<meta name="twitter:image" content="https://alepan13.github.io/centrum-zakatek-nowa/assets/brand/og-image.jpg">
 <meta name="theme-color" content="#f7f5ef">
 <meta name="color-scheme" content="light dark">
 <script>
