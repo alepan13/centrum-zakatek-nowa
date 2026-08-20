@@ -200,11 +200,28 @@ document.documentElement.classList.add('js');
      nagłówek. To jest zadanie scroll-padding, nie paddingu sekcji - inaczej
      każda sekcja płaciłaby 110 px pustki tylko po to, żeby jedna sytuacja
      wyglądała dobrze. Dotyczy tak samo snapowania, jak i skoków z nawigacji. */
-  html{scroll-padding-top:118px}
-  @media(max-width:600px){ html{scroll-padding-top:88px} }
+  /* Wyściółka jest SYMETRYCZNA, i to nie jest kosmetyka. Sekcje zatrzymują się
+     teraz na ŚRODKU, a środek liczy się względem pudełka pomniejszonego o tę
+     wyściółkę: przy samej górnej sekcja siadałaby 59 px poniżej środka kadru. */
+  html{scroll-padding:118px 0}
+  @media(max-width:600px){ html{scroll-padding:88px 0} }
   @media(min-width:761px){
-    html{scroll-snap-type:y proximity}
-    main>.scene{scroll-snap-align:start}
+    /* mandatory, nie proximity: „kolejny krok to kolejna sekcja" znaczy, że
+       przewijanie ma kończyć się NA sekcji, a nie gdziekolwiek obok niej. */
+    html{scroll-snap-type:y mandatory}
+    main>.scene{scroll-snap-align:center}
+    /* Sekcja wyższa od okna nie ma środka, który dałoby się pokazać -
+       wyśrodkowanie ucina ją z góry I z dołu naraz. Takie sekcje (cennik
+       zawsze, zakres na niższych ekranach) dostają DWA punkty zatrzymania:
+       górę i dół. Dzięki temu mandatory nie chowa ich dolnej części, a
+       przejście przez nie to dwa czyste kroki zamiast jednego z urwaniem.
+       Klasę stawia skrypt, bo CSS nie umie porównać wysokości z oknem. */
+    main>.scene.-wysoka{scroll-snap-align:start}
+    main>.scene.-wysoka::after{content:"";position:absolute;left:0;right:0;bottom:0;
+      height:1px;scroll-snap-align:end;pointer-events:none}
+    /* Stopka też potrzebuje swojego punktu: przy mandatory element bez
+       zaczepienia potrafi zostać przeskoczony, a w stopce siedzi numer. */
+    .pagefoot{scroll-snap-align:end}
   }
   html{background:var(--bg)}
   body{font-family:var(--body);color:var(--ink);line-height:var(--lh-relaxed);-webkit-font-smoothing:antialiased;min-height:100%;background-color:var(--bg)}
@@ -748,18 +765,22 @@ document.documentElement.classList.add('js');
   .tc-m{font-size:var(--t-meta);color:var(--soft);margin-top:5px;font-weight:500}
 
   /* CENNIK */
-  .ptiers{margin-top:40px;display:flex;flex-direction:column;gap:clamp(34px,4vh,52px)}
+  /* Cennik jest jedyną sekcją wyższą od kadru na KAŻDYM laptopie - zmierzone:
+     1083 px przy oknie 800 i 1137 px przy 1080. Poniższe skróty zbierają ~66 px
+     bez ruszania stopni pisma i bez zmiany charakteru tabeli: to ma być ciaśniej
+     o włos, a nie gęściej. */
+  .ptiers{margin-top:32px;display:flex;flex-direction:column;gap:clamp(28px,3.4vh,44px)}
   /* Nagłówek piętra jest ETYKIETĄ, nie drugim nagłówkiem sekcji: cennik ma
      jeden tytuł, a to jest linia porządkująca. Stąd wersaliki i kreska przez
      całą szerokość zamiast stopnia h3 - inaczej sekcja miałaby trzy tytuły
      tej samej wagi i żaden nie prowadziłby. */
   .ptier-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;
-    padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:22px}
+    padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:18px}
   .ptier-h h3{font-family:var(--label);font-size:var(--t-label);letter-spacing:var(--tr-widest);
     text-transform:uppercase;font-weight:600;color:var(--ink)}
   .ptier-h p{font-size:var(--t-meta);color:var(--soft);line-height:var(--lh-snug)}
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
-  .pc{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:var(--space-4);opacity:0;transition:opacity .8s ease}
+  .pc{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:22px;opacity:0;transition:opacity .8s ease}
   .scene.show .pc{opacity:1}
   .scene.show .pc:nth-child(2){transition-delay:.08s}.scene.show .pc:nth-child(3){transition-delay:.16s}
   .pc h4{font-family:var(--display);font-weight:500;font-size:var(--t-h4);color:var(--ink);
@@ -767,7 +788,7 @@ document.documentElement.classList.add('js');
   .pr-list{margin:0}
   /* wykaz cen to rola gęsta: wiersz jest jednoliniowy, więc interlinia prozy
      tylko rozpycha tabelę i rozjeżdża rytm cen */
-  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--t-dense);line-height:var(--lh-normal)}
+  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-dense);line-height:var(--lh-normal)}
   .pr:last-child{border-bottom:0;padding-bottom:0}
   .pr dt{color:var(--soft);margin:0}
   /* Cena schodzi z akcentu na atrament. Piętnaście zielonych liczb rozcieńcza
@@ -778,7 +799,7 @@ document.documentElement.classList.add('js');
      cyfry i kolumna cen faluje. */
   .pp{margin:0;white-space:nowrap;font-family:var(--display);font-weight:500;font-size:var(--t-body);
     color:var(--ink);font-variant-numeric:tabular-nums}
-  .price-foot{font-family:var(--label);font-size:var(--t-micro);color:var(--muted);margin-top:28px;letter-spacing:var(--tr-label)}
+  .price-foot{font-family:var(--label);font-size:var(--t-micro);color:var(--muted);margin-top:22px;letter-spacing:var(--tr-label)}
 
   /* ROZWIJANE SEKCJE: teaser + przyciski */
   .collapse-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--label);font-size:var(--t-label);letter-spacing:var(--tr-label);text-transform:uppercase;font-weight:500;color:var(--accent-ink);background:var(--accent);border:1px solid transparent;border-radius:var(--r-md);padding:14px 24px;cursor:pointer;transition:transform .25s var(--ease),background .25s,border-color .25s}
@@ -1732,6 +1753,31 @@ document.documentElement.classList.add('js');
       };
     });
 
+    /* Zdjęcia dochodzą, gdy sekcja zespołu jest w zasięgu - nie przy starcie.
+       27 portretów to 758 kB; ładowane od razu konkurowałyby z chmurą punktów
+       i pierwszym kadrem, a do sekcji zespołu trzeba najpierw dojechać.
+       Zapas 700 px: przy zwykłym przewijaniu zdjęcia są na miejscu, zanim
+       sekcja wejdzie w kadr. */
+    var zdjeciaOdblokowane=false;
+    function dosylZdjecia(){
+      zdjeciaOdblokowane=true;
+      ring.querySelectorAll('img[data-src]').forEach(function(im){
+        im.src=im.getAttribute('data-src'); im.removeAttribute('data-src');
+      });
+    }
+    (function(){
+      var sekcja=document.getElementById('zespol');
+      if(!sekcja || !('IntersectionObserver' in window)){ dosylZdjecia(); return; }
+      var io=new IntersectionObserver(function(en){
+        if(en[0].isIntersecting){ io.disconnect(); dosylZdjecia(); }
+      },{rootMargin:'700px 0px'});
+      io.observe(sekcja);
+      /* Siatka: gdyby obserwator nie odpalił (przeglądarka bez wsparcia dla
+         rootMargin, karta w tle), zdjęcia i tak dojdą - lepiej pobrać je za
+         wcześnie niż nie pokazać wcale. */
+      setTimeout(function(){ if(!zdjeciaOdblokowane){ io.disconnect(); dosylZdjecia(); } }, 6000);
+    })();
+
     function przebuduj(klucz){
       LISTA = (klucz==='all'||!klucz) ? SPECIALISTS.slice()
             : SPECIALISTS.filter(function(s){ return s.group===klucz; });
@@ -1771,7 +1817,16 @@ document.documentElement.classList.add('js');
       ring.innerHTML=pola.map(function(s,i){
         return '<article class="tcard" data-i="'+i+'" style="--a:'+(i*step)+'deg">'
           +'<div class="tcard__in">'
-          +'<img src="'+s.photo+'" alt="'+s.name+'" draggable="false" loading="lazy">'
+          /* data-src, nie src: karty stoją na pierścieniu 3D w kontenerze o
+             ZEROWYM rozmiarze (#teamRing ma width:0/height:0, a pozycję każdej
+             karty robi wyłącznie rotateY+translateZ). Safari liczy widoczność
+             dla loading="lazy" z pudełka układu, a nie z transformacji 3D -
+             wszystkie karty leżą więc dla niego w jednym punkcie i lazy nie
+             odpala się nigdy. Zdjęcia pojawiały się dopiero po otwarciu karty
+             specjalisty, bo modal ładował ten sam plik zwykłym <img>.
+             Ładowaniem steruje teraz obserwator na SEKCJI (zwykły element w
+             normalnym układzie), a nie heurystyka przeglądarki. */
+          +'<img data-src="'+s.photo+'" alt="'+s.name+'" draggable="false">'
           +'<div class="tcard__scrim"></div>'
           +'<span class="tcard__tag">'+(TAGI[s.group]||'Specjalista')+'</span>'
           +'<div class="tcard__foot"><h4 class="tcard__name">'+s.name+'</h4>'
@@ -1779,6 +1834,7 @@ document.documentElement.classList.add('js');
           +'</div></article>';
       }).join('');
       cards=ring.querySelectorAll('.tcard');
+      if(zdjeciaOdblokowane) dosylZdjecia();   // filtr przebudował pierścień po odblokowaniu
       elTotal.textContent=pad2(N);
       /* Skąd startuje łuk:
          - pełny skład otwiera się na wskazanej osobie (START_ID), żeby w
@@ -1994,6 +2050,28 @@ document.documentElement.classList.add('js');
 
   /* ---------- reveal scen (scroll + fallback, niezależne od środowiska) ---------- */
   var scenes=[].slice.call(document.querySelectorAll('.scene'));
+
+  /* ---------- które sekcje nie mieszczą się w oknie ----------
+     Mierzone, nie zgadywane: cennik jest wyższy od kadru na każdym laptopie,
+     zakres dopiero poniżej ~1080 px wysokości, a hero ma dokładnie 100vh i
+     ma zostać wyśrodkowany. Stąd zapas 8 px - bez niego hero łapałby się na
+     „za wysoki" przez zaokrąglenie subpikselowe. */
+  var sceneMain=[].slice.call(document.querySelectorAll('main>.scene'));
+  function zmierzWysokosci(){
+    var vh=window.innerHeight;
+    sceneMain.forEach(function(s){
+      s.classList.toggle('-wysoka', s.getBoundingClientRect().height > vh + 8);
+    });
+  }
+  zmierzWysokosci();
+  var timerWys=0;
+  addEventListener('resize',function(){ clearTimeout(timerWys); timerWys=setTimeout(zmierzWysokosci,180); },{passive:true});
+  /* Rozwinięcie zespołu i filtry cennika zmieniają wysokość sekcji bez zmiany
+     rozmiaru okna - przemierzamy też wtedy. */
+  if('ResizeObserver' in window){
+    var ro=new ResizeObserver(function(){ clearTimeout(timerWys); timerWys=setTimeout(zmierzWysokosci,180); });
+    sceneMain.forEach(function(s){ ro.observe(s); });
+  }
   var reduceM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var heroScene=document.querySelector('.scene.hero');
   function showScene(s){ if(s) s.classList.add('show'); }
@@ -2538,14 +2616,15 @@ document.documentElement.classList.add('js');
   var VERT=
     'attribute vec3 aBase;attribute vec3 aTarget;'+
     'uniform mat4 uProj,uMV;uniform float uMix,uSize;'+
-    'uniform vec3 uCursor;uniform float uScatterR,uScatterF,uTurb;'+
+    'uniform vec3 uTrail[4];uniform float uTrailW[4];'+
+    'uniform vec3 uDrag;uniform float uScatterR,uScatterF,uTurb;'+
     'void main(){'+
       'vec4 mv=uMV*vec4(mix(aBase,aTarget,uMix),1.0);'+
       'if(uScatterF>0.0){'+
         /* rnd wyjęte przed sprawdzenie wpływu, bo teraz WSPÓŁDECYDUJE o tym,
            gdzie ten wpływ sięga - a nie tylko o kierunku ucieczki punktu */
         'vec3 rnd=(aTarget-aBase*vec3(2.25,2.25,1.2375))/vec3(0.85,0.85,0.35);'+
-        'vec3 away=mv.xyz-uCursor;'+
+        'vec3 przes=vec3(0.0);'+
         /* Strefa wpływu przestaje być kulą. Kula dawała gładką, okrągłą
            wypukłość - czytało się to jak narośl w mózgu, a nie jak reakcja
            chmury na rękę. Psują ją trzy rzeczy naraz:
@@ -2564,14 +2643,25 @@ document.documentElement.classList.add('js');
            max() nie jest ozdobą: przy zbiegu obu sinusów i ziarna w minimum
            mnożnik schodzi do ~0,06 i bez tego promień potrafiłby wyjść
            ujemny, a smoothstep z odwróconymi krańcami zwraca wtedy śmieci. */
-        'float d=length(away*vec3(1.0,1.35,1.0));'+
+        /* Promień jest niezmienny dla punktu, więc liczy się RAZ, przed pętlą */
         'float lob=0.28*sin(aBase.x*7.3+aBase.y*4.1+aBase.z*2.7)'+
                  '+0.16*sin(aBase.y*11.9-aBase.z*6.2);'+
         'float r=max(0.06,uScatterR*(1.0+lob+0.16*(0.62*rnd.x+0.38*rnd.z)));'+
-        'float infl=1.0-smoothstep(0.0,r,d);'+
-        'if(infl>0.0){'+
-          'mv.xyz+=normalize(away+rnd*uTurb+vec3(1e-5))*infl*uScatterF;'+
+        /* Cztery próbki toru kursora, od najnowszej do najstarszej. Punkt
+           liczy wpływ każdej z osobna i sumuje - dzięki temu zaburzenie nie
+           siedzi tam, GDZIE kursor jest teraz, tylko rozciąga się wzdłuż
+           drogi, którą przeszedł. To jest ta smuga. */
+        'for(int i=0;i<4;i++){'+
+          'vec3 away=mv.xyz-uTrail[i];'+
+          'float d=length(away*vec3(1.0,1.35,1.0));'+
+          'float infl=(1.0-smoothstep(0.0,r,d))*uTrailW[i];'+
+          /* uDrag ciągnie WZDŁUŻ ruchu i jest silniejszy od odpychania (0,45):
+             kurz ma iść za rzuconym przedmiotem, a nie uciekać na boki.
+             Odpychanie zostaje, ale schodzi do roli szumu - bez niego smuga
+             byłaby idealną kreską, a nie chmurą. */
+          'przes+=(normalize(away+rnd*uTurb+vec3(1e-5))*0.45+uDrag)*infl;'+
         '}'+
+        'mv.xyz+=przes*uScatterF;'+
       '}'+
       'gl_Position=uProj*mv;'+
       'gl_PointSize=uSize/max(0.001,-mv.z);'+
@@ -2598,7 +2688,8 @@ document.documentElement.classList.add('js');
   var U_PROJ=gl.getUniformLocation(prog,'uProj'), U_MV=gl.getUniformLocation(prog,'uMV');
   var U_MIX=gl.getUniformLocation(prog,'uMix'), U_SIZE=gl.getUniformLocation(prog,'uSize');
   var U_COLOR=gl.getUniformLocation(prog,'uColor'), U_OPACITY=gl.getUniformLocation(prog,'uOpacity');
-  var U_CUR=gl.getUniformLocation(prog,'uCursor'), U_SCR=gl.getUniformLocation(prog,'uScatterR'),
+  var U_TRAIL=gl.getUniformLocation(prog,'uTrail[0]'), U_TRAILW=gl.getUniformLocation(prog,'uTrailW[0]'),
+      U_DRAG=gl.getUniformLocation(prog,'uDrag'), U_SCR=gl.getUniformLocation(prog,'uScatterR'),
       U_SCF=gl.getUniformLocation(prog,'uScatterF'), U_TURB=gl.getUniformLocation(prog,'uTurb');
   /* Zasięg i siła w jednostkach WIDOKU. Na głębokości modelu kadr ma 2,61
      takiej jednostki wysokości, więc 0,46 to ok. 16% wysokości okna zasięgu,
@@ -2684,15 +2775,45 @@ document.documentElement.classList.add('js');
   var FINE=matchMedia('(pointer:fine)').matches && !reduce;
   var pxNdc=0, pyNdc=0,          // wskaźnik w NDC, przycięty do [-1,1]
       pxEase=0, pyEase=0,        // ten sam, wygładzony (parallaksa)
-      curX=0, curY=0,            // kursor w przestrzeni widoku, wygładzony
-      scatter=0, scatterCel=0,   // narastanie i wygasanie siły
       nadKadrem=false,
       rozwiane=0;                // ostatnie `e` z pętli: 0 = mózg, 1 = rozsypka
+
+  /* ---------- kurz i smuga za ruchem ----------
+     Zaburzenie nie należy już do POZYCJI kursora, tylko do jego RUCHU. Kursor
+     stojący nie robi nic - kurz wisi. Dopiero przejazd ciągnie za sobą drobiny
+     i po chwili wszystko osiada z powrotem.
+
+     Dwie rzeczy budują to wrażenie:
+     - ŚLAD: cztery ostatnie pozycje kursora w przestrzeni widoku. Nowa próbka
+       dochodzi dopiero po przebyciu MIN_KROK, więc przy zatrzymaniu ślad
+       ZOSTAJE tam, gdzie był, i gaśnie w miejscu. Gdyby dokładać próbkę co
+       klatkę, ogon zwinąłby się do punktu w chwili zatrzymania - czyli
+       dokładnie wtedy, kiedy ma być najbardziej widoczny.
+     - POBUDZENIE: rośnie od przebytej drogi, opada samo (0,938 na klatkę,
+       czyli ~0,55 s do wygaszenia przy 60 Hz). To ono decyduje, że kurz
+       „ciągnie się jeszcze chwilę" po tym, jak kursor już pojechał dalej. */
+  var SLADOW=4;
+  var sladXYZ=new Float32Array(SLADOW*3);
+  var sladW=new Float32Array(SLADOW);
+  /* Świeższa próbka waży więcej - stąd zwężający się ogon, a nie wałek.
+     Sumę normalizujemy do 1, żeby punkt leżący pod całym śladem dostał
+     tyle samo, co wcześniej dostawał pod jednym kursorem. */
+  var WAGI=[1.0,0.62,0.34,0.15], SUMA_WAG=2.11;
+  var sladGotowy=false, pobudzenie=0, MIN_KROK=0.035;
+  var przeciagX=0, przeciagY=0,        // kierunek ciągnięcia, wygładzony
+      przeciagCelX=0, przeciagCelY=0;
+  var PRZECIAG=0.85;                   // ile z przesunięcia idzie „za ruchem"
   /* Kursor w przestrzeni widoku na głębokości środka modelu. Bez odwracania
      macierzy: proj[0]=f/aspect, proj[5]=f, więc z NDC wychodzi się wprost. */
-  function kursorWidok(){
+  function kursorWidok(nx,ny){
     var f=1/Math.tan(FOV/2);
-    return [pxEase*CAM_Z*aspektNow/f, pyEase*CAM_Z/f, -CAM_Z];
+    return [nx*CAM_Z*aspektNow/f, ny*CAM_Z/f, -CAM_Z];
+  }
+  function dosunSlad(x,y,z){
+    for(var i=SLADOW-1;i>0;i--){
+      sladXYZ[i*3]=sladXYZ[(i-1)*3]; sladXYZ[i*3+1]=sladXYZ[(i-1)*3+1]; sladXYZ[i*3+2]=sladXYZ[(i-1)*3+2];
+    }
+    sladXYZ[0]=x; sladXYZ[1]=y; sladXYZ[2]=z;
   }
   if(FINE){
     addEventListener('pointermove',function(e){
@@ -2701,14 +2822,32 @@ document.documentElement.classList.add('js');
       pyNdc=Math.max(-1,Math.min(1, -((e.clientY/innerHeight)*2-1)));
       /* chmura żyje tylko w hero; niżej i tak jest rozwiana, więc siła schodzi */
       nadKadrem = e.clientY < innerHeight*1.05;
-      scatterCel = nadKadrem?1:0;
+      if(nadKadrem){
+        var kw=kursorWidok(pxNdc,pyNdc);
+        if(!sladGotowy){
+          for(var i=0;i<SLADOW;i++){ sladXYZ[i*3]=kw[0]; sladXYZ[i*3+1]=kw[1]; sladXYZ[i*3+2]=kw[2]; }
+          sladGotowy=true;
+        } else {
+          var dx=kw[0]-sladXYZ[0], dy=kw[1]-sladXYZ[1];
+          var krok=Math.sqrt(dx*dx+dy*dy);
+          if(krok>MIN_KROK){
+            dosunSlad(kw[0],kw[1],kw[2]);
+            przeciagCelX=dx/krok; przeciagCelY=dy/krok;
+          }
+          /* pobudzenie rośnie od PRZEBYTEJ DROGI, nie od samej obecności:
+             wolne przesunięcie ledwie muska kurz, szybki przejazd go rozrzuca */
+          pobudzenie=Math.min(1, pobudzenie + krok*2.4);
+        }
+      }
       /* Nad rozwianym tłem ruch myszy nie budzi pętli. Bez tego każde drgnięcie
          kursora gdziekolwiek na stronie kosztowało klatkę, która i tak nie
          miała czego narysować - przewinięcie w górę budzi ją zdarzeniem scroll. */
       if(rozwiane<0.85) wake();
     },{passive:true});
-    addEventListener('pointerleave',function(){ scatterCel=0; if(rozwiane<0.85) wake(); },{passive:true});
-    document.addEventListener('mouseleave',function(){ scatterCel=0; if(rozwiane<0.85) wake(); },{passive:true});
+    /* Kursor poza oknem nie zeruje kurzu w jednej klatce - zostawia go
+       osiadający, tak samo jak przy zatrzymaniu. Znika tylko dopływ. */
+    addEventListener('pointerleave',function(){ sladGotowy=false; if(rozwiane<0.85) wake(); },{passive:true});
+    document.addEventListener('mouseleave',function(){ sladGotowy=false; if(rozwiane<0.85) wake(); },{passive:true});
   }
 
   fetch('assets/brain-points.bin').then(function(res){
@@ -2818,16 +2957,22 @@ document.documentElement.classList.add('js');
        temu powrót w górę nie jest skokiem. */
     rozwiane=e;
     if(FINE && e<0.85){
-      var dsc=scatterCel-scatter;
-      if(Math.abs(dsc)>0.002){ scatter+=dsc*0.09; moving=true; } else scatter=scatterCel;
       var dpx=pxNdc-pxEase, dpy=pyNdc-pyEase;
       if(Math.abs(dpx)>0.0008||Math.abs(dpy)>0.0008){ pxEase+=dpx*0.06; pyEase+=dpy*0.06; moving=true; }
-      var kw=kursorWidok(), dcx=kw[0]-curX, dcy=kw[1]-curY;
-      if(Math.abs(dcx)>0.0008||Math.abs(dcy)>0.0008){ curX+=dcx*0.09; curY+=dcy*0.09; moving=true; }
-      gl.uniform3f(U_CUR,curX,curY,-CAM_Z);
-      gl.uniform1f(U_SCF, 0.28*scatter*(1-e));
-    } else if(FINE && scatter!==0){
-      scatter=0; gl.uniform1f(U_SCF,0);       // raz, przy przejściu przez próg
+      /* Kurz osiada sam. Dopóki cokolwiek jest jeszcze poruszone, pętla musi
+         żyć - inaczej zasnęłaby w połowie opadania i smuga zastygłaby
+         w powietrzu zamiast zniknąć. */
+      if(pobudzenie>0.0015){ pobudzenie*=0.938; moving=true; }
+      else if(pobudzenie!==0){ pobudzenie=0; }
+      var dqx=przeciagCelX-przeciagX, dqy=przeciagCelY-przeciagY;
+      if(Math.abs(dqx)>0.002||Math.abs(dqy)>0.002){ przeciagX+=dqx*0.14; przeciagY+=dqy*0.14; moving=true; }
+      for(var i=0;i<SLADOW;i++) sladW[i]=pobudzenie*WAGI[i]/SUMA_WAG;
+      gl.uniform3fv(U_TRAIL,sladXYZ);
+      gl.uniform1fv(U_TRAILW,sladW);
+      gl.uniform3f(U_DRAG, przeciagX*PRZECIAG, przeciagY*PRZECIAG, 0);
+      gl.uniform1f(U_SCF, 0.34*pobudzenie*(1-e));
+    } else if(FINE && pobudzenie!==0){
+      pobudzenie=0; gl.uniform1f(U_SCF,0);    // raz, przy przejściu przez próg
     }
     draw(e, 0.2*(1-e)+0.15*e);                  // kropki zostają delikatne, nie znikają
     if(moving) raf=requestAnimationFrame(tick); // nic się nie rusza -> pętla zasypia
