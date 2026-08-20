@@ -280,33 +280,40 @@ const GROUPS = [
 ];
 
 /* Cennik — wybrane pozycje (obowiązuje od 1.01.2026) */
+/* Dwa piętra cennika to nie ozdoba, tylko rozróżnienie, które strona i tak
+   już robi w notce pod zakresem: psychiatra i neurolog są LEKARZAMI i mogą
+   włączyć farmakoterapię, reszta pracuje rozmową albo ciałem. Odwiedzający
+   wybiera cenę dopiero po tym, jak wybierze rodzaj pomocy, więc to jest
+   pierwsze pytanie, nie ostatnie.
+   Kolejność w obrębie piętra idzie od najdłuższej listy do najkrótszej -
+   siatka trzech kolumn schodzi wtedy schodkiem, a nie przypadkiem. */
 const PRICING = [
-  { group:'Psychiatra - dorośli', icon:'ti-stethoscope', items:[
+  { group:'Psychiatra - dorośli', tier:'lek', icon:'ti-stethoscope', items:[
     ['Wizyta diagnostyczna (40 min)','380 zł'],
     ['Wizyta kontrolna (20 min)','300 zł'],
     ['Zaświadczenie','80 zł'],
   ]},
-  { group:'Psychiatra - dzieci i młodzież', icon:'ti-mood-kid', items:[
+  { group:'Psychiatra - dzieci i młodzież', tier:'lek', icon:'ti-mood-kid', items:[
     ['Wizyta diagnostyczna (60 min)','450 zł'],
     ['Wizyta kontrolna (30 min)','350 zł'],
   ]},
-  { group:'Neurolog', icon:'ti-brain', items:[
+  { group:'Neurolog', tier:'lek', icon:'ti-brain', items:[
     ['Wizyta neurologiczna (30 min)','250 zł'],
     ['Wystawienie recepty','60 zł'],
   ]},
-  { group:'Psycholog / psychoterapia', icon:'ti-message-circle-heart', items:[
+  { group:'Psycholog / psychoterapia', tier:'ter', icon:'ti-message-circle-heart', items:[
     ['Konsultacja psychologiczna (50 min)','190-200 zł'],
     ['Wizyta wydłużona (80 min)','280-300 zł'],
     ['Psychoterapia indywidualna','200-220 zł'],
     ['Terapia par','200-300 zł'],
     ['Diagnoza psychologiczna z opinią','400 zł'],
   ]},
-  { group:'Seksuolog', icon:'ti-shield-lock', items:[
-    ['Konsultacja seksuologiczna','220 zł'],
-  ]},
-  { group:'Fizjoterapia dziecięca', icon:'ti-yoga', items:[
+  { group:'Fizjoterapia dziecięca', tier:'ter', icon:'ti-yoga', items:[
     ['Konsultacja diagnostyczna (60 min)','200 zł'],
     ['Sesja terapeutyczna (45 min)','180 zł'],
+  ]},
+  { group:'Seksuolog', tier:'ter', icon:'ti-shield-lock', items:[
+    ['Konsultacja seksuologiczna','220 zł'],
   ]},
 ];
 

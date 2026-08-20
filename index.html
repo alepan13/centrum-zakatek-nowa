@@ -21,8 +21,7 @@
 <meta name="twitter:title" content="Centrum Zakątek - zdrowie psychiczne w Toruniu">
 <meta name="twitter:description" content="Psychiatria, psychoterapia, psychologia, neurologia i seksuologia w Toruniu.">
 <meta name="twitter:image" content="https://centrumzakatek.pl/assets/brand/og-image.jpg">
-<meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1d1711" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f5ef">
 <meta name="color-scheme" content="light dark">
 <script>
 /* ===== Motyw: rozstrzygnięcie przed pierwszym malowaniem =====
@@ -30,15 +29,15 @@
    Gdyby jechał razem z resztą kodu na dole strony, użytkownik z wybranym
    trybem ciemnym zobaczyłby najpierw jasny kadr i dopiero potem przeskok.
 
-   Stany są trzy, nie dwa. Brak wpisu w pamięci = brak atrybutu = decyduje
-   system, na bieżąco (macOS potrafi przełączyć się sam o zmierzchu i strona
-   ma za nim pójść bez odświeżania). Wpis = użytkownik zdecydował i jego
-   wybór wygrywa z systemem do odwołania. */
+   Stany są dwa, nie trzy, i domyślny jest jasny. Ustawienie systemu nie
+   decyduje o niczym: marka Zakątka to ciepły papier, więc pierwszy kadr ma
+   być papierowy także u kogoś, kto trzyma macOS w trybie nocnym. Ciemny
+   włącza wyłącznie kliknięcie w przycisk i ten wybór zostaje do odwołania. */
 (function(){
   try{
     var t = localStorage.getItem('zakatek-motyw');
-    if(t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-  }catch(e){}   // tryb prywatny bez dostępu do localStorage: zostaje systemowy
+    document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  }catch(e){ document.documentElement.setAttribute('data-theme','light'); }
 })();
 </script>
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
@@ -75,10 +74,11 @@
     unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 
   :root{
-    /* Bez tego natywne części strony - pasek przewijania, pole tekstowe,
-       kursor w formularzu - zostają jasne także w trybie ciemnym.
-       Atrybut data-theme niżej nadpisuje tę deklarację na konkretną wartość. */
-    color-scheme: light dark;
+    /* Domyślnie jasny - także na systemie ustawionym na noc. Ciemny jest
+       wyborem, nie ustawieniem środowiska, więc `data-theme="dark"` niżej
+       nadpisuje tę deklarację i dopiero wtedy natywne części strony - pasek
+       przewijania, pole tekstowe, kursor - schodzą w ciemne. */
+    color-scheme: light;
     /* --- kolory --- */
     /* Paleta marki Zakątek: ciepły papier + szałwiowa zieleń + czerń.
        Płótnem nie jest już czysta biel, tylko kość - ciepło niesie tło,
@@ -266,14 +266,10 @@
      ósmą część widoku i wchodziło na nagłówek hero */
   .brandmark img{height:clamp(62px,9vh,94px);width:auto;display:block;filter:drop-shadow(0 2px 6px var(--logo-shadow))}
   /* Znak ma dwa warianty rysunku, więc nie da się go przemalować tokenem.
-     Oba leżą w kodzie, a widoczny jest ten zgodny z motywem - dzięki temu
-     logo idzie za wyborem użytkownika, a nie tylko za ustawieniem systemu
-     (element <picture> potrafi czytać wyłącznie media, nie atrybut). */
+     Oba leżą w kodzie, a widoczny jest ten zgodny z motywem - i dlatego
+     przełącza je atrybut, a nie media query: element <picture> potrafi
+     czytać wyłącznie media, a o motywie decyduje tu wybór człowieka. */
   .brandmark .lm-dark{display:none}
-  @media(prefers-color-scheme:dark){
-    :root:not([data-theme="light"]) .brandmark .lm-light{display:none}
-    :root:not([data-theme="light"]) .brandmark .lm-dark{display:block}
-  }
   :root[data-theme="dark"] .brandmark .lm-light{display:none}
   :root[data-theme="dark"] .brandmark .lm-dark{display:block}
   @media(max-width:600px){ .brandmark{top:10px;left:14px} }
@@ -379,7 +375,7 @@
      arkuszu - reguła elementowa postawiona niżej po prostu by je nadpisała. */
   h3,h4,h5,h6{line-height:var(--lh-snug)}
   /* wdowy i bękarty w ostatnim wierszu to zadanie łamacza, nie twardej spacji */
-  p,li,.lede,.rc-why,.dp-bubble,.foot,.tt-text,.assure-list li,.dlg-hint,.spec-desc,.pt-side p{text-wrap:pretty}
+  p,li,.lede,.rc-why,.dp-bubble,.foot,.tt-text,.assure-list li,.dlg-hint,.spec-desc{text-wrap:pretty}
   /* Podkreślenie jako tło, nie ::after. Inline, który zawija się na dwa wiersze,
      ma dwa fragmenty; absolutnie pozycjonowany ::after zna tylko jeden z nich
      i na wąskim ekranie podkreślał połowę frazy. box-decoration-break:clone
@@ -709,17 +705,37 @@
   .tc-m{font-size:var(--t-meta);color:var(--soft);margin-top:5px;font-weight:500}
 
   /* CENNIK */
-  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px;align-items:start}
+  .ptiers{margin-top:40px;display:flex;flex-direction:column;gap:clamp(34px,4vh,52px)}
+  /* Nagłówek piętra jest ETYKIETĄ, nie drugim nagłówkiem sekcji: cennik ma
+     jeden tytuł, a to jest linia porządkująca. Stąd wersaliki i kreska przez
+     całą szerokość zamiast stopnia h3 - inaczej sekcja miałaby trzy tytuły
+     tej samej wagi i żaden nie prowadziłby. */
+  .ptier-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;
+    padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .ptier-h h3{font-family:var(--label);font-size:var(--t-label);letter-spacing:var(--tr-widest);
+    text-transform:uppercase;font-weight:600;color:var(--ink)}
+  .ptier-h p{font-size:var(--t-meta);color:var(--soft);line-height:var(--lh-snug)}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
   .pc{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:var(--space-4);opacity:0;transition:opacity .8s ease}
   .scene.show .pc{opacity:1}
-  .scene.show .pc:nth-child(2){transition-delay:.08s}.scene.show .pc:nth-child(3){transition-delay:.16s}.scene.show .pc:nth-child(4){transition-delay:.24s}.scene.show .pc:nth-child(5){transition-delay:.32s}.scene.show .pc:nth-child(6){transition-delay:.4s}
-  .pc h3{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:var(--t-h4);color:var(--ink);padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .scene.show .pc:nth-child(2){transition-delay:.08s}.scene.show .pc:nth-child(3){transition-delay:.16s}
+  .pc h4{font-family:var(--display);font-weight:500;font-size:var(--t-h4);color:var(--ink);
+    line-height:var(--lh-tight);padding-bottom:14px;margin-bottom:2px;border-bottom:1px solid var(--line)}
+  .pr-list{margin:0}
   /* wykaz cen to rola gęsta: wiersz jest jednoliniowy, więc interlinia prozy
      tylko rozpycha tabelę i rozjeżdża rytm cen */
-  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--t-dense);line-height:var(--lh-normal);color:var(--soft)}
+  .pr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--t-dense);line-height:var(--lh-normal)}
   .pr:last-child{border-bottom:0;padding-bottom:0}
-  .pp{white-space:nowrap;font-family:var(--display);font-weight:500;font-size:var(--t-body);color:var(--accent)}
-  .price-foot{font-family:var(--label);font-size:var(--t-micro);color:var(--muted);margin-top:24px;letter-spacing:var(--tr-label)}
+  .pr dt{color:var(--soft);margin:0}
+  /* Cena schodzi z akcentu na atrament. Piętnaście zielonych liczb rozcieńcza
+     akcent, który w tej sekcji należy do jednego słowa w nagłówku - a przy
+     okazji kontrast rośnie z ok. 4,7:1 do ponad 15:1, a to jest ta liczba,
+     dla której ludzie tu przychodzą.
+     tabular-nums, bo bez nich „380" i „80 zł" stoją na różnych szerokościach
+     cyfry i kolumna cen faluje. */
+  .pp{margin:0;white-space:nowrap;font-family:var(--display);font-weight:500;font-size:var(--t-body);
+    color:var(--ink);font-variant-numeric:tabular-nums}
+  .price-foot{font-family:var(--label);font-size:var(--t-micro);color:var(--muted);margin-top:28px;letter-spacing:var(--tr-label)}
 
   /* ROZWIJANE SEKCJE: teaser + przyciski */
   .collapse-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--label);font-size:var(--t-label);letter-spacing:var(--tr-label);text-transform:uppercase;font-weight:500;color:var(--accent-ink);background:var(--accent);border:1px solid transparent;border-radius:var(--r-md);padding:14px 24px;cursor:pointer;transition:transform .25s var(--ease),background .25s,border-color .25s}
@@ -739,10 +755,10 @@
      i tam wraca. Wysokości nie animujemy z rozmysłem: rozwinięcie zespołu to
      kilka tysięcy pikseli, a animowanie wysokości przeliczałoby układ całej
      siatki w każdej klatce. Ruch niesie transform i krycie. */
-  .team-full,.price-full{opacity:0;transform:translateY(10px);
+  .team-full{opacity:0;transform:translateY(10px);
     transition:opacity .45s var(--ease),transform .45s var(--ease)}
-  .team-full.in,.price-full.in{opacity:1;transform:none}
-  .team-full.out,.price-full.out{opacity:0;transform:translateY(10px);
+  .team-full.in{opacity:1;transform:none}
+  .team-full.out{opacity:0;transform:translateY(10px);
     transition-timing-function:var(--ease-in);transition-duration:.26s}
   /* teaser zespołu */
 
@@ -753,13 +769,7 @@
   .tt-text{flex:1;min-width:260px;color:var(--soft);font-size:var(--t-body);line-height:var(--lh-normal)}
   .tt-text b{color:var(--ink);font-family:var(--display);font-weight:500;font-size:var(--t-h5);display:block;margin-bottom:4px}
   /* teaser cennika */
-  .price-teaser{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;margin-top:36px;padding:28px 30px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow-sm)}
-  .pt-rows{display:flex;flex-direction:column}
-  .pt-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:var(--t-dense);line-height:var(--lh-normal);color:var(--soft)}
-  .pt-row:last-child{border-bottom:0}
-  .pt-row b{font-family:var(--display);font-weight:500;color:var(--accent);white-space:nowrap;font-size:var(--t-body)}
-  .pt-side p{color:var(--soft);line-height:var(--lh-relaxed);margin-bottom:22px}
-  @media(max-width:760px){ .team-teaser{gap:18px} .tt-text{min-width:200px} .price-teaser{grid-template-columns:1fr;gap:22px} }
+  @media(max-width:760px){ .team-teaser{gap:18px} .tt-text{min-width:200px} }
   @media(max-width:620px){ .tt-avatars img{width:44px;height:44px;margin-left:-14px} }
 
   /* PROCES - poziomy timeline na desktop */
@@ -794,9 +804,6 @@
   .assure-ic{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:var(--r-md);background:rgba(var(--accent-rgb),.08);color:var(--accent)}
   @media(max-width:620px){ .assure{gap:22px} .assure-list{grid-template-columns:1fr} }
 
-  /* KONTAKT */
-  .contact .inner{max-width:1320px}
-  .contact p{max-width:52ch}
   /* głębia kart */
   .svc,.pc,.tc{box-shadow:var(--shadow-sm)}
   .svc:hover,.tc:hover,.pc:hover{box-shadow:var(--shadow)}
@@ -805,15 +812,45 @@
   .why-points li{position:relative;padding:18px 0 18px 26px;border-bottom:1px solid var(--line);font-size:var(--t-body);color:var(--soft);line-height:var(--lh-normal)}
   .why-points li b{color:var(--ink);font-weight:600}
   .why-points li::before{content:"";position:absolute;left:0;top:27px;width:12px;height:1.5px;background:var(--accent)}
-  /* pull-quote */
-  .contact h2{font-size:var(--t-h2);line-height:var(--lh-tight)}
-  .contact p{color:var(--soft);font-size:var(--t-lede);margin-top:22px;max-width:48ch;line-height:var(--lh-relaxed)}
-  .mailrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:36px}
+  /* ===== STOPKA =====
+     Kreska nad stopką należy do całej stopki, a nie do lewej kolumny, więc
+     border-top siedzi na siatce - inaczej wezwanie po prawej wisiałoby nad
+     linią, która kończy się w połowie kadru.
+     `align-items:start` to jest to „na równi": obie kolumny zaczynają się od
+     tej samej linii pod kreską, niezależnie od tego, która jest wyższa. */
   .pagefoot{position:relative;z-index:2;padding:0 4.5vw 9vh}
-  @media(max-width:980px){ .pagefoot{padding:0 26px 8vh} }
-  .foot{font-family:var(--label);font-size:var(--t-micro);color:var(--muted);letter-spacing:var(--tr-label);line-height:2;border-top:1px solid var(--line);padding-top:26px}
+  .footgrid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px 60px;align-items:start;
+    border-top:1px solid var(--line);padding-top:26px}
+  .foot{font-family:var(--label);font-size:var(--t-micro);color:var(--muted);letter-spacing:var(--tr-label);line-height:2}
   .foot a{color:var(--soft)}.foot a:hover{color:var(--accent)}
   .foot .fsoc{display:inline-flex;gap:10px;margin-left:8px}
+
+  /* Wezwanie w stopce: ta sama treść co dawna sekcja, o dwa stopnie skali
+     niżej. Nagłówek schodzi z --t-h2 (do 2,5rem) na ~1,35rem, bo obok stoi
+     tekst 12-pikselowy - w pełnej skali nie byłby domknięciem, tylko drugim
+     hero doklejonym do stopki. */
+  /* 440 px, nie 38ch: to jest dokładnie tyle, ile potrzebują oba przyciski
+     obok siebie (117 + 10 + 296). Przy węższej kolumnie adres mailowy
+     spadał do drugiego rzędu i wezwanie robiło się wyższe od reszty
+     stopki - czyli przestawało być „na równi". */
+  .footcta{justify-self:end;text-align:right;max-width:440px}
+  .footcta h2{font-family:var(--display);font-size:clamp(1.2rem,1.7vw,1.45rem);line-height:var(--lh-tight);color:var(--ink);font-weight:600;letter-spacing:-.01em}
+  .footcta p{color:var(--muted);font-size:.9375rem;line-height:var(--lh-normal);margin-top:10px}
+  /* podkreślenie akcentu jedzie normalnie z klasy .accentword, ale ta czeka na
+     `.scene.show` - w stopce żadnej sceny nie ma, więc zapalamy je tutaj */
+  .footcta .accentword{background-size:100% 2px}
+  .mailrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;margin-top:18px}
+  .mailrow .btn{padding:11px 18px;font-size:var(--t-micro);border-radius:var(--r-sm)}
+
+  /* Poniżej 900 px kolumny się układają jedna pod drugą i wezwanie idzie na
+     górę: na telefonie numer jest tym, po co ktoś tu zjechał, a adres i linia
+     kryzysowa czytają się równie dobrze pod nim. */
+  @media(max-width:900px){
+    .footgrid{grid-template-columns:1fr;gap:26px}
+    .footcta{order:-1;justify-self:stretch;text-align:left;max-width:46ch}
+    .mailrow{justify-content:flex-start}
+  }
+  @media(max-width:980px){ .pagefoot{padding:0 26px 8vh} }
   /* linia kryzysowa: najważniejszy tekst w stopce, więc własny stopień w skali - nie 11px stopki */
   .crisis{display:inline-block;margin:6px 0;color:var(--clay);font-family:var(--body);font-size:var(--t-body);font-weight:600;letter-spacing:0;line-height:var(--lh-normal);text-transform:none}
   .crisis b{font-weight:700}
@@ -829,7 +866,7 @@
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}.reveal,.svc,.pc,.step,.tc{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}.steps::before{transform:scaleY(1)!important}.svc-art .dl{stroke-dashoffset:0!important}
     /* nie „bez reakcji", tylko łagodniejsza: zostaje przenikanie, znika skala */
     .modal-card,.modal.out .modal-card{transform:none!important;transition:opacity .2s ease!important}
-    .team-full,.price-full,.team-full.out,.price-full.out{transform:none!important;transition:opacity .2s ease!important}
+    .team-full,.team-full.out{transform:none!important;transition:opacity .2s ease!important}
     .modal-bg{transition:opacity .2s ease!important}
     .btn:active,.tc:active,.qtile:active,.filt:active,.collapse-cta:active,.dp-launch:active,
     .navsoc a:active,.navtoggle:active,.themetoggle:active,.modal-x:active,.link-btn:active,.topnav a:active,.mobilemenu a:active{transform:none!important}
@@ -1128,31 +1165,9 @@
      Ziemia siedzi w powierzchniach, a nie w akcencie - szałwia zostaje
      szałwią, bo to ona niesie markę.
 
-     Wejścia do trybu ciemnego są dwa i dlatego są tu dwa selektory:
-       1. system mówi „ciemno", a użytkownik niczego nie wybrał — działa bez
-          JS i przełącza się razem z macOS o zmierzchu;
-       2. użytkownik wybrał ciemny przyciskiem — data-theme wygrywa z systemem.
-     Deklaracje muszą zostać identyczne w obu; przy zmianie palety zmieniamy
-     obie listy albo żadnej. */
-  @media(prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){
-      color-scheme:dark;
-      --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
-      --ink:#eeeae1; --soft:#b2ada2; --muted:#928d83;
-      --line:rgba(238,234,225,.15); --halo-ring:rgba(var(--accent-rgb),.20);
-      --clay:#d9a780; --card:#272018; --photo:#30281e;
-      --bg:#1d1711; --bg-top:#221c15; --bg-bottom:#14100b; --surface:#272018;
-      --shadow:0 2px 5px rgba(0,0,0,.34),0 20px 46px -28px rgba(0,0,0,.7);
-      --shadow-sm:0 1px 3px rgba(0,0,0,.3),0 13px 28px -18px rgba(0,0,0,.5);
-      --alert-bg:#2e1c17; --alert-line:#573229; --alert-ink:#f0b9a5;
-      --alert-body:#dcb1a3; --alert-surface:#1d1310; --alert-text:#e9d5cd; --alert-hint:#8a5346;
-      --veil:rgba(11,8,4,.63); --veil-solid:rgba(11,8,4,.83);
-      --scrim-rgb:34,28,21; --grain-op:.03;
-      --chip-bg:rgba(39,32,24,.94); --chip-solid:#272018;
-      --logo-shadow:rgba(0,0,0,.45);
-      --panel-step:rgba(255,246,226,.030); --vignette:rgba(0,0,0,.26); --brain-rgb:247,245,239;
-    }
-  }
+     Wejście do trybu ciemnego jest jedno: atrybut `data-theme="dark"`, który
+     stawia przycisk. Ustawienie systemu nic tu nie znaczy - strona ma być
+     papierowa także o zmierzchu, dopóki ktoś nie poprosi inaczej. */
   :root[data-theme="dark"]{
     color-scheme:dark;
     --accent:#93b28f; --accent-rgb:147,178,143; --accent-2:#aac6a6; --accent-ink:#12160f;
@@ -1170,8 +1185,9 @@
     --logo-shadow:rgba(0,0,0,.45);
     --panel-step:rgba(255,246,226,.030); --vignette:rgba(0,0,0,.26); --brain-rgb:247,245,239;
   }
-  /* wybór jasnego to też wybór: bez tego pole tekstowe i pasek przewijania
-     zostałyby ciemne na systemie ustawionym na noc */
+  /* Powtórzenie deklaracji z :root, bo atrybut jest tu stawiany zawsze -
+     także przy jasnym - i lepiej, żeby obie wartości stały obok siebie niż
+     żeby jedna z nich milcząco dziedziczyła. */
   :root[data-theme="light"]{color-scheme:light}
 
   /* ===== Wzmocniony kontrast (systemowy) =====
@@ -1184,11 +1200,8 @@
      się rozjaśnianiem tekstu, a nie przyciemnianiem. */
   @media(prefers-contrast:more){
     :root{--line:rgba(46,40,28,.34);--line-hc:rgba(46,40,28,.42);--muted:#4d534c;--soft:#434841}
-    @media(prefers-color-scheme:dark){
-      :root:not([data-theme="light"]){--line:rgba(238,234,225,.38);--line-hc:rgba(238,234,225,.46);--muted:#cbc7bd;--soft:#dcd8ce}
-    }
     :root[data-theme="dark"]{--line:rgba(238,234,225,.38);--line-hc:rgba(238,234,225,.46);--muted:#cbc7bd;--soft:#dcd8ce}
-    .svc,.pc,.tc,.rescard,.qtile,.filt,.dlg-note,.svc-note,.team-teaser,.price-teaser,.dobor-panel{border-color:var(--line-hc)}
+    .svc,.pc,.tc,.rescard,.qtile,.filt,.dlg-note,.svc-note,.team-teaser,.dobor-panel{border-color:var(--line-hc)}
     :focus-visible{outline-width:3px}
     .btn-ghost{border-color:var(--accent)}
   }
@@ -1197,20 +1210,48 @@
      Rysunek jest jeden - okrąg z promieniami - a nie dwie wymienne ikony.
      Zaćmienie robi maska: kula cienia wjeżdża na tarczę i wygryza z niej
      księżyc, promienie w tym samym czasie chowają się do środka. Jeden ruch,
-     jedna metafora, żadnego przeskoku między dwoma obrazkami. */
+     jedna metafora, żadnego przeskoku między dwoma obrazkami.
+
+     Ikona jest OBIETNICĄ, nie stanem: na jasnej stronie stoi księżyc, bo
+     kliknięcie daje noc, a na ciemnej słońce, bo kliknięcie daje dzień.
+     Dlatego stanem spoczynkowym rysunku jest sierp, a promienie wychodzą
+     dopiero przy `data-theme="dark"`.
+
+     Stan czyta atrybut na <html>, a nie `aria-pressed` na przycisku, i to
+     jest różnica praktyczna, nie kosmetyczna: atrybut stoi już w pierwszej
+     klatce (stawia go skrypt w <head>), a `aria-pressed` ustawia dopiero
+     kod z dołu strony - wejście z zapisanym trybem ciemnym otwierałoby się
+     na moment księżycem i dopiero potem przeskakiwało na słońce.
+     `aria-pressed` zostaje tam, gdzie jest naprawdę potrzebny: dla
+     czytnika ekranu. */
   .themetoggle{width:44px;height:44px;padding:0;margin-left:8px;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--ink);cursor:pointer;transition:color .25s,border-color .25s,background .25s,transform .25s}
   .themetoggle:hover{color:var(--accent);border-color:var(--accent);background:rgba(var(--accent-rgb),.06);transform:translateY(-1px)}
   .themetoggle svg{width:19px;height:19px}
-  .tt-disc{fill:currentColor;transition:transform .45s var(--ease)}
-  .tt-rays{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;transform-origin:12px 12px;transition:transform .45s var(--ease),opacity .3s var(--ease)}
+  /* transform-origin obowiązkowo: w SVG domyślnym punktem odniesienia jest
+     róg układu (0 0), a nie środek kształtu - bez tej linijki `scale` na
+     tarczy zsuwał ją w prawy dolny róg kadru i księżyc wychodził krzywy. */
+  /* Stan spoczynkowy = księżyc: tarcza podrośnięta, promienie schowane do
+     środka i zgaszone, cień wjechany na tarczę.
+     Geometria sierpa nie jest dobrana na oko. Tarcza ma r=5,4 (5 × 1,08),
+     cień r=5,8, a jego środek stoi 4 px od środka tarczy - przy takiej
+     trójce z tarczy zostaje pasek grubości 3,6 px na 10,8 px średnicy (jedna
+     trzecia) i dwa ostre rogi. Cień równy tarczy ścinałby ledwie skrawek i
+     zostawałby obły kleks zamiast księżyca.
+     transform-origin obowiązkowo: w SVG domyślnym punktem odniesienia jest
+     róg układu (0 0), a nie środek kształtu - bez tej linijki `scale` na
+     tarczy zsuwa ją w prawy dolny róg kadru i księżyc wychodzi krzywy. */
+  .tt-disc{fill:currentColor;transform-origin:12px 12px;transform:scale(1.08);transition:transform .45s var(--ease)}
+  .tt-rays{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;transform-origin:12px 12px;transform:scale(.55);opacity:0;transition:transform .45s var(--ease),opacity .3s var(--ease)}
   /* Cień wygryza z tarczy prawdziwą dziurę (maska), a nie kółko w kolorze tła:
      kółko trzeba by przemalowywać przy każdym stanie przycisku i i tak by się
      rozjechało na hoverze. */
-  .tt-bite{transform:translate(9px,-9px);transition:transform .45s var(--ease)}
-  /* stan „ciemno": promienie do środka i zgaszone, cień wjeżdża na tarczę */
-  .themetoggle[aria-pressed="true"] .tt-rays{transform:scale(.55);opacity:0}
-  .themetoggle[aria-pressed="true"] .tt-disc{transform:scale(1.18)}
-  .themetoggle[aria-pressed="true"] .tt-bite{transform:translate(3.4px,-3.4px)}
+  .tt-bite{transform:translate(2.83px,-2.83px);transition:transform .45s var(--ease)}
+  /* stan „strona jest ciemna" = słońce: cień odjeżdża poza tarczę (10 px przy
+     sumie promieni 10,8 - czyli tuż za styk, bez śladu na krawędzi), tarcza
+     wraca do swojej skali, promienie wychodzą */
+  :root[data-theme="dark"] .tt-disc{transform:none}
+  :root[data-theme="dark"] .tt-rays{transform:none;opacity:1}
+  :root[data-theme="dark"] .tt-bite{transform:translate(10px,-10px)}
   @media(prefers-reduced-motion:reduce){
     .tt-disc,.tt-rays,.tt-bite{transition:none}
   }
@@ -1239,10 +1280,10 @@
   <a data-goto="zespol">Zespół</a>
   <a data-goto="prywatnosc">Prywatność</a>
   <a data-goto="cennik">Cennik</a>
-  <button class="themetoggle" id="themetoggle" type="button" aria-pressed="false" aria-label="Tryb ciemny" title="Tryb ciemny">
+  <button class="themetoggle" id="themetoggle" type="button" aria-pressed="false" aria-label="Tryb ciemny" title="Włącz tryb ciemny">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <defs><mask id="ttMask" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-        <rect width="24" height="24" fill="#fff"/><circle class="tt-bite" cx="12" cy="12" r="5" fill="#000"/>
+        <rect width="24" height="24" fill="#fff"/><circle class="tt-bite" cx="12" cy="12" r="5.8" fill="#000"/>
       </mask></defs>
       <g class="tt-rays" fill="none"><path d="M12 1.6v2.2M12 20.2v2.2M22.4 12h-2.2M3.8 12H1.6M19.4 4.6l-1.6 1.6M6.2 17.8l-1.6 1.6M19.4 19.4l-1.6-1.6M6.2 6.2 4.6 4.6"/></g>
       <g mask="url(#ttMask)"><circle class="tt-disc" cx="12" cy="12" r="5"/></g>
@@ -1423,37 +1464,41 @@
   <section class="scene" id="cennik">
     <div class="inner">
       <h2 class="reveal">Ceny widoczne <span class="accentword">przed decyzją.</span></h2>
-      <div class="price-teaser reveal" id="priceTeaser"></div>
-      <div class="price-full" id="priceFull" hidden>
-        <div class="full-top"><b>Pełny cennik</b><button class="collapse-cta ghost sm" data-price-collapse>Zwiń <span>↑</span></button></div>
-        <div class="price-grid" id="priceGrid"></div>
-        <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
-        <button class="collapse-cta ghost" data-price-collapse>Zwiń cennik <span>↑</span></button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene contact" id="umow">
-    <div class="inner">
-      <h2 class="reveal">Zrób <span class="accentword">pierwszy krok.</span></h2>
-      <p class="reveal">Zadzwoń lub napisz. Pomożemy dobrać specjalistę, termin i formę wizyty - stacjonarnie w Toruniu lub online.</p>
-      <div class="mailrow reveal">
-        <a class="btn btn-primary" href="tel:575805505">575 805 505</a>
-        <a class="btn btn-ghost" href="mailto:rejestracja@centrumzakatek.pl">rejestracja@centrumzakatek.pl</a>
-      </div>
+      <p class="lede reveal">Wszystkie wizyty - psychiatria, neurologia, psychoterapia, diagnozy i&nbsp;wsparcie dla dzieci. Bez ukrytych kosztów i&nbsp;dopłat po wizycie.</p>
+      <!-- Cennik stoi otworem. Wcześniej były tu dwa stany: zajawka z czterema
+           cenami i przycisk „Pokaż pełny cennik". Sekcja obiecuje „ceny widoczne
+           przed decyzją", a kazała kliknąć, żeby je zobaczyć - to obietnica
+           i jej zaprzeczenie w odległości dwóch centymetrów. -->
+      <div class="ptiers" id="priceGrid"></div>
+      <p class="price-foot">Obowiązuje od 1 stycznia 2026 · rejestracja potwierdza finalny termin i koszt wizyty.</p>
     </div>
   </section>
 
 </main>
 
 <!-- poza <main>, żeby był prawdziwym punktem orientacyjnym „contentinfo" -->
-<footer class="pagefoot">
+<footer class="pagefoot" id="umow">
   <div class="inner">
-    <div class="foot">
-      Centrum Zakątek · ul. Bydgoska 32, Toruń
-      <span class="fsoc"><a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener">Facebook</a> · <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener">Instagram</a></span><br>
-      <span class="crisis">Pomoc w kryzysie: <b>112</b> · <b>116 123</b> (telefon zaufania) · <b>116 111</b> (dzieci i młodzież)</span><br>
-      © 2026 Centrum Zakątek · makieta koncepcyjna
+    <!-- Dwie kolumny pod jedną kreską, obie zaczynają się od tej samej linii.
+         Wezwanie do kontaktu było wcześniej osobnym ekranem na całą wysokość;
+         zeszło tutaj, bo trzy sekcje wyżej padają już trzy drogi kontaktu, a
+         powtórzenie tego samego gestu w pełnej skali czytało się jak nacisk.
+         W stopce zostaje tym, czym naprawdę jest: numerem pod ręką. -->
+    <div class="footgrid">
+      <div class="foot">
+        Centrum Zakątek · ul. Bydgoska 32, Toruń
+        <span class="fsoc"><a href="https://facebook.com/centrumzakatek" target="_blank" rel="noopener">Facebook</a> · <a href="https://instagram.com/centrumzakatek" target="_blank" rel="noopener">Instagram</a></span><br>
+        <span class="crisis">Pomoc w kryzysie: <b>112</b> · <b>116 123</b> (telefon zaufania) · <b>116 111</b> (dzieci i młodzież)</span><br>
+        © 2026 Centrum Zakątek · makieta koncepcyjna
+      </div>
+      <div class="footcta">
+        <h2>Zrób <span class="accentword">pierwszy krok.</span></h2>
+        <p>Zadzwoń lub napisz. Pomożemy dobrać specjalistę, termin i formę wizyty - stacjonarnie w Toruniu lub online.</p>
+        <div class="mailrow">
+          <a class="btn btn-primary" href="tel:575805505">575 805 505</a>
+          <a class="btn btn-ghost" href="mailto:rejestracja@centrumzakatek.pl">rejestracja@centrumzakatek.pl</a>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
@@ -1467,7 +1512,10 @@
   </div>
 </div>
 
-<script src="data.js?v=14"></script>
+<!-- ?v rośnie przy KAŻDEJ zmianie data.js. v15: doszło pole `tier` w PRICING.
+     Bez podbicia przeglądarka podaje starą kopię pliku do nowego index.html -
+     i cennik zniknął, bo filtr po nieistniejącym polu zwracał pustkę. -->
+<script src="data.js?v=15"></script>
 <script src="assistant.js?v=14"></script>
 <script>
 (function(){
@@ -1861,36 +1909,44 @@
     typoPass(teaser);
   })();
 
-  /* ---------- cennik: rozwijany (teaser -> pełny widok) ---------- */
+  /* ---------- cennik: pełny, od razu, w dwóch piętrach ---------- */
   var pg=document.getElementById('priceGrid');
-  if(pg && typeof PRICING!=='undefined'){ pg.innerHTML=PRICING.map(function(g){
-    return '<div class="pc"><h3>'+g.group+'</h3>'
-      + g.items.map(function(it){return '<div class="pr"><span>'+it[0]+'</span><span class="pp">'+it[1]+'</span></div>';}).join('')+'</div>';
-  }).join(''); }
-  (function(){
-    var teaser=document.getElementById('priceTeaser'), full=document.getElementById('priceFull');
-    if(!teaser||!full||typeof PRICING==='undefined') return;
-    teaser.innerHTML='<div class="pt-rows">'+PRICING.slice(0,4).map(function(g){return '<div class="pt-row"><span>'+g.group+'</span><b>'+g.items[0][1]+'</b></div>';}).join('')+'</div>'
-      +'<div class="pt-side"><p>Cennik wszystkich wizyt - psychiatria, psychoterapia, diagnozy oraz wsparcie dla dzieci. Bez ukrytych kosztów i dopłat po wizycie.</p><button class="collapse-cta" data-price-expand>Pokaż pełny cennik <span>↓</span></button></div>';
-    var priceTimer=0;
-    function setPrice(open){
-      clearTimeout(priceTimer);
-      if(open){
-        teaser.style.display='none';
-        full.hidden=false; full.classList.remove('out');
-        void full.offsetWidth;
-        full.classList.add('in');
-      } else {
-        full.classList.remove('in'); full.classList.add('out');
-        priceTimer=setTimeout(function(){
-          full.hidden=true; full.classList.remove('out'); teaser.style.display='';
-        }, 260);
-      }
+  if(pg && typeof PRICING!=='undefined'){
+    var PIETRA=[
+      {id:'lek', nazwa:'Wizyty lekarskie', opis:'Lekarz - może zlecić badania i włączyć leczenie farmakologiczne.'},
+      {id:'ter', nazwa:'Konsultacje i terapia', opis:'Praca rozmową lub ciałem, bez skierowania i bez recepty.'}
+    ];
+    /* Zakresu („190-200 zł") NIE zamieniamy na półpauzę, choć typograficznie
+       byłaby poprawniejsza: pl() zamienia długie myślniki z powrotem na dywiz
+       w całym serwisie i to jest tu świadoma konwencja, nie przeoczenie.
+       Przed łamaniem w środku zakresu chroni white-space:nowrap na .pp. */
+    function karta(g){
+      return '<article class="pc"><h4>'+g.group+'</h4><dl class="pr-list">'
+        + g.items.map(function(it){
+            return '<div class="pr"><dt>'+it[0]+'</dt><dd class="pp">'+it[1]+'</dd></div>';
+          }).join('')
+        +'</dl></article>';
     }
-    teaser.querySelector('[data-price-expand]').onclick=function(){ setPrice(true); };
-    full.querySelectorAll('[data-price-collapse]').forEach(function(b){ b.onclick=function(){ setPrice(false); var c=document.getElementById('cennik'); if(c) c.scrollIntoView(window.SCROLL||{behavior:'smooth'}); }; });
-    typoPass(teaser);
-  })();
+    function siatka(grupy){ return '<div class="price-grid">'+grupy.map(karta).join('')+'</div>'; }
+    var html=PIETRA.map(function(p){
+      var grupy=PRICING.filter(function(g){ return g.tier===p.id; });
+      if(!grupy.length) return '';
+      return '<section class="ptier">'
+        +'<div class="ptier-h"><h3>'+p.nazwa+'</h3><p>'+p.opis+'</p></div>'
+        +siatka(grupy)+'</section>';
+    }).join('');
+    /* Siatka bezpieczeństwa: podział na piętra opiera się na polu `tier`, a to
+       pole żyje w OSOBNYM pliku. Jeśli data.js przyjdzie starszy niż index.html
+       (cache, częściowy deploy), filtr nie dopasuje niczego i cennik zniknąłby
+       bez śladu - najgorszy możliwy tryb awarii dla sekcji, która ma jedno
+       zadanie: pokazać ceny. Wtedy pokazujemy je bez podziału. */
+    pg.innerHTML = html || siatka(PRICING);
+    typoPass(pg);
+  }
+  /* Zajawka cennika i cała maszyneria rozwijania (setPrice, dwa przyciski,
+     timer 260 ms) zniknęły razem z drugim stanem sekcji - nie ma już czego
+     przełączać. Ten sam mechanizm dla ZESPOŁU zostaje: tam rozwijanie ma
+     sens, bo pełny widok to 27 profili i łuk 3D, a nie piętnaście wierszy. */
 
   /* ---------- reveal scen (scroll + fallback, niezależne od środowiska) ---------- */
   var scenes=[].slice.call(document.querySelectorAll('.scene'));
@@ -2298,29 +2354,22 @@
 /* Rozstrzygnięcie przy wejściu zrobił już skrypt w <head>. Tutaj mieszka to,
    co dzieje się później: klik, zapis wyboru i śledzenie systemu.
 
-   Trzy stany, jeden przycisk:
-     brak wpisu  -> „jak system", i tak zostaje, dopóki ktoś nie kliknie;
-     light/dark  -> wybór człowieka, ważniejszy niż ustawienie systemu.
-   Przycisk przełącza jasny<->ciemny względem tego, co widać w tej chwili,
+   Dwa stany, jeden przycisk, jasny domyślnie. Ustawienie systemu nie bierze
+   udziału w rozstrzygnięciu - decyduje wyłącznie kliknięcie i to, co zostało
+   po nim zapisane. Przycisk przełącza względem tego, co widać w tej chwili,
    więc pierwszy klik zawsze robi to, czego użytkownik się spodziewa. */
 (function(){
   var root = document.documentElement;
   var btn  = document.getElementById('themetoggle');
   var KEY  = 'zakatek-motyw';
-  var sys  = window.matchMedia('(prefers-color-scheme: dark)');
 
-  function zapisany(){
-    try{ var v = localStorage.getItem(KEY); return (v === 'light' || v === 'dark') ? v : null; }
-    catch(e){ return null; }
-  }
   function widoczny(){
-    return root.getAttribute('data-theme') || (sys.matches ? 'dark' : 'light');
+    return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
   }
 
-  /* Pasek adresu na telefonie ma iść za motywem także wtedy, gdy wybór kłóci
-     się z systemem. Para <meta media="..."> z <head> tego nie umie, więc
-     dokładamy jeden wpis bez media - przeglądarka bierze pierwszy pasujący,
-     a ten pasuje zawsze. Bez JS zostaje para systemowa i to jest w porządku. */
+  /* Pasek adresu na telefonie ma iść za motywem. Wpis z <head> jest jasny
+     i statyczny, więc dokładamy własny, który przemalowujemy przy każdym
+     przełączeniu. Bez JS zostaje jasny - czyli stan domyślny. */
   var meta = document.createElement('meta');
   meta.setAttribute('name','theme-color');
   document.head.insertBefore(meta, document.head.firstChild);
@@ -2328,7 +2377,14 @@
   function zsynchronizuj(){
     var t = widoczny(), ciemno = (t === 'dark');
     meta.setAttribute('content', ciemno ? '#1d1711' : '#f7f5ef');   // musi zgadzać się z --bg
-    if(btn) btn.setAttribute('aria-pressed', ciemno ? 'true' : 'false');
+    /* aria-label zostaje stały („Tryb ciemny") - to nazwa przełącznika i
+       czytnik ekranu dopowiada do niej stan z aria-pressed. Zmienny jest
+       tylko `title`, czyli dymek dla widzącego: ma mówić dokładnie to, co
+       obiecuje rysunek, a rysunek pokazuje skutek kliknięcia. */
+    if(btn){
+      btn.setAttribute('aria-pressed', ciemno ? 'true' : 'false');
+      btn.title = ciemno ? 'Włącz tryb jasny' : 'Włącz tryb ciemny';
+    }
     /* chmura punktów czyta kolor akcentu raz, przy starcie - musi wiedzieć,
        że właśnie się zmienił, inaczej zostałaby ciemnozielona na czarnym */
     document.dispatchEvent(new CustomEvent('motyw', { detail:{ motyw:t } }));
@@ -2340,12 +2396,6 @@
     try{ localStorage.setItem(KEY, nowy); }catch(e){}
     zsynchronizuj();
   });
-
-  /* macOS potrafi przerzucić się w ciemny sam, o zmierzchu. Idziemy za nim
-     na żywo - ale tylko dopóki użytkownik nie zdecydował inaczej. */
-  function systemZmienil(){ if(!zapisany()) zsynchronizuj(); }
-  if(sys.addEventListener) sys.addEventListener('change', systemZmienil);
-  else if(sys.addListener) sys.addListener(systemZmienil);
 
   zsynchronizuj();
   /* Stan początkowy jest już ustawiony, więc od tej chwili animacja ikony może
@@ -2498,7 +2548,8 @@
       pxEase=0, pyEase=0,        // ten sam, wygładzony (parallaksa)
       curX=0, curY=0,            // kursor w przestrzeni widoku, wygładzony
       scatter=0, scatterCel=0,   // narastanie i wygasanie siły
-      nadKadrem=false;
+      nadKadrem=false,
+      rozwiane=0;                // ostatnie `e` z pętli: 0 = mózg, 1 = rozsypka
   /* Kursor w przestrzeni widoku na głębokości środka modelu. Bez odwracania
      macierzy: proj[0]=f/aspect, proj[5]=f, więc z NDC wychodzi się wprost. */
   function kursorWidok(){
@@ -2513,10 +2564,13 @@
       /* chmura żyje tylko w hero; niżej i tak jest rozwiana, więc siła schodzi */
       nadKadrem = e.clientY < innerHeight*1.05;
       scatterCel = nadKadrem?1:0;
-      wake();
+      /* Nad rozwianym tłem ruch myszy nie budzi pętli. Bez tego każde drgnięcie
+         kursora gdziekolwiek na stronie kosztowało klatkę, która i tak nie
+         miała czego narysować - przewinięcie w górę budzi ją zdarzeniem scroll. */
+      if(rozwiane<0.85) wake();
     },{passive:true});
-    addEventListener('pointerleave',function(){ scatterCel=0; wake(); },{passive:true});
-    document.addEventListener('mouseleave',function(){ scatterCel=0; wake(); },{passive:true});
+    addEventListener('pointerleave',function(){ scatterCel=0; if(rozwiane<0.85) wake(); },{passive:true});
+    document.addEventListener('mouseleave',function(){ scatterCel=0; if(rozwiane<0.85) wake(); },{passive:true});
   }
 
   fetch('assets/brain-points.bin').then(function(res){
@@ -2554,8 +2608,15 @@
        Tam chmura jest bohaterem kadru; tu leży pod nagłówkiem, którego prawy
        margines wobec kropek policzyłem co do piksela. Obwiednia pełnego
        obrotu wokół Y już te 0.26 rad obejmuje, więc korytarz się nie zmienia;
-       pochylenie trzymam na 0.10 rad, bo tego obwiednia nie mierzyła. */
-    setMV(posX,0.06,-0.18+pyEase*0.10,rotY+pxEase*0.26,scaleNow);
+       pochylenie trzymam na 0.10 rad, bo tego obwiednia nie mierzyła.
+
+       Parallaksa gaśnie razem z mózgiem. Próg 0.85 jest ten sam, na którym
+       staje obrót - autor wyznaczył nim granicę „mózg przestał być mózgiem".
+       Do 0.6 nic się nie zmienia, więc hero zostaje dokładnie taki, jaki był;
+       potem wpływ schodzi do zera i rozwiane tło stoi nieruchomo, także gdy
+       ktoś wodzi po nim myszą. */
+    var wplyw=Math.max(0,Math.min(1,(0.85-mix)/0.25));
+    setMV(posX,0.06,-0.18+pyEase*0.10*wplyw,rotY+pxEase*0.26*wplyw,scaleNow);
     gl.uniformMatrix4fv(U_MV,false,mv);
     gl.uniform1f(U_MIX,mix); gl.uniform1f(U_OPACITY,opacity);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -2605,7 +2666,14 @@
        każde zgłasza ruch samodzielnie. Dzięki temu pętla zasypia dopiero,
        gdy WSZYSTKIE trzy dobiegły do celu - inaczej zatrzymywałaby się
        w połowie dojazdu i chmura zastygała w pozycji pośredniej. */
-    if(FINE){
+    /* Po rozwianiu chmura jest tłem CAŁEJ strony, a nie obiektem w hero -
+       wtedy kursor nie ma tu nic do roboty. Cały blok milknie za tym samym
+       progiem 0.85, na którym staje obrót: żadne wygładzenie nie zgłasza już
+       ruchu, więc pętla zasypia i tło stoi. Wartości pxEase/pyEase zostają
+       nietknięte - i tak są mnożone przez zerowy wpływ w draw(), a dzięki
+       temu powrót w górę nie jest skokiem. */
+    rozwiane=e;
+    if(FINE && e<0.85){
       var dsc=scatterCel-scatter;
       if(Math.abs(dsc)>0.002){ scatter+=dsc*0.09; moving=true; } else scatter=scatterCel;
       var dpx=pxNdc-pxEase, dpy=pyNdc-pyEase;
@@ -2613,9 +2681,9 @@
       var kw=kursorWidok(), dcx=kw[0]-curX, dcy=kw[1]-curY;
       if(Math.abs(dcx)>0.0008||Math.abs(dcy)>0.0008){ curX+=dcx*0.09; curY+=dcy*0.09; moving=true; }
       gl.uniform3f(U_CUR,curX,curY,-CAM_Z);
-      /* po rozwianiu chmura jest tłem całej strony, nie obiektem w hero -
-         wtedy kursor przestaje ją ruszać, bo nie ma już czego rozpraszać */
       gl.uniform1f(U_SCF, 0.28*scatter*(1-e));
+    } else if(FINE && scatter!==0){
+      scatter=0; gl.uniform1f(U_SCF,0);       // raz, przy przejściu przez próg
     }
     draw(e, 0.2*(1-e)+0.15*e);                  // kropki zostają delikatne, nie znikają
     if(moving) raf=requestAnimationFrame(tick); // nic się nie rusza -> pętla zasypia
