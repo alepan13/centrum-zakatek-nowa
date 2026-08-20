@@ -39,6 +39,30 @@
     document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
   }catch(e){ document.documentElement.setAttribute('data-theme','light'); }
 })();
+
+/* Znacznik „skrypty działają". Stawiany TUTAJ, przed arkuszem, bo wisi na nim
+   cała kolejność wejścia strony: logo, nawigacja i nagłówek startują niewidoczne
+   i czekają na chmurę punktów. Bez JS klasa nie powstaje i nic się nie chowa -
+   żaden element nie ma prawa zniknąć na zawsze dlatego, że skrypt nie ruszył. */
+document.documentElement.classList.add('js');
+
+/* Kopia na GitHub Pages to makieta, nie strona kliniki, i nie ma prawa stanąć
+   w wynikach wyszukiwania obok centrumzakatek.pl.
+   robots.txt tego nie załatwi: przy „project pages" leży pod
+   /centrum-zakatek-nowa/robots.txt, a roboty czytają wyłącznie /robots.txt
+   z korzenia hosta - czyli plik z tego repo jest tam martwy.
+   Zostaje meta, wstawiona zanim cokolwiek się wyrenderuje, i wyłącznie na
+   github.io. Docelowy deploy na własnej domenie wychodzi z tego czysty. */
+(function(){
+  if(!/(^|\.)github\.io$/i.test(location.hostname)) return;
+  /* Nadpisujemy istniejący wpis, a nie dokładamy drugi. Przy dwóch metach
+     „robots" Google bierze ostrzejszą, więc dokładanie też by zadziałało -
+     ale zostawiałoby w kodzie dwie sprzeczne deklaracje, a to jest proszenie
+     się o pomyłkę przy następnej edycji. */
+  var m=document.head.querySelector('meta[name="robots"]');
+  if(!m){ m=document.createElement('meta'); m.setAttribute('name','robots'); document.head.appendChild(m); }
+  m.setAttribute('content','noindex,nofollow');
+})();
 </script>
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 <link rel="alternate icon" href="assets/brand/favicon-src.ico">
@@ -417,6 +441,25 @@
   .scene.hero.show .reveal:nth-child(2){transition-delay:.18s}
   .scene.hero.show .reveal:nth-child(3){transition-delay:.32s}
   .scene.hero.show .reveal:nth-child(4){transition-delay:.46s}
+
+  /* ===== Kolejność wejścia strony =====
+     Pierwsza wchodzi chmura punktów: zbiera się na ŚRODKU kadru, tam się
+     rozjaśnia i dopiero stamtąd wędruje na swoje miejsce po prawej. Reszta -
+     logo, nawigacja, nagłówek - czeka na jej dojazd. Sygnałem jest
+     `body.introReady`, którą stawia skrypt dopiero po zdarzeniu od chmury.
+
+     Nagłówek hero nie ma klasy .reveal, bo jego wejściem są pojedyncze litery -
+     a dzieli go na nie skrypt z DOŁU strony. Do tej chwili stał widoczny w
+     całości i znikał dopiero po podziale: sekunda tekstu, po której wszystko
+     gaśnie. Stąd `opacity:0` od pierwszej klatki, a nie od pierwszego skryptu.
+
+     Wszystko wisi na `:root.js` - patrz komentarz przy tej klasie w <head>. */
+  :root.js .brandmark,
+  :root.js .topnav{opacity:0;transition:opacity .9s var(--ease)}
+  :root.js body.introReady .brandmark,
+  :root.js body.introReady .topnav{opacity:1}
+  :root.js .scene.hero [data-litery]{opacity:0}
+  :root.js .scene.hero.show [data-litery]{opacity:1}
 
   .hero .live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--halo-ring);animation:breathe 2.2s ease-in-out infinite}
 
@@ -879,7 +922,8 @@
   }
   /* prefers-contrast mieszka niżej, razem z motywami - patrz komentarz tam */
   /* awaryjne wymuszenie widoczności, gdy animacje CSS nie ruszają (np. kontekst headless) */
-  body.forced .lit,body.forced .hero-fakt,
+  body.forced .lit,body.forced .hero-fakt,body.forced [data-litery],
+  body.forced .brandmark,body.forced .topnav,
   body.forced .reveal,body.forced .svc,body.forced .pc,body.forced .step{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
   body.forced .steps::before{transform:scaleY(1)!important;animation:none!important}
   body.forced .accentword{background-size:100% 2px!important;transition:none!important}
@@ -1310,7 +1354,7 @@
         <div class="eyebrow reveal"><span class="live"></span>Centrum zdrowia psychicznego · Toruń</div>
         <!-- kompozycja narożna: początek zdania tu, dokończenie w prawym dolnym rogu -->
         <h1 data-litery>Największą odwagą jest<br><span class="accentword">poprosić o&nbsp;pomoc.</span></h1>
-        <h2 class="h1-echo" data-litery data-opoznienie="800">Resztę przejdziemy razem,<br><span class="accentword">w&nbsp;Twoim tempie.</span></h2>
+        <h2 class="h1-echo" data-litery data-opoznienie="560">Resztę przejdziemy razem,<br><span class="accentword">w&nbsp;Twoim tempie.</span></h2>
         <div class="cta reveal">
           <!-- Przycisk nie dzwoni, tylko prowadzi do sekcji z trzema drogami
                kontaktu: telefon, mail, asystent. Numer zszedł z etykiety, bo
@@ -1962,11 +2006,35 @@
   } else {
     scenes.forEach(function(s){ if(s!==heroScene) showScene(s); });
   }
-  /* hero czeka na intro (mózg najpierw); potem pokazujemy */
-  var introWait = reduceM ? 0 : 1150;
-  setTimeout(function(){ document.body.classList.add('introReady'); showScene(heroScene); }, introWait);
+  /* ---------- kolejność wejścia: najpierw chmura, potem cała reszta ----------
+     Wcześniej hero jechał na własnym zegarze (1150 ms od załadowania), a chmura
+     na swoim - zaczynała dopiero, gdy dojechał jej plik. Dwa niezależne zegary
+     dają dokładnie to, co widać było na ekranie: nagłówek mignął, zgasł przy
+     dzieleniu na litery, a mózg przyjeżdżał osobno i po swojemu.
+     Teraz jest jeden zegar i należy do chmury. Ona ogłasza `mozg-osiadl`, gdy
+     dojedzie na miejsce - i ona też ogłasza go NATYCHMIAST, kiedy wie, że jej
+     nie będzie (wąski ekran, tryb oszczędzania danych, brak WebGL, nieudane
+     pobranie). Dzięki temu strona bez mózgu nie czeka ani chwili. */
+  var heroWszedl=false;
+  function pokazHero(){
+    if(heroWszedl) return; heroWszedl=true;
+    document.body.classList.add('introReady');
+    showScene(heroScene);
+    /* liczby przy siatce i czujnik zablokowanych animacji liczą czas OD TEJ
+       chwili, a nie od załadowania strony - inaczej odpalałyby się w hero,
+       który jeszcze nie dostał sygnału do wejścia */
+    document.dispatchEvent(new CustomEvent('hero-wchodzi'));
+  }
+  if(reduceM) pokazHero();
+  else {
+    document.addEventListener('mozg-osiadl', pokazHero, {once:true});
+    /* Siatka na wypadek, gdyby chmura nie odezwała się wcale (skrypt padł,
+       plik wisi na wolnym łączu). Trzy sekundy to sufit czekania: lepiej
+       pokazać treść przy mózgu w połowie drogi niż trzymać pusty kadr. */
+    setTimeout(pokazHero, 3000);
+  }
   /* siatka bezpieczeństwa: pokaż wszystkie sekcje */
-  setTimeout(function(){ scenes.forEach(showScene); }, 3500);
+  setTimeout(function(){ pokazHero(); scenes.forEach(showScene); }, 3500);
   /* twarde zabezpieczenie: jeśli mimo .show treść nadal niewidoczna (np. zepsuta animacja/token), wymuś widoczność */
   setTimeout(function(){
     var probe=document.querySelector('#zakres .reveal, #dlaczego .reveal');
@@ -2035,12 +2103,15 @@
 
     document.querySelectorAll('[data-litery]').forEach(function(el){
       if(REDUKCJA) return;                       /* przy ograniczonym ruchu tekst stoi od razu */
-      naLitery(el, +(el.dataset.opoznienie||600));
+      naLitery(el, +(el.dataset.opoznienie||260));
     });
 
-    /* dane przy liniach siatki dochodzą na końcu, gdy nagłówek już stoi */
+    /* Dane przy liniach siatki dochodzą na końcu, gdy nagłówek już stoi.
+       1000 ms, nie 2000: hero startuje teraz dopiero po dojeździe chmury,
+       więc dwie sekundy liczone od jego wejścia wypadałyby w czwartej
+       sekundzie oglądania strony. */
     document.querySelectorAll('.hero-fakt').forEach(function(f,i){
-      f.style.transitionDelay=(2000+i*90)+'ms';
+      f.style.transitionDelay=(1000+i*90)+'ms';
     });
 
     /* Liczba „dosypuje się" z losowych znaków zamiast wjechać gotowa.
@@ -2061,25 +2132,38 @@
       }
       setTimeout(function(){ requestAnimationFrame(klatka); }, start);
     }
+    /* Liczby sypią się RAZEM z wejściem hero, a nie na widok sekcji. Hero jest
+       na górze strony, więc obserwator zgłaszał ją natychmiast po załadowaniu -
+       a kafelki stają się widoczne dopiero po dojeździe chmury. Cyfry mieszały
+       się więc w elemencie o zerowym kryciu i wychodziły z tego gotowe. */
     var hero=document.getElementById('hero');
     if(hero && !REDUKCJA){
       var odpalone=false;
-      var io=new IntersectionObserver(function(en){
-        if(!en[0].isIntersecting || odpalone) return;
-        odpalone=true; io.disconnect();
-        document.querySelectorAll('.hero-fakt [data-skok]').forEach(function(b,i){ skok(b, 2000+i*90); });
-      },{threshold:.15});
-      io.observe(hero);
+      var sypLiczby=function(){
+        if(odpalone) return; odpalone=true;
+        document.querySelectorAll('.hero-fakt [data-skok]').forEach(function(b,i){ skok(b, 1000+i*90); });
+      };
+      if(document.body.classList.contains('introReady')) sypLiczby();
+      else document.addEventListener('hero-wchodzi', sypLiczby, {once:true});
     }
   })();
 
-  /* auto-wykrycie zablokowanych animacji: jeśli po intro hero wciąż niewidoczne, wymuś widoczność */
-  setTimeout(function(){
-    /* sprawdzamy LITERĘ, nie nagłówek: nagłówek ma krycie 1, to jego litery
-       wchodzą osobno, więc pomiar na nim zawsze wyszedłby „widoczny" */
-    var probka=document.querySelector('.hero h1 .lit')||document.querySelector('.hero h1');
-    if(probka && parseFloat(getComputedStyle(probka).opacity) < 0.5){ document.body.classList.add('forced'); }
-  },2300);
+  /* auto-wykrycie zablokowanych animacji: jeśli po intro hero wciąż niewidoczne, wymuś widoczność.
+     Zegar rusza od WEJŚCIA hero, nie od załadowania strony. Przy stałych
+     2300 ms od startu pomiar trafiałby w nagłówek, który dopiero czeka na
+     chmurę - pierwsza litera byłaby wtedy 100 ms w swoim przejściu, czujnik
+     odczytałby krycie bliskie zeru i wyłączyłby WSZYSTKIE animacje na stronie
+     dokładnie wtedy, gdy działają poprawnie. */
+  function czujnikWidocznosci(){
+    setTimeout(function(){
+      /* sprawdzamy LITERĘ, nie nagłówek: nagłówek ma krycie 1, to jego litery
+         wchodzą osobno, więc pomiar na nim zawsze wyszedłby „widoczny" */
+      var probka=document.querySelector('.hero h1 .lit')||document.querySelector('.hero h1');
+      if(probka && parseFloat(getComputedStyle(probka).opacity) < 0.5){ document.body.classList.add('forced'); }
+    },2300);
+  }
+  if(document.body.classList.contains('introReady')) czujnikWidocznosci();
+  else document.addEventListener('hero-wchodzi', czujnikWidocznosci, {once:true});
 
   /* ---------- modal (profil specjalisty / dobór) ---------- */
   var modal=document.getElementById('modal'), modalBody=document.getElementById('modalBody');
@@ -2417,15 +2501,25 @@
      (nieczytelnie), więc tam jej po prostu nie ma. Hero działa bez niej. -->
 <script>
 (function(){
+  /* Sygnał „chmura na miejscu - reszta strony może wchodzić". Stoi na samej
+     górze, PRZED wszystkimi wyjściami awaryjnymi, bo każde z nich musi go
+     wysłać natychmiast: kiedy mózgu nie będzie, nie ma na co czekać, a strona
+     bez tego stałaby pusta aż do siatki bezpieczeństwa. */
+  var osiadlo=false;
+  function ogloszOsiadanie(){
+    if(osiadlo) return; osiadlo=true;
+    document.dispatchEvent(new CustomEvent('mozg-osiadl'));
+  }
+
   var wide  = window.matchMedia('(min-width:761px)').matches;
   var saver = navigator.connection && navigator.connection.saveData;
-  if(!wide || saver) return;
+  if(!wide || saver){ ogloszOsiadanie(); return; }
 
-  var canvas=document.getElementById('brain'); if(!canvas) return;
+  var canvas=document.getElementById('brain'); if(!canvas){ ogloszOsiadanie(); return; }
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var gl;
   try{ gl=canvas.getContext('webgl',{alpha:true,antialias:true,depth:false}); }catch(e){}
-  if(!gl) return;
+  if(!gl){ ogloszOsiadanie(); return; }
 
   /* Rozwianie liczy shader, nie procesor. Pozycja bazowa i docelowa jadą na
      GPU raz, a każda klatka zmienia tylko jedną liczbę (uMix). Wcześniej ta
@@ -2540,6 +2634,21 @@
   var count=0, ready=false, BASE=0.82, FINALX=0.86, baseScale=1.05;
   var posX=0, rotY=0, introT=0, introStart=0, scaleNow=baseScale;
 
+  /* ---------- intro chmury: dwie fazy, nie jedna ----------
+     Wcześniej rozjaśnianie i wędrówka jechały RAZEM, więc chmura nigdy nie
+     stała na środku kadru - wynurzała się już w drodze na prawo i cały gest
+     czytał się jak jedno rozmyte przesunięcie.
+     Teraz: ZWLOKA (kadr oddycha) -> WEJSCIE (chmura zbiera się na środku i
+     tam się rozjaśnia, bez ruchu) -> WEDROWKA (dopiero stąd jedzie na swoje
+     miejsce po prawej).
+     PROG_ODSLONY = 0,82: reszta strony rusza, gdy wędrówka ma za sobą 82%
+     drogi. Nie 100%, bo te ostatnie ~200 ms i tak czyta się jako „chmura już
+     dojechała", a twarde zero-jedynkowe przełożenie robi z intra dwa osobne
+     ujęcia zamiast jednego ruchu. */
+  var INTRO_ZWLOKA=120, INTRO_WEJSCIE=520, INTRO_WEDROWKA=1150;
+  var INTRO_CALOSC=INTRO_ZWLOKA+INTRO_WEJSCIE+INTRO_WEDROWKA;
+  var PROG_ODSLONY=0.82;
+
   /* ---------- reakcja na kursor: parallaksa + rozpraszanie ----------
      Tylko przy myszy. Na dotyku nie ma kursora, który by „przejeżdżał",
      a każdy tap wyglądałby jak przypadkowe szarpnięcie chmury. */
@@ -2601,7 +2710,7 @@
     ready=true;
     draw(0,0.2);
     wake();                                    // chmura dojechała po tym, jak pętla zdążyła zasnąć
-  }).catch(function(){ /* brak chmury - strona działa bez mózgu */ });
+  }).catch(function(){ ogloszOsiadanie(); });   // brak chmury - strona nie ma na co czekać
 
   function draw(mix,opacity){
     /* Parallaksa jest CELOWO mniejsza niż w pierwowzorze (tam 0.45/0.28 rad).
@@ -2641,14 +2750,20 @@
     raf=0;
     if(document.hidden||!ready) return;
     var moving=false;
-    if(reduce){ if(introT<1){ introT=1; posX=FINALX; scaleNow=baseScale; canvas.style.opacity=BASE; } }
-    else if(introT<1){                          // intro: środek -> prawo + fade-in + delikatne „osiadanie"
+    if(reduce){ if(introT<1){ introT=1; posX=FINALX; scaleNow=baseScale; canvas.style.opacity=BASE; ogloszOsiadanie(); } }
+    else if(introT<1){
       if(!introStart) introStart=performance.now();
-      var it=(performance.now()-introStart-300)/1200; introT=it<0?0:(it>1?1:it);
-      var ie=introT<.5?4*introT*introT*introT:1-Math.pow(-2*introT+2,3)/2;   // easeInOutCubic
+      var t=performance.now()-introStart;
+      introT=t/INTRO_CALOSC; if(introT<0)introT=0; else if(introT>1)introT=1;
+      /* faza „wejście": chmura zbiera się na ŚRODKU i tam się rozjaśnia */
+      var tf=(t-INTRO_ZWLOKA)/INTRO_WEJSCIE;                 tf=tf<0?0:(tf>1?1:tf);
+      /* faza „wędrówka": dopiero teraz jedzie na swoje miejsce */
+      var tm=(t-INTRO_ZWLOKA-INTRO_WEJSCIE)/INTRO_WEDROWKA;  tm=tm<0?0:(tm>1?1:tm);
+      var ie=tm<.5?4*tm*tm*tm:1-Math.pow(-2*tm+2,3)/2;       // easeInOutCubic
       posX=FINALX*ie;
       scaleNow=baseScale*(1+0.10*(1-ie));
-      canvas.style.opacity=(BASE*Math.min(1,introT*1.7)).toFixed(3);
+      canvas.style.opacity=(BASE*(1-Math.pow(1-tf,3))).toFixed(3);   // easeOutCubic na rozjaśnianiu
+      if(tm>=PROG_ODSLONY) ogloszOsiadanie();
       moving=true;
     }
     var e=curProg*curProg*(3-2*curProg);        // stan rozwiania (0=mózg,1=rozsypka)
@@ -2691,6 +2806,7 @@
   /* fallback: gdy rAF jest wstrzymany (karta w tle / podgląd headless) - osadź chmurę w stanie końcowym */
   setTimeout(function(){
     if(ready && introT<1){ introT=1; posX=FINALX; scaleNow=baseScale; canvas.style.opacity=BASE; draw(0,0.2); }
+    ogloszOsiadanie();       // rAF wstrzymany albo plik nadal w drodze - strona przestaje czekać
   }, 2600);
 })();
 </script>
