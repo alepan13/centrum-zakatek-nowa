@@ -209,7 +209,14 @@ document.documentElement.classList.add('js');
     /* mandatory, nie proximity: „kolejny krok to kolejna sekcja" znaczy, że
        przewijanie ma kończyć się NA sekcji, a nie gdziekolwiek obok niej. */
     html{scroll-snap-type:y mandatory}
-    main>.scene{scroll-snap-align:center}
+    /* Sekcja krótsza od kadru zostawiała po ~100 px luzu z góry i z dołu, więc
+       przy wyśrodkowaniu wystawał nagłówek sąsiadki - czytało się to jak
+       niedokończone zatrzymanie, a nie jak kadr. Dociągamy każdą do pełnej
+       wysokości okna i centrujemy treść w środku. Sekcji wyższych od kadru
+       min-height nie dotyczy - już go przekraczają, a `safe` pilnuje, żeby
+       centrowanie nie wypchnęło im góry poza ekran. */
+    main>.scene{min-height:100vh;display:flex;align-items:safe center;scroll-snap-align:center}
+    main>.scene>.inner{width:100%}
     /* Sekcja wyższa od okna nie ma środka, który dałoby się pokazać -
        wyśrodkowanie ucina ją z góry I z dołu naraz. Takie sekcje (cennik
        zawsze, zakres na niższych ekranach) dostają DWA punkty zatrzymania:
@@ -2616,15 +2623,14 @@ document.documentElement.classList.add('js');
   var VERT=
     'attribute vec3 aBase;attribute vec3 aTarget;'+
     'uniform mat4 uProj,uMV;uniform float uMix,uSize;'+
-    'uniform vec3 uTrail[4];uniform float uTrailW[4];'+
-    'uniform vec3 uDrag;uniform float uScatterR,uScatterF,uTurb;'+
+    'uniform vec3 uCursor;uniform float uScatterR,uScatterF,uTurb;'+
     'void main(){'+
       'vec4 mv=uMV*vec4(mix(aBase,aTarget,uMix),1.0);'+
       'if(uScatterF>0.0){'+
         /* rnd wyjęte przed sprawdzenie wpływu, bo teraz WSPÓŁDECYDUJE o tym,
            gdzie ten wpływ sięga - a nie tylko o kierunku ucieczki punktu */
         'vec3 rnd=(aTarget-aBase*vec3(2.25,2.25,1.2375))/vec3(0.85,0.85,0.35);'+
-        'vec3 przes=vec3(0.0);'+
+        'vec3 away=mv.xyz-uCursor;'+
         /* Strefa wpływu przestaje być kulą. Kula dawała gładką, okrągłą
            wypukłość - czytało się to jak narośl w mózgu, a nie jak reakcja
            chmury na rękę. Psują ją trzy rzeczy naraz:
@@ -2643,25 +2649,24 @@ document.documentElement.classList.add('js');
            max() nie jest ozdobą: przy zbiegu obu sinusów i ziarna w minimum
            mnożnik schodzi do ~0,06 i bez tego promień potrafiłby wyjść
            ujemny, a smoothstep z odwróconymi krańcami zwraca wtedy śmieci. */
-        /* Promień jest niezmienny dla punktu, więc liczy się RAZ, przed pętlą */
-        'float lob=0.28*sin(aBase.x*7.3+aBase.y*4.1+aBase.z*2.7)'+
-                 '+0.16*sin(aBase.y*11.9-aBase.z*6.2);'+
-        'float r=max(0.06,uScatterR*(1.0+lob+0.16*(0.62*rnd.x+0.38*rnd.z)));'+
-        /* Cztery próbki toru kursora, od najnowszej do najstarszej. Punkt
-           liczy wpływ każdej z osobna i sumuje - dzięki temu zaburzenie nie
-           siedzi tam, GDZIE kursor jest teraz, tylko rozciąga się wzdłuż
-           drogi, którą przeszedł. To jest ta smuga. */
-        'for(int i=0;i<4;i++){'+
-          'vec3 away=mv.xyz-uTrail[i];'+
-          'float d=length(away*vec3(1.0,1.35,1.0));'+
-          'float infl=(1.0-smoothstep(0.0,r,d))*uTrailW[i];'+
-          /* uDrag ciągnie WZDŁUŻ ruchu i jest silniejszy od odpychania (0,45):
-             kurz ma iść za rzuconym przedmiotem, a nie uciekać na boki.
-             Odpychanie zostaje, ale schodzi do roli szumu - bez niego smuga
-             byłaby idealną kreską, a nie chmurą. */
-          'przes+=(normalize(away+rnd*uTurb+vec3(1e-5))*0.45+uDrag)*infl;'+
+        /* SKOS przed skalowaniem: sama anizotropia daje elipsę stojącą prosto,
+           czyli nadal figurę z podręcznika. Ścięcie o 0,42 przechyla ją i
+           odbiera jej oś - oko nie ma już czego rozpoznać jako „kształt". */
+        'vec3 sk=vec3(away.x,(away.y+away.x*0.42)*1.70,away.z);'+
+        'float d=length(sk);'+
+        /* Trzy częstotliwości zamiast dwóch, i z większymi amplitudami: przy
+           zbiegu w minimum mnożnik schodzi poniżej zera, max() ścina go do
+           0,06 i w tym miejscu strefa po prostu ZNIKA. Stąd dziury w środku
+           plamy, a nie tylko postrzępiony brzeg - to one najmocniej odbierają
+           jej okrągłość. */
+        'float lob=0.58*sin(aBase.x*7.3+aBase.y*4.1+aBase.z*2.7)'+
+                 '+0.34*sin(aBase.y*11.9-aBase.z*6.2)'+
+                 '+0.20*sin(aBase.x*17.3-aBase.y*13.1+aBase.z*9.7);'+
+        'float r=max(0.06,uScatterR*(1.0+lob+0.34*(0.62*rnd.x+0.38*rnd.z)));'+
+        'float infl=1.0-smoothstep(0.0,r,d);'+
+        'if(infl>0.0){'+
+          'mv.xyz+=normalize(away+rnd*uTurb+vec3(1e-5))*infl*uScatterF;'+
         '}'+
-        'mv.xyz+=przes*uScatterF;'+
       '}'+
       'gl_Position=uProj*mv;'+
       'gl_PointSize=uSize/max(0.001,-mv.z);'+
@@ -2688,8 +2693,7 @@ document.documentElement.classList.add('js');
   var U_PROJ=gl.getUniformLocation(prog,'uProj'), U_MV=gl.getUniformLocation(prog,'uMV');
   var U_MIX=gl.getUniformLocation(prog,'uMix'), U_SIZE=gl.getUniformLocation(prog,'uSize');
   var U_COLOR=gl.getUniformLocation(prog,'uColor'), U_OPACITY=gl.getUniformLocation(prog,'uOpacity');
-  var U_TRAIL=gl.getUniformLocation(prog,'uTrail[0]'), U_TRAILW=gl.getUniformLocation(prog,'uTrailW[0]'),
-      U_DRAG=gl.getUniformLocation(prog,'uDrag'), U_SCR=gl.getUniformLocation(prog,'uScatterR'),
+  var U_CUR=gl.getUniformLocation(prog,'uCursor'), U_SCR=gl.getUniformLocation(prog,'uScatterR'),
       U_SCF=gl.getUniformLocation(prog,'uScatterF'), U_TURB=gl.getUniformLocation(prog,'uTurb');
   /* Zasięg i siła w jednostkach WIDOKU. Na głębokości modelu kadr ma 2,61
      takiej jednostki wysokości, więc 0,46 to ok. 16% wysokości okna zasięgu,
@@ -2775,45 +2779,15 @@ document.documentElement.classList.add('js');
   var FINE=matchMedia('(pointer:fine)').matches && !reduce;
   var pxNdc=0, pyNdc=0,          // wskaźnik w NDC, przycięty do [-1,1]
       pxEase=0, pyEase=0,        // ten sam, wygładzony (parallaksa)
+      curX=0, curY=0,            // kursor w przestrzeni widoku, wygładzony
+      scatter=0, scatterCel=0,   // narastanie i wygasanie siły
       nadKadrem=false,
       rozwiane=0;                // ostatnie `e` z pętli: 0 = mózg, 1 = rozsypka
-
-  /* ---------- kurz i smuga za ruchem ----------
-     Zaburzenie nie należy już do POZYCJI kursora, tylko do jego RUCHU. Kursor
-     stojący nie robi nic - kurz wisi. Dopiero przejazd ciągnie za sobą drobiny
-     i po chwili wszystko osiada z powrotem.
-
-     Dwie rzeczy budują to wrażenie:
-     - ŚLAD: cztery ostatnie pozycje kursora w przestrzeni widoku. Nowa próbka
-       dochodzi dopiero po przebyciu MIN_KROK, więc przy zatrzymaniu ślad
-       ZOSTAJE tam, gdzie był, i gaśnie w miejscu. Gdyby dokładać próbkę co
-       klatkę, ogon zwinąłby się do punktu w chwili zatrzymania - czyli
-       dokładnie wtedy, kiedy ma być najbardziej widoczny.
-     - POBUDZENIE: rośnie od przebytej drogi, opada samo (0,938 na klatkę,
-       czyli ~0,55 s do wygaszenia przy 60 Hz). To ono decyduje, że kurz
-       „ciągnie się jeszcze chwilę" po tym, jak kursor już pojechał dalej. */
-  var SLADOW=4;
-  var sladXYZ=new Float32Array(SLADOW*3);
-  var sladW=new Float32Array(SLADOW);
-  /* Świeższa próbka waży więcej - stąd zwężający się ogon, a nie wałek.
-     Sumę normalizujemy do 1, żeby punkt leżący pod całym śladem dostał
-     tyle samo, co wcześniej dostawał pod jednym kursorem. */
-  var WAGI=[1.0,0.62,0.34,0.15], SUMA_WAG=2.11;
-  var sladGotowy=false, pobudzenie=0, MIN_KROK=0.035;
-  var przeciagX=0, przeciagY=0,        // kierunek ciągnięcia, wygładzony
-      przeciagCelX=0, przeciagCelY=0;
-  var PRZECIAG=0.85;                   // ile z przesunięcia idzie „za ruchem"
   /* Kursor w przestrzeni widoku na głębokości środka modelu. Bez odwracania
      macierzy: proj[0]=f/aspect, proj[5]=f, więc z NDC wychodzi się wprost. */
-  function kursorWidok(nx,ny){
+  function kursorWidok(){
     var f=1/Math.tan(FOV/2);
-    return [nx*CAM_Z*aspektNow/f, ny*CAM_Z/f, -CAM_Z];
-  }
-  function dosunSlad(x,y,z){
-    for(var i=SLADOW-1;i>0;i--){
-      sladXYZ[i*3]=sladXYZ[(i-1)*3]; sladXYZ[i*3+1]=sladXYZ[(i-1)*3+1]; sladXYZ[i*3+2]=sladXYZ[(i-1)*3+2];
-    }
-    sladXYZ[0]=x; sladXYZ[1]=y; sladXYZ[2]=z;
+    return [pxEase*CAM_Z*aspektNow/f, pyEase*CAM_Z/f, -CAM_Z];
   }
   if(FINE){
     addEventListener('pointermove',function(e){
@@ -2822,32 +2796,14 @@ document.documentElement.classList.add('js');
       pyNdc=Math.max(-1,Math.min(1, -((e.clientY/innerHeight)*2-1)));
       /* chmura żyje tylko w hero; niżej i tak jest rozwiana, więc siła schodzi */
       nadKadrem = e.clientY < innerHeight*1.05;
-      if(nadKadrem){
-        var kw=kursorWidok(pxNdc,pyNdc);
-        if(!sladGotowy){
-          for(var i=0;i<SLADOW;i++){ sladXYZ[i*3]=kw[0]; sladXYZ[i*3+1]=kw[1]; sladXYZ[i*3+2]=kw[2]; }
-          sladGotowy=true;
-        } else {
-          var dx=kw[0]-sladXYZ[0], dy=kw[1]-sladXYZ[1];
-          var krok=Math.sqrt(dx*dx+dy*dy);
-          if(krok>MIN_KROK){
-            dosunSlad(kw[0],kw[1],kw[2]);
-            przeciagCelX=dx/krok; przeciagCelY=dy/krok;
-          }
-          /* pobudzenie rośnie od PRZEBYTEJ DROGI, nie od samej obecności:
-             wolne przesunięcie ledwie muska kurz, szybki przejazd go rozrzuca */
-          pobudzenie=Math.min(1, pobudzenie + krok*2.4);
-        }
-      }
+      scatterCel = nadKadrem?1:0;
       /* Nad rozwianym tłem ruch myszy nie budzi pętli. Bez tego każde drgnięcie
          kursora gdziekolwiek na stronie kosztowało klatkę, która i tak nie
          miała czego narysować - przewinięcie w górę budzi ją zdarzeniem scroll. */
       if(rozwiane<0.85) wake();
     },{passive:true});
-    /* Kursor poza oknem nie zeruje kurzu w jednej klatce - zostawia go
-       osiadający, tak samo jak przy zatrzymaniu. Znika tylko dopływ. */
-    addEventListener('pointerleave',function(){ sladGotowy=false; if(rozwiane<0.85) wake(); },{passive:true});
-    document.addEventListener('mouseleave',function(){ sladGotowy=false; if(rozwiane<0.85) wake(); },{passive:true});
+    addEventListener('pointerleave',function(){ scatterCel=0; if(rozwiane<0.85) wake(); },{passive:true});
+    document.addEventListener('mouseleave',function(){ scatterCel=0; if(rozwiane<0.85) wake(); },{passive:true});
   }
 
   fetch('assets/brain-points.bin').then(function(res){
@@ -2957,22 +2913,16 @@ document.documentElement.classList.add('js');
        temu powrót w górę nie jest skokiem. */
     rozwiane=e;
     if(FINE && e<0.85){
+      var dsc=scatterCel-scatter;
+      if(Math.abs(dsc)>0.002){ scatter+=dsc*0.09; moving=true; } else scatter=scatterCel;
       var dpx=pxNdc-pxEase, dpy=pyNdc-pyEase;
       if(Math.abs(dpx)>0.0008||Math.abs(dpy)>0.0008){ pxEase+=dpx*0.06; pyEase+=dpy*0.06; moving=true; }
-      /* Kurz osiada sam. Dopóki cokolwiek jest jeszcze poruszone, pętla musi
-         żyć - inaczej zasnęłaby w połowie opadania i smuga zastygłaby
-         w powietrzu zamiast zniknąć. */
-      if(pobudzenie>0.0015){ pobudzenie*=0.938; moving=true; }
-      else if(pobudzenie!==0){ pobudzenie=0; }
-      var dqx=przeciagCelX-przeciagX, dqy=przeciagCelY-przeciagY;
-      if(Math.abs(dqx)>0.002||Math.abs(dqy)>0.002){ przeciagX+=dqx*0.14; przeciagY+=dqy*0.14; moving=true; }
-      for(var i=0;i<SLADOW;i++) sladW[i]=pobudzenie*WAGI[i]/SUMA_WAG;
-      gl.uniform3fv(U_TRAIL,sladXYZ);
-      gl.uniform1fv(U_TRAILW,sladW);
-      gl.uniform3f(U_DRAG, przeciagX*PRZECIAG, przeciagY*PRZECIAG, 0);
-      gl.uniform1f(U_SCF, 0.34*pobudzenie*(1-e));
-    } else if(FINE && pobudzenie!==0){
-      pobudzenie=0; gl.uniform1f(U_SCF,0);    // raz, przy przejściu przez próg
+      var kw=kursorWidok(), dcx=kw[0]-curX, dcy=kw[1]-curY;
+      if(Math.abs(dcx)>0.0008||Math.abs(dcy)>0.0008){ curX+=dcx*0.09; curY+=dcy*0.09; moving=true; }
+      gl.uniform3f(U_CUR,curX,curY,-CAM_Z);
+      gl.uniform1f(U_SCF, 0.28*scatter*(1-e));
+    } else if(FINE && scatter!==0){
+      scatter=0; gl.uniform1f(U_SCF,0);       // raz, przy przejściu przez próg
     }
     draw(e, 0.2*(1-e)+0.15*e);                  // kropki zostają delikatne, nie znikają
     if(moving) raf=requestAnimationFrame(tick); // nic się nie rusza -> pętla zasypia
