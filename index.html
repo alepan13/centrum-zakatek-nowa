@@ -228,7 +228,13 @@ document.documentElement.classList.add('js');
     main>.scene{min-height:100vh;display:flex;align-items:safe center;scroll-snap-align:center;
       padding-top:calc(clamp(84px,12vh,132px) + 46px);
       padding-bottom:clamp(36px,4.5vh,80px)}
-    main>.scene>.inner{width:100%}
+    /* NIE dopisywać tu `main>.scene>.inner{width:100%}`. Kusi, bo .inner jest
+       teraz elementem siatki flex - ale bazowa reguła i tak daje mu 100%, a ta
+       ma wyższą wagę niż `.hero .inner{width:auto}` z bloku ≥1024px. Skutek:
+       w hero szerokość bije `right:4.5vw`, .inner rozciąga się na całą
+       szerokość okna i WSZYSTKIE cztery narożniki jadą w prawo - napis
+       „27 specjalistów" wyjeżdża poza kadr. Komentarz przy .hero .inner
+       ostrzega przed dokładnie tym; ja to i tak zrobiłem. */
     /* Sekcja wyższa od okna nie ma środka, który dałoby się pokazać -
        wyśrodkowanie ucina ją z góry I z dołu naraz. Takie sekcje (cennik
        zawsze, zakres na niższych ekranach) dostają DWA punkty zatrzymania:
@@ -2899,7 +2905,13 @@ document.documentElement.classList.add('js');
      macierzy: proj[0]=f/aspect, proj[5]=f, więc z NDC wychodzi się wprost. */
   function kursorWidok(){
     var f=1/Math.tan(FOV/2);
-    return [pxEase*CAM_Z*aspektNow/f, pyEase*CAM_Z/f, -CAM_Z];
+    /* pxNdc, nie pxEase - i to jest połowa całego opóźnienia. pxEase jest
+       wygładzany dla PARALLAKSY, która ma być powolna z założenia. Podawanie
+       go dalej do rozpraszania dawało wygładzanie PODWÓJNE: najpierw 0,06 na
+       klatkę, potem drugie na curX. Razem prawie pół sekundy, zanim chmura
+       zauważyła, że kursor się ruszył. Parallaksa zostaje wolna, rozpraszanie
+       dostaje surową pozycję i jedno wygładzenie. */
+    return [pxNdc*CAM_Z*aspektNow/f, pyNdc*CAM_Z/f, -CAM_Z];
   }
   if(FINE){
     addEventListener('pointermove',function(e){
@@ -3026,11 +3038,11 @@ document.documentElement.classList.add('js');
     rozwiane=e;
     if(FINE && e<0.85){
       var dsc=scatterCel-scatter;
-      if(Math.abs(dsc)>0.002){ scatter+=dsc*0.09; moving=true; } else scatter=scatterCel;
+      if(Math.abs(dsc)>0.002){ scatter+=dsc*0.20; moving=true; } else scatter=scatterCel;   // narastanie siły: ~5 klatek zamiast ~11
       var dpx=pxNdc-pxEase, dpy=pyNdc-pyEase;
       if(Math.abs(dpx)>0.0008||Math.abs(dpy)>0.0008){ pxEase+=dpx*0.06; pyEase+=dpy*0.06; moving=true; }
       var kw=kursorWidok(), dcx=kw[0]-curX, dcy=kw[1]-curY;
-      if(Math.abs(dcx)>0.0008||Math.abs(dcy)>0.0008){ curX+=dcx*0.09; curY+=dcy*0.09; moving=true; }
+      if(Math.abs(dcx)>0.0008||Math.abs(dcy)>0.0008){ curX+=dcx*0.24; curY+=dcy*0.24; moving=true; }   // dojazd do kursora: ~4 klatki zamiast ~11
       gl.uniform3f(U_CUR,curX,curY,-CAM_Z);
       gl.uniform1f(U_SCF, 0.28*scatter*(1-e));
     } else if(FINE && scatter!==0){
