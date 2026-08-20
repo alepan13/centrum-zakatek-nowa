@@ -453,6 +453,11 @@ document.documentElement.classList.add('js');
     transition:background-size 1s var(--ease) .4s}
   .scene.show .accentword{background-size:100% 2px}
   .lede{font-size:var(--t-lede);color:var(--soft);margin-top:24px;max-width:46ch;line-height:var(--lh-relaxed)}
+  /* Twardy podział działa tylko wtedy, gdy wiersz PRZED nim się mieści.
+     Na wąskim ekranie zdanie łamie się i tak, a dodatkowy <br> zostawiłby
+     w środku sierotę - więc tam go wyłączamy i zostaje zwykłe zawijanie. */
+  .lede-br{display:none}
+  @media(min-width:900px){ .lede-br{display:inline} }
 
   .btn{font-family:var(--label);font-size:var(--t-label);letter-spacing:var(--tr-label);text-transform:uppercase;padding:15px 26px;border-radius:var(--r-md);display:inline-flex;align-items:center;gap:9px;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s;cursor:pointer;border:1px solid transparent}
   .btn-primary{background:var(--accent);color:var(--accent-ink);font-weight:600}
@@ -1627,7 +1632,13 @@ document.documentElement.classList.add('js');
   <section class="scene" id="zespol">
     <div class="inner">
       <h2 class="reveal">27 specjalistów.</h2>
-      <p class="lede reveal" id="teamLede">Rozwiń, by zobaczyć profile - z ceną i&nbsp;orientacyjnym terminem.</p>
+      <!-- „Rozwiń" odpadło razem z przyciskiem: instrukcja bez przycisku każe
+           zrobić coś, czego nie da się zrobić. Profil otwiera się kliknięciem
+           w kartę na łuku i to jest zdanie, które tu zostaje - ta sama treść,
+           którą autor napisał już dla stanu rozwiniętego (ledeOpen).
+           Twardy podział wiersza stawia „z ceną" na początku drugiego, żeby
+           cena i termin szły razem, a nie w poprzek złamania. -->
+      <p class="lede reveal" id="teamLede">Kliknij osobę, by zobaczyć pełny profil&nbsp;-<br class="lede-br">z&nbsp;ceną i&nbsp;orientacyjnym terminem.</p>
       <div class="team-teaser reveal" id="teamTeaser"></div>
       <div class="team-full" id="teamFull" hidden>
         <div class="full-top"><b>Wszyscy specjaliści</b><button class="collapse-cta ghost sm" data-team-collapse>Zwiń <span>↑</span></button></div>
@@ -2138,11 +2149,10 @@ document.documentElement.classList.add('js');
       +'<div class="tdock__r"><button class="tnav" id="td-prev" aria-label="Poprzednia osoba">‹</button>'
       +'<button class="tnav" id="td-next" aria-label="Następna osoba">›</button></div>'
       +'</div>'
-      +'<p class="thint">Przeciągnij · przesuń · strzałki</p>'
-      +'<button class="collapse-cta" data-team-expand>Zobacz cały zespół <span>↓</span></button>';
+      +'<p class="thint">Przeciągnij · przesuń · strzałki</p>';
     initTeamRing();
     var lede=document.getElementById('teamLede'), ledeShut=lede?lede.innerHTML:'';
-    var ledeOpen='Kliknij osobę, by zobaczyć pełny profil - z ceną i&nbsp;orientacyjnym terminem.';
+    var ledeOpen=ledeShut;   // ta sama treść w obu stanach - łuk i siatka otwierają profil tak samo
     /* instrukcja „rozwiń” po rozwinięciu odsyła do stanu, którego już nie ma */
     var teamTimer=0;
     function setTeam(open){
@@ -2160,7 +2170,9 @@ document.documentElement.classList.add('js');
       }
       if(lede){ lede.innerHTML = open?ledeOpen:ledeShut; typoPass(lede); }
     }
-    teaser.querySelector('[data-team-expand]').onclick=function(){ setTeam(true); };
+    /* Przycisk rozwijający zniknął, więc `setTeam(true)` nie ma już kto wywołać.
+       Obsługa zwijania zostaje - pełny widok jest osiągalny wyłącznie z kodu
+       (np. gdyby przycisk kiedyś wrócił), a martwy nasłuch nic nie kosztuje. */
     full.querySelectorAll('[data-team-collapse]').forEach(function(b){ b.onclick=function(){ setTeam(false); var z=document.getElementById('zespol'); if(z) z.scrollIntoView(window.SCROLL||{behavior:'smooth'}); }; });
     typoPass(teaser);
   })();
