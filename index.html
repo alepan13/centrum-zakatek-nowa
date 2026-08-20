@@ -3104,7 +3104,21 @@ document.documentElement.classList.add('js');
      narożników był dobierany i w której wygląda tak, jak ma wyglądać. Zmierzony
      rzut chmury: x 702..1375, y 145..693; stare pozycje procentowe wypadały
      wtedy dokładnie tutaj. Od teraz ta sama relacja obowiązuje w każdym oknie. */
-  var KOTWICE={'-a':[0.806,0.033], '-b':[0.222,0.941], '-c':[-0.207,0.773]};
+  /* Ułamki pochodzą z POMIARU przy 1440x900 - to proporcja, w której układ
+     narożników był dobierany.
+
+     „Toruń" NIE jest ułamkiem w poziomie i to jest poprawka po pierwszym
+     podejściu: ujemny ułamek szerokości znaczy „tyle a tyle procent chmury na
+     lewo od jej krawędzi", więc odstęp ROŚNIE razem z chmurą. Przy 1440x900
+     dawał 139 px, przy 1512x1296 już 202 px i napis odjeżdżał w pustkę.
+     Teraz trzyma stałą odległość od lewej krawędzi chmury, niezależnie od jej
+     wielkości: prawy brzeg napisu wchodzi ODSTEP_C pikseli w obrys.
+
+     Wartość dobrana tak, żeby oba napisy - „Toruń" i „27 specjalistów" -
+     stały o kilkadziesiąt pikseli bardziej w prawo niż po pierwszym podejściu.
+     Jedna liczba, jeśli trzeba je ruszyć jeszcze raz. */
+  var KOTWICE={'-a':[0.806,0.033], '-b':[0.222,0.941], '-c':[null,0.773]};
+  var ODSTEP_C=50;
   function ustawNapisy(){
     if(!punkty || !count) return;
     var inner=document.querySelector('#hero .inner'); if(!inner) return;
@@ -3129,9 +3143,18 @@ document.documentElement.classList.add('js');
     Object.keys(KOTWICE).forEach(function(k){
       var el=document.querySelector('.hero-fakt.'+k); if(!el) return;
       var r=el.getBoundingClientRect();
-      var lx = minx + KOTWICE[k][0]*bw - ir.left;
+      var ekranX = (KOTWICE[k][0]===null)
+        ? (minx + ODSTEP_C - r.width)          // „Toruń": stały odstęp od lewej krawędzi chmury
+        : (minx + KOTWICE[k][0]*bw);
+      var lx = ekranX - ir.left;
       var ty = miny + KOTWICE[k][1]*bh - ir.top;
-      lx = Math.max(0, Math.min(lx, ir.width  - r.width  - 4));
+      /* Przycinamy do KADRU, nie do `.inner`. `.inner` jest wcięty o 4,5vw z
+         każdej strony (68 px przy oknie 1512), a te napisy to podpisy przy
+         chmurze, nie tekst w kolumnie - wolno im wejść w ten margines.
+         Przy wysokim oknie chmura jest szersza od kadru i „27 specjalistów"
+         opierał się o wcięcie zamiast o krawędź ekranu, tracąc te 60 px. */
+      var margines=12;
+      lx = Math.max(margines - ir.left, Math.min(lx, innerWidth - margines - r.width - ir.left));
       ty = Math.max(0, Math.min(ty, ir.height - r.height - 4));
       el.style.setProperty('--fx', Math.round(lx)+'px');
       el.style.setProperty('--fy', Math.round(ty)+'px');
